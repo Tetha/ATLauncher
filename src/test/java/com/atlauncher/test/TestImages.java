@@ -6,6 +6,6 @@ import org.junit.Test;
 public class TestImages {
     @Test
     public void test(){
-        System.out.println("With Slash: " + (Utils.getIconImage("/icon.png") != null));
+        System.out.println("With Slash: " + (Utils.getIconImage("/Icon.png") != null));
     }
 }

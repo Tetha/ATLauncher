@@ -45,7 +45,7 @@ public class App {
             setLAF();
             modifyLAF();
 
-            // trySystemTrayIntegration();
+            trySystemTrayIntegration();
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -182,7 +182,7 @@ public class App {
         if (SystemTray.isSupported()) {
             TRAY = SystemTray.getSystemTray();
 
-            Image trayIconImage = Utils.getImage("/resources/icon.png");
+            Image trayIconImage = Utils.getImage("/resources/Icon.png");
             TRAY.add(new TrayIcon(trayIconImage, "tray_icon") {
                 {
                     this.setPopupMenu(getSystemTrayMenu());

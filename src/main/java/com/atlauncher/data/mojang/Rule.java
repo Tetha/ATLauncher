@@ -13,11 +13,10 @@ package com.atlauncher.data.mojang;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-enum Action {
-    ALLOW, DISALLOW;
-}
-
 public class Rule {
+    enum Action{
+        ALLOW, DISALLOW
+    }
 
     private Action action; // If it should be allowed
     private OperatingSystemRule os; // The OS this rule applies to

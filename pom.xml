@@ -64,7 +64,7 @@
                     </includes>
                     <replacements>
                         <replacement>
-                            <token>%PASTECHECKURL</token>
+                            <token>%PASTECHECKURL%</token>
                             <value>${project.paste.check.url}</value>
                         </replacement>
                         <replacement>
