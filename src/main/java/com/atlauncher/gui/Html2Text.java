@@ -6,13 +6,12 @@
  */
 package com.atlauncher.gui;
 
-import java.io.IOException;
-import java.io.Reader;
-
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.parser.ParserDelegator;
+import java.io.IOException;
+import java.io.Reader;
 
 public class Html2Text extends HTMLEditorKit.ParserCallback {
     StringBuffer s;

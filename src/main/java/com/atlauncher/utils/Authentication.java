@@ -10,6 +10,13 @@
  */
 package com.atlauncher.utils;
 
+import com.atlauncher.App;
+import com.atlauncher.data.Settings;
+import com.atlauncher.data.mojang.auth.AuthenticationRequest;
+import com.atlauncher.data.mojang.auth.AuthenticationResponse;
+import com.atlauncher.data.mojang.auth.InvalidateRequest;
+import com.google.gson.Gson;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -20,13 +27,6 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.UUID;
-
-import com.atlauncher.App;
-import com.atlauncher.data.Settings;
-import com.atlauncher.data.mojang.auth.AuthenticationRequest;
-import com.atlauncher.data.mojang.auth.AuthenticationResponse;
-import com.atlauncher.data.mojang.auth.InvalidateRequest;
-import com.google.gson.Gson;
 
 public class Authentication {
 

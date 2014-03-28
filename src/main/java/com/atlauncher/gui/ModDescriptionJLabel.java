@@ -6,13 +6,11 @@
  */
 package com.atlauncher.gui;
 
+import com.atlauncher.App;
+
+import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
-import com.atlauncher.App;
 
 public class ModDescriptionJLabel extends JLabel {
 

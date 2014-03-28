@@ -6,15 +6,11 @@
  */
 package com.atlauncher.gui;
 
-import java.awt.BorderLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-
 import com.atlauncher.App;
 import com.atlauncher.data.Addon;
+
+import javax.swing.*;
+import java.awt.*;
 
 public class AddonsPanel extends JPanel {
 

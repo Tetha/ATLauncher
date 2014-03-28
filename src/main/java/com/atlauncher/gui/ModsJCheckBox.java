@@ -6,10 +6,10 @@
  */
 package com.atlauncher.gui;
 
-import javax.swing.JCheckBox;
-
 import com.atlauncher.data.DisableableMod;
 import com.atlauncher.data.Mod;
+
+import javax.swing.*;
 
 public class ModsJCheckBox extends JCheckBox {
 

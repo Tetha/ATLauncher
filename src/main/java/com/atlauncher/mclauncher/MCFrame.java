@@ -6,17 +6,15 @@
  */
 package com.atlauncher.mclauncher;
 
+import com.atlauncher.utils.Utils;
+import net.minecraft.Launcher;
+
 import java.applet.Applet;
-import java.awt.Dimension;
-import java.awt.Frame;
+import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.net.MalformedURLException;
 import java.net.URL;
-
-import net.minecraft.Launcher;
-
-import com.atlauncher.utils.Utils;
 
 public class MCFrame extends Frame implements WindowListener {
     private Launcher appletWrap = null;

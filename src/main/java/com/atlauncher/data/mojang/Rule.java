@@ -14,7 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Rule {
-    enum Action{
+    static enum Action{
         ALLOW, DISALLOW
     }
 

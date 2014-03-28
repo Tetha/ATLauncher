@@ -14,6 +14,10 @@
     </description>
     <url>https://www.atlauncher.com</url>
 
+    <properties>
+        <project.jdk.version>1.6</project.jdk.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -43,67 +47,24 @@
 
     <build>
         <plugins>
+            <!--
             <plugin>
-                <groupId>com.google.code.maven-replacer-plugin</groupId>
-                <artifactId>replacer</artifactId>
-                <version>1.5.2</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.7</version>
                 <executions>
                     <execution>
-                        <phase>prepare-package</phase>
                         <goals>
-                            <goal>replace</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <includes>
-                        <indclude>target/**/Settings.java</indclude>
-                        <include>target/**/Instance.java</include>
-                        <include>target/**/Utils.java</include>
-                        <include>target/**/ConsoleBottomBar.java</include>
-                    </includes>
-                    <replacements>
-                        <replacement>
-                            <token>%PASTECHECKURL%</token>
-                            <value>${project.paste.check.url}</value>
-                        </replacement>
-                        <replacement>
-                            <token>%PASTEAPIURL%</token>
-                            <value>$project.paste.url}</value>
-                        </replacement>
-                        <replacement>
-                            <token>replace("%VERSION"</token>
-                            <value>replace("%VERSION%"</value>
-                        </replacement>
-                        <replacement>
-                            <token>%APIURL%</token>
-                            <value>${project.api.url}</value>
-                        </replacement>
-                        <replacement>
-                            <token>// INSERT SERVERS HERE</token>
-                            <value>${project.servers}</value>
-                        </replacement>
-                    </replacements>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>properties-maven-plugin</artifactId>
-                <version>1.0-alpha-2</version>
-                <executions>
-                    <execution>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>read-project-properties</goal>
+                            <goal>run</goal>
                         </goals>
                         <configuration>
-                            <files>
-                                <file>build.properties</file>
-                            </files>
+                            <target>
+                                <ant antfile="build.xml" target="swapper"/>
+                            </target>
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin> -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

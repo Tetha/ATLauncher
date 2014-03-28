@@ -10,9 +10,9 @@
  */
 package com.atlauncher.data.mojang.auth;
 
-import java.util.List;
-
 import com.atlauncher.data.mojang.Property;
+
+import java.util.List;
 
 public class User {
 

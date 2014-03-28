@@ -6,15 +6,15 @@
  */
 package com.atlauncher.data;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-
 import com.atlauncher.App;
 import com.atlauncher.data.mojang.MojangConstants;
 import com.atlauncher.data.mojang.Version;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 
 public class MinecraftVersion {
 

@@ -6,11 +6,15 @@
  */
 package com.atlauncher.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import com.atlauncher.App;
+import com.atlauncher.data.Instance;
+import com.atlauncher.data.Pack;
+import com.atlauncher.data.PackVersion;
+import com.atlauncher.utils.Utils;
+import com.atlauncher.workers.InstanceInstaller;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -19,23 +23,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
-
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JTextField;
-
-import com.atlauncher.App;
-import com.atlauncher.data.Instance;
-import com.atlauncher.data.Pack;
-import com.atlauncher.data.PackVersion;
-import com.atlauncher.utils.Utils;
-import com.atlauncher.workers.InstanceInstaller;
 
 public class InstanceInstallerDialog extends JDialog {
 

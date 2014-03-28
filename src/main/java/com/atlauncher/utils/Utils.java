@@ -38,7 +38,7 @@ import java.util.zip.ZipOutputStream;
 public class Utils {
 
     public static ImageIcon getIconImage(String path) {
-        URL url = App.class.getResource(path.replace("/resources/", "/"));
+        URL url = System.class.getResource(path.replace("/resources/", "/"));
 
         System.out.println("Loading Icon: " + path.replace("/resources", "/"));
 
@@ -72,7 +72,7 @@ public class Utils {
     }
 
     public static Image getImage(String path) {
-        URL url = App.class.getResource(path.replace("/resources/", "/"));
+        URL url = System.class.getResource(path.replace("/resources/", "/"));
 
         if (url == null) {
             System.err.println("Unable to load resource " + path.replace("/resources/", "/"));
@@ -283,7 +283,7 @@ public class Utils {
             urlParameters += "language=" + URLEncoder.encode("text", "ISO-8859-1") + "&";
             urlParameters += "private=" + URLEncoder.encode("1", "ISO-8859-1") + "&";
             urlParameters += "text=" + URLEncoder.encode(log, "ISO-8859-1");
-            URL url = new URL("%PASTEAPIURL%");
+            URL url = new URL("%PASTECHECK");
             URLConnection conn = url.openConnection();
             conn.setDoOutput(true);
             OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream());

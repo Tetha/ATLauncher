@@ -6,15 +6,10 @@
  */
 package com.atlauncher.gui;
 
-import java.awt.Component;
-import java.awt.Dimension;
-
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.ListCellRenderer;
-
 import com.atlauncher.data.Account;
+
+import javax.swing.*;
+import java.awt.*;
 
 public class AccountsDropDownRenderer extends JLabel implements ListCellRenderer {
 

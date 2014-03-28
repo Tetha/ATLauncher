@@ -1135,7 +1135,7 @@ public class Settings {
      * files
      */
     private void setupServers() {
-        // INSERT SERVERS HERE
+        servers.add(new Server("Auto", "files.atlcdn.net", true));             servers.add(new Server("Europe", "eu.atlcdn.net", true));             servers.add(new Server("US Central", "uscentral.atlcdn.net", true));             servers.add(new Server("US East", "useast.atlcdn.net", true));             servers.add(new Server("US West", "uswest.atlcdn.net", true));             servers.add(new Server("Master Server", "master.atlauncher.com", true));
     }
 
     public boolean disableServerGetNext() {
@@ -1688,7 +1688,7 @@ public class Settings {
             data += "&" + URLEncoder.encode("extra3", "UTF-8") + "="
                     + URLEncoder.encode(extra3, "UTF-8");
 
-            URL url = new URL("%APIURL%");
+            URL url = new URL("%API%");
             URLConnection conn = url.openConnection();
             conn.setDoOutput(true);
             OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
@@ -2589,7 +2589,7 @@ public class Settings {
     }
 
     public String getUserAgent() {
-        return this.userAgent + " ATLauncher/" + this.version.replace("%VERSION", "3.1");
+        return this.userAgent + " ATLauncher/" + this.version.replace("%VERSION%", "3.1");
     }
 
     public String getLocalizedString(String string) {

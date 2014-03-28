@@ -6,22 +6,6 @@
  */
 package com.atlauncher.data;
 
-import java.awt.BorderLayout;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-
 import com.atlauncher.App;
 import com.atlauncher.data.mojang.auth.AuthenticationResponse;
 import com.atlauncher.gui.ProgressDialog;
@@ -29,6 +13,12 @@ import com.atlauncher.mclauncher.LegacyMCLauncher;
 import com.atlauncher.mclauncher.MCLauncher;
 import com.atlauncher.utils.Authentication;
 import com.atlauncher.utils.Utils;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Instance implements Serializable {
 
@@ -724,20 +714,19 @@ public class Instance implements Serializable {
     }
 
     public void uploadCrashLog() {
-        Thread thread = new Thread() {
+        App.TASKPOOL.execute(new Runnable(){
             public void run() {
                 String result = Utils.uploadPaste("ATLauncher Log", App.settings.getLog());
-                if (result.contains("%PASTECHECKURL%")) {
+                if (result.contains("%PASTE%")) {
                     App.settings.apiCall(App.settings.getAccount().getMinecraftUsername(),
                             "reportcrash", realPack.getID() + "", getVersion(),
-                            result.replace("http://paste.atlauncher.com/view/", ""));
+                            result.replace("%PASTE%/view/", ""));
                     App.settings.log("Log uploaded and reported to ModPack creator: " + result);
                 } else {
                     App.settings
                             .log("Log failed to upload: " + result, LogMessageType.error, false);
                 }
-            };
-        };
-        thread.run();
+            }
+        });
     }
 }

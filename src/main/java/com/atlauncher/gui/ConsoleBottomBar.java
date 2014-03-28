@@ -6,26 +6,16 @@
  */
 package com.atlauncher.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.Toolkit;
+import com.atlauncher.App;
+import com.atlauncher.data.LogMessageType;
+import com.atlauncher.utils.Utils;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-
-import com.atlauncher.App;
-import com.atlauncher.data.LogMessageType;
-import com.atlauncher.utils.Utils;
 
 @SuppressWarnings("serial")
 public class ConsoleBottomBar extends JPanel {
@@ -103,7 +93,7 @@ public class ConsoleBottomBar extends JPanel {
         uploadLog.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String result = Utils.uploadLog();
-                if (result.contains("%PASTECHECKURL%")) {
+                if (result.contains("%PASTECHECK%")) {
                     App.settings.log("Log uploaded and link copied to clipboard: " + result);
                     StringSelection text = new StringSelection(result);
                     Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();

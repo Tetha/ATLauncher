@@ -6,13 +6,31 @@
  */
 package com.atlauncher.workers;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.StringReader;
+import com.atlauncher.App;
+import com.atlauncher.data.Action;
+import com.atlauncher.data.*;
+import com.atlauncher.data.mojang.*;
+import com.atlauncher.gui.ModsChooser;
+import com.atlauncher.utils.Base64;
+import com.atlauncher.utils.Utils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+import javax.swing.*;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -22,49 +40,6 @@ import java.util.concurrent.Executors;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 import java.util.jar.JarOutputStream;
-
-import javax.swing.JEditorPane;
-import javax.swing.JOptionPane;
-import javax.swing.SwingWorker;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-
-import com.atlauncher.App;
-import com.atlauncher.data.Action;
-import com.atlauncher.data.DecompType;
-import com.atlauncher.data.DisableableMod;
-import com.atlauncher.data.Download;
-import com.atlauncher.data.Downloadable;
-import com.atlauncher.data.Instance;
-import com.atlauncher.data.LogMessageType;
-import com.atlauncher.data.Mod;
-import com.atlauncher.data.Pack;
-import com.atlauncher.data.PackVersion;
-import com.atlauncher.data.Type;
-import com.atlauncher.data.mojang.AssetIndex;
-import com.atlauncher.data.mojang.AssetObject;
-import com.atlauncher.data.mojang.DateTypeAdapter;
-import com.atlauncher.data.mojang.EnumTypeAdapterFactory;
-import com.atlauncher.data.mojang.FileTypeAdapter;
-import com.atlauncher.data.mojang.Library;
-import com.atlauncher.data.mojang.MojangConstants;
-import com.atlauncher.gui.ModsChooser;
-import com.atlauncher.utils.Base64;
-import com.atlauncher.utils.Utils;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonSyntaxException;
 
 public class InstanceInstaller extends SwingWorker<Boolean, Void> {
 

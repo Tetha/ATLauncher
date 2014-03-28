@@ -10,18 +10,14 @@
  */
 package com.atlauncher.data;
 
-import java.awt.Color;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.Serializable;
+import com.atlauncher.App;
+import com.atlauncher.utils.Utils;
+
+import java.awt.*;
+import java.io.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 import java.util.jar.JarOutputStream;
-
-import com.atlauncher.App;
-import com.atlauncher.utils.Utils;
 
 public class DisableableMod implements Serializable {
 

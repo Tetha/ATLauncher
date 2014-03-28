@@ -10,9 +10,9 @@
  */
 package com.atlauncher.data;
 
-import java.io.File;
-
 import com.atlauncher.App;
+
+import java.io.File;
 
 public class DownloadableFile {
 

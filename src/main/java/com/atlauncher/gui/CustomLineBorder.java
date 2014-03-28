@@ -10,13 +10,8 @@
  */
 package com.atlauncher.gui;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Insets;
-
-import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
+import java.awt.*;
 
 public class CustomLineBorder extends LineBorder {
 

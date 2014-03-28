@@ -6,20 +6,16 @@
  */
 package com.atlauncher.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
+import com.atlauncher.App;
+import com.atlauncher.data.News;
+import com.atlauncher.utils.Utils;
 
-import javax.swing.JEditorPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
-
-import com.atlauncher.App;
-import com.atlauncher.data.News;
-import com.atlauncher.utils.Utils;
+import java.awt.*;
 
 @SuppressWarnings("serial")
 public class NewsPanel extends JPanel {

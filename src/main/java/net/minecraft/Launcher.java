@@ -18,9 +18,7 @@ package net.minecraft;
 
 import java.applet.Applet;
 import java.applet.AppletStub;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Graphics;
+import java.awt.*;
 import java.net.URL;
 import java.util.Map;
 import java.util.TreeMap;

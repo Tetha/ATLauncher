@@ -6,20 +6,15 @@
  */
 package com.atlauncher.data;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import com.atlauncher.App;
+import com.atlauncher.utils.Utils;
+import com.atlauncher.workers.InstanceInstaller;
+
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.SocketException;
 import java.net.URL;
 import java.util.zip.GZIPInputStream;
-
-import com.atlauncher.App;
-import com.atlauncher.utils.Utils;
-import com.atlauncher.workers.InstanceInstaller;
 
 public class Downloadable {
 

@@ -6,8 +6,13 @@
  */
 package com.atlauncher.data;
 
-import java.awt.Graphics;
-import java.awt.Image;
+import com.atlauncher.App;
+import com.atlauncher.gui.ProgressDialog;
+import com.atlauncher.utils.Utils;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -17,13 +22,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-
-import com.atlauncher.App;
-import com.atlauncher.gui.ProgressDialog;
-import com.atlauncher.utils.Utils;
 
 public class Account implements Serializable {
 
