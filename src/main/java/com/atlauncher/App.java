@@ -45,7 +45,7 @@ public class App {
             setLAF();
             modifyLAF();
 
-            trySystemTrayIntegration();
+            // trySystemTrayIntegration();
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -183,9 +183,7 @@ public class App {
             TRAY = SystemTray.getSystemTray();
 
             Image trayIconImage = Utils.getImage("/resources/icon.png");
-            int trayIconWidth = new TrayIcon(Utils.getImage("/resources/icon.png")).getSize().width;
-            TRAY.add(new TrayIcon(trayIconImage.getScaledInstance(trayIconWidth, -1,
-                    Image.SCALE_SMOOTH), "tray_icon") {
+            TRAY.add(new TrayIcon(trayIconImage, "tray_icon") {
                 {
                     this.setPopupMenu(getSystemTrayMenu());
                     this.setToolTip("ATLauncher");

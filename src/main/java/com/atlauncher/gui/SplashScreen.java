@@ -6,18 +6,13 @@
  */
 package com.atlauncher.gui;
 
+import com.atlauncher.utils.Utils;
+
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import javax.swing.JWindow;
-
-import com.atlauncher.utils.Utils;
 
 public class SplashScreen extends JWindow {
 

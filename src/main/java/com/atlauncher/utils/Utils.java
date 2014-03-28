@@ -6,37 +6,22 @@
  */
 package com.atlauncher.utils;
 
-import java.awt.Desktop;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.Closeable;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import com.atlauncher.App;
+import com.atlauncher.data.LogMessageType;
+import com.atlauncher.data.mojang.ExtractRule;
+import com.atlauncher.data.mojang.OperatingSystem;
+import com.atlauncher.gui.ProgressDialog;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+import javax.swing.*;
+import java.awt.*;
+import java.io.*;
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
+import java.net.*;
 import java.nio.channels.FileChannel;
 import java.security.Key;
 import java.security.MessageDigest;
@@ -50,23 +35,15 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
-import javax.swing.ImageIcon;
-
-import com.atlauncher.App;
-import com.atlauncher.data.LogMessageType;
-import com.atlauncher.data.mojang.ExtractRule;
-import com.atlauncher.data.mojang.OperatingSystem;
-import com.atlauncher.gui.ProgressDialog;
-
 public class Utils {
 
     public static ImageIcon getIconImage(String path) {
-        URL url = System.class.getResource(path);
+        URL url = App.class.getResource(path.replace("/resources/", "/"));
+
+        System.out.println("Loading Icon: " + path.replace("/resources", "/"));
 
         if (url == null) {
-            App.settings.log("Unable to load resource " + path, LogMessageType.error, false);
+            System.err.println("Unable to load resource " + path.replace("/resources/", "/"));
             return null;
         }
 
@@ -77,8 +54,7 @@ public class Utils {
 
     public static ImageIcon getIconImage(File file) {
         if (!file.exists()) {
-            App.settings.log("Unable to load file " + file.getAbsolutePath(), LogMessageType.error,
-                    false);
+            System.err.println("Unable to load file " + file.getAbsolutePath());
             return null;
         }
 
@@ -96,10 +72,10 @@ public class Utils {
     }
 
     public static Image getImage(String path) {
-        URL url = System.class.getResource(path);
+        URL url = App.class.getResource(path.replace("/resources/", "/"));
 
         if (url == null) {
-            App.settings.log("Unable to load resource " + path, LogMessageType.error, false);
+            System.err.println("Unable to load resource " + path.replace("/resources/", "/"));
             return null;
         }
 
@@ -142,7 +118,7 @@ public class Utils {
         Font font = null;
         try {
             font = Font.createFont(Font.TRUETYPE_FONT,
-                    System.class.getResource("/resources/" + name + ".ttf").openStream());
+                    System.class.getResource(name + ".ttf").openStream());
         } catch (FontFormatException e) {
             App.settings.logStackTrace(e);
         } catch (IOException e) {
