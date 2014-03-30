@@ -9,6 +9,7 @@ package com.atlauncher.gui;
 import com.atlauncher.App;
 import com.atlauncher.data.Account;
 import com.atlauncher.data.Status;
+import com.atlauncher.gui.comp.SocialMediaPanel;
 import com.atlauncher.utils.Utils;
 
 import javax.swing.*;
@@ -21,10 +22,9 @@ import java.awt.event.ItemListener;
 
 @SuppressWarnings("serial")
 public class BottomBar extends JPanel {
-
+    private final SocialMediaPanel SMP = new SocialMediaPanel();
     private JPanel leftSide;
     private JPanel middle;
-    private JPanel rightSide;
 
     private Account fillerAccount;
     private boolean dontSave = false;
@@ -33,10 +33,6 @@ public class BottomBar extends JPanel {
     private JButton openFolder;
     private JButton updateData;
     private JComboBox<Account> username;
-    private JButton facebookIcon;
-    private JButton githubIcon;
-    private JButton twitterIcon;
-    private JButton redditIcon;
 
     private JLabel statusIcon;
 
@@ -50,8 +46,6 @@ public class BottomBar extends JPanel {
         leftSide.setLayout(new GridBagLayout());
         middle = new JPanel();
         middle.setLayout(new GridBagLayout());
-        rightSide = new JPanel();
-        rightSide.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
         createButtons();
@@ -73,20 +67,9 @@ public class BottomBar extends JPanel {
         gbc.gridx++;
         middle.add(statusIcon, gbc);
 
-        gbc.gridx = 0;
-        gbc.gridy = GridBagConstraints.RELATIVE;
-        gbc.insets = new Insets(0, 0, 0, 5);
-        rightSide.add(facebookIcon, gbc);
-        gbc.gridx++;
-        rightSide.add(githubIcon, gbc);
-        gbc.gridx++;
-        rightSide.add(redditIcon, gbc);
-        gbc.gridx++;
-        rightSide.add(twitterIcon, gbc);
-
         add(leftSide, BorderLayout.WEST);
         add(middle, BorderLayout.CENTER);
-        add(rightSide, BorderLayout.EAST);
+        this.add(this.SMP, BorderLayout.EAST);
     }
 
     /**
@@ -114,7 +97,9 @@ public class BottomBar extends JPanel {
                             App.settings.reloadLauncherData();
                         }
                         dialog.close();
-                    };
+                    }
+
+                    ;
                 });
                 dialog.start();
             }
@@ -126,30 +111,6 @@ public class BottomBar extends JPanel {
                         App.settings.switchAccount((Account) username.getSelectedItem());
                     }
                 }
-            }
-        });
-        facebookIcon.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                App.settings.log("Opening Up ATLauncher Facebook Page");
-                Utils.openBrowser("http://www.facebook.com/ATLauncher");
-            }
-        });
-        githubIcon.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                App.settings.log("Opening Up ATLauncher GitHub Page");
-                Utils.openBrowser("https://github.com/RyanTheAllmighty/ATLauncher");
-            }
-        });
-        redditIcon.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                App.settings.log("Opening Up ATLauncher Reddit Page");
-                Utils.openBrowser("http://www.reddit.com/r/ATLauncher");
-            }
-        });
-        twitterIcon.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                App.settings.log("Opening Up ATLauncher Twitter Page");
-                Utils.openBrowser("http://www.twitter.com/ATLauncher");
             }
         });
     }
@@ -180,26 +141,6 @@ public class BottomBar extends JPanel {
         } else {
             username.setSelectedItem(active);
         }
-
-        facebookIcon = new JButton(Utils.getIconImage("FacebookIcon.png"));
-        facebookIcon.setBorder(BorderFactory.createEmptyBorder());
-        facebookIcon.setContentAreaFilled(false);
-        facebookIcon.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
-        githubIcon = new JButton(Utils.getIconImage("GitHubIcon.png"));
-        githubIcon.setBorder(BorderFactory.createEmptyBorder());
-        githubIcon.setContentAreaFilled(false);
-        githubIcon.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
-        redditIcon = new JButton(Utils.getIconImage("RedditIcon.png"));
-        redditIcon.setBorder(BorderFactory.createEmptyBorder());
-        redditIcon.setContentAreaFilled(false);
-        redditIcon.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
-        twitterIcon = new JButton(Utils.getIconImage("TwitterIcon.png"));
-        twitterIcon.setBorder(BorderFactory.createEmptyBorder());
-        twitterIcon.setContentAreaFilled(false);
-        twitterIcon.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         statusIcon = new JLabel(Utils.getIconImage("StatusWhite.png")) {
             public JToolTip createToolTip() {

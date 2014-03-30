@@ -7,15 +7,16 @@
 package com.atlauncher.utils;
 
 import com.atlauncher.App;
+import com.atlauncher.data.Constants;
 import com.atlauncher.data.LogMessageType;
 import com.atlauncher.data.mojang.ExtractRule;
 import com.atlauncher.data.mojang.OperatingSystem;
-import com.atlauncher.gui.ProgressDialog;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.datatransfer.StringSelection;
 import java.io.*;
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
@@ -283,7 +284,7 @@ public class Utils {
             urlParameters += "language=" + URLEncoder.encode("text", "ISO-8859-1") + "&";
             urlParameters += "private=" + URLEncoder.encode("1", "ISO-8859-1") + "&";
             urlParameters += "text=" + URLEncoder.encode(log, "ISO-8859-1");
-            URL url = new URL("%PASTECHECK");
+            URL url = new URL(Constants.PASTE_CHECK);
             URLConnection conn = url.openConnection();
             conn.setDoOutput(true);
             OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream());
@@ -296,6 +297,7 @@ public class Utils {
             writer.close();
             reader.close();
         } catch (IOException e1) {
+            result = e1.getMessage();
             App.settings.logStackTrace(e1);
         }
         return result;
@@ -738,19 +740,20 @@ public class Utils {
         fs.close();
     }
 
-    public static String uploadLog() {
-        final ProgressDialog dialog = new ProgressDialog(
-                App.settings.getLocalizedString("console.uploadinglog"), 0,
-                App.settings.getLocalizedString("console.uploadinglog"), "Aborting log upload!");
-        dialog.addThread(new Thread() {
-            public void run() {
+    public static void uploadLog() {
+        App.TASKPOOL.execute(new Runnable(){
+            @Override
+            public void run(){
                 String result = Utils.uploadPaste("ATLauncher Log", App.settings.getLog());
-                dialog.setReturnValue(result);
-                dialog.close();
-            };
+
+                if(result.contains(Constants.PASTE)){
+                    App.settings.log("Paste Uploaded & Copied To Clipboard: " + result);
+                    Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(result), null);
+                } else{
+                    App.settings.log("Error Pasting Log: " + result, LogMessageType.error, false);
+                }
+            }
         });
-        dialog.start();
-        return (String) dialog.getReturnValue();
     }
 
     public static String sendPostData(String urll, String text, String key) throws IOException {
