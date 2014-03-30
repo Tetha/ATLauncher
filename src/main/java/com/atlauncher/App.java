@@ -6,20 +6,12 @@
  */
 package com.atlauncher;
 
-import com.atlauncher.data.Add;
-import com.atlauncher.data.Instance;
-import com.atlauncher.data.LogMessageType;
-import com.atlauncher.data.Settings;
-import com.atlauncher.data.to;
-import com.atlauncher.gui.LauncherFrame;
-import com.atlauncher.gui.SetupDialog;
-import com.atlauncher.gui.SplashScreen;
-import com.atlauncher.gui.comp.ConsoleActionsPanel;
-import com.atlauncher.utils.Utils;
-
-import javax.swing.*;
-
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Image;
+import java.awt.MenuItem;
+import java.awt.PopupMenu;
+import java.awt.SystemTray;
+import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -28,6 +20,19 @@ import java.net.URISyntaxException;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+
+import com.atlauncher.data.Instance;
+import com.atlauncher.data.LogMessageType;
+import com.atlauncher.data.Settings;
+import com.atlauncher.gui.LauncherFrame;
+import com.atlauncher.gui.SetupDialog;
+import com.atlauncher.gui.SplashScreen;
+import com.atlauncher.utils.Utils;
 
 public class App {
     // Using this will help spread the workload across multiple threads allowing you to do many
