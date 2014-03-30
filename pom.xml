@@ -5,6 +5,11 @@
     <groupId>com.atlauncher</groupId>
     <artifactId>atlauncher</artifactId>
     <name>ATLauncher</name>
+    <version>3.1.23</version>
+    <organization>
+        <name>ATLauncher</name>
+        <url>http://www.github.com/ATLauncher/</url>
+    </organization>
     <packaging>jar</packaging>
     <description>
         ATLauncher is a Launcher for Minecraft
@@ -15,6 +20,7 @@
 
     <properties>
         <project.jdk.version>1.6</project.jdk.version>
+        <mainclass>com.atlauncher.App</mainclass>
     </properties>
 
     <dependencies>
@@ -83,7 +89,7 @@
                         <index>true</index>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>com.atlauncher.App</mainClass>
+                            <mainClass>${mainclass}</mainClass>
                         </manifest>
                         <manifestEntries>
                             <Implementation-Vender>RyanTheAllmighty</Implementation-Vender>
@@ -98,21 +104,104 @@
                 <artifactId>maven-shade-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>versioned</id>
                         <phase>package</phase>
                         <goals>
                             <goal>shade</goal>
                         </goals>
+                        <configuration>
+                            <finalName>ATLauncher-${project.version}</finalName>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>release</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <finalName>ATLauncher</finalName>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <finalName>ATLauncher</finalName>
-                </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.akathist.maven.plugins.launch4j</groupId>
+                <artifactId>launch4j-maven-plugin</artifactId>
+                <version>1.5.2</version>
+                <executions>
+                    <execution>
+                        <id>versioned</id>
+                        <configuration>
+                            <headerType>gui</headerType>
+                            <stayAlive>false</stayAlive>
+                            <jar>${project.build.directory}/ATLauncher-${project.version}.jar</jar>
+                            <outfile>${project.build.directory}/ATLauncher-${project.version}.exe</outfile>
+                            <classPath>
+                                <mainClass>${mainclass}</mainClass>
+                                <addDependencies>false</addDependencies>
+                                <preCp>anything</preCp>
+                            </classPath>
+                            <jre>
+                                <minVersion>1.6.0</minVersion>
+                            </jre>
+                            <icon>${basedir}/src/main/resources/Icon.ico</icon>
+                        </configuration>
+                        <goals>
+                            <goal>launch4j</goal>
+                        </goals>
+                        <phase>package</phase>
+                    </execution>
+                    <execution>
+                        <id>release</id>
+                        <configuration>
+                            <headerType>gui</headerType>
+                            <stayAlive>false</stayAlive>
+                            <jar>${project.build.directory}/ATLauncher-${project.version}.jar</jar>
+                            <outfile>${project.build.directory}/ATLauncher.exe</outfile>
+                            <classPath>
+                                <mainClass>${mainclass}</mainClass>
+                                <addDependencies>false</addDependencies>
+                                <preCp>anything</preCp>
+                            </classPath>
+                            <jre>
+                                <minVersion>1.6.0</minVersion>
+                            </jre>
+                            <icon>${basedir}/src/main/resources/Icon.ico</icon>
+                        </configuration>
+                        <goals>
+                            <goal>launch4j</goal>
+                        </goals>
+                        <phase>package</phase>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>osxappbundle-maven-plugin</artifactId>
+                <version>1.0-alpha-2</version>
+                <executions>
+                    <execution>
+                        <configuration>
+                            <mainClass>${mainclass}</mainClass>
+                            <bundleName>${project.name}</bundleName>
+                            <version>${project.version}</version>
+                            <internetEnable>true</internetEnable>
+                            <jvmVersion>1.6+</jvmVersion>
+                            <iconFile>${basedir}/src/main/resources/Icon.icns</iconFile>
+                            <javaApplicationStub>${basedir}/macapp/Contents/MacOS/JavaApplicationStub</javaApplicationStub>
+                            <dictionaryFile>${basedir}/macapp/Contents/Info.plist</dictionaryFile>
+                            <zipFile>${project.build.directory}/ATLauncher-${project.version}.zip</zipFile>
+                        </configuration>
+                        <goals>
+                            <goal>bundle</goal>
+                        </goals>
+                        <phase>package</phase>
+                    </execution>
+                </executions>
+            </plugin>
+            -->
         </plugins>
     </build>
-    <version>3.1.22</version>
-    <organization>
-    	<name>ATLauncher</name>
-    	<url>http://www.github.com/ATLauncher/</url>
-    </organization>
 </project>

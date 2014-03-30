@@ -24,7 +24,7 @@ Other than that, I am releasing this as an Open Source project in hopes that oth
 
 ### Coding Standards
 
-Please keep all line lengths to 100 characters and use 4 spaces rather than tab characters
+Please keep all line lengths to 100 characters and use 4 spaces rather than tab characters.
 
 ### Building
 
@@ -40,6 +40,10 @@ Download and install the latest version from [Oracle's Java Downloads page](http
 
 Install Apache Ant via the official [Apache Ant Install Docs](http://ant.apache.org/manual/install.html).
 
+###### Apache Maven
+
+Install Apache Maven via the official [Apache Maven Install Docs](http://maven.apache.org/download.cgi#Installation).
+
 ###### launch4j
 
 Download and install [launch4j](http://sourceforge.net/projects/launch4j/files/launch4j-3/3.1.0-beta2/).
@@ -52,10 +56,10 @@ C:\Program Files (x86)\Launch4j
 
 ### Pluging In Your Data
 
-To get started with the code and plug in your own data, you need to replace the following files
+To get started with the code and plug in your own data, you need to replace the following files:
 
 #### /src/com/atlauncher/data/Settings.java
-%APIURL% should be replaced with a link to your server side API for processing of leaderboard times and pack installs
+%APIURL% should be replaced with a link to your server side API for processing of leaderboard times and pack installs.
 
 #### /src/com/atlauncher/gui/ConsoleBottomBar.java & /src/com/atlauncher/data/Instance.java
 %PASTECHECKURL% should be replaced with a link to the url where an instance of [stikked](https://github.com/claudehohl/Stikked) is running (For instance http://www.mypaste.com) this is how the launcher knows if the paste was successful by checking the response from the API for the url of the software.
@@ -64,7 +68,7 @@ To get started with the code and plug in your own data, you need to replace the 
 %PASTEAPIURL% should be replaced with a link to the create api command for the instance of [stikked](https://github.com/claudehohl/Stikked) is running (For instance http://www.mypaste.com/api/create/)
 
 #### /src/com/atlauncher/data/Settings.java
-// INSERT SERVERS HERE should be replaced with the addition of your servers to the servers ArrayList such as details below
+// INSERT SERVERS HERE should be replaced with the addition of your servers to the servers ArrayList such as details below.
 
 servers.add(new Server("Test", "sometest.myserver.com"));
 
