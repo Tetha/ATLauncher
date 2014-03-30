@@ -98,6 +98,10 @@ public class App {
         settings = new Settings(); // Setup the Settings and wait for it to
                                    // finish
 
+        if(settings.enableConsole()){
+            settings.setConsoleVisible(true, false);
+        }
+
         settings.log("ATLauncher Version: " + settings.getVersion());
         settings.log("Operating System: " + System.getProperty("os.name"));
         settings.log("RAM Available: " + Utils.getMaximumRam() + "MB");
