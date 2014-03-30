@@ -1,4 +1,4 @@
-package com.atlauncher.gui.comp;
+package com.atlauncher.gui.comp.panel;
 
 import com.atlauncher.App;
 import com.atlauncher.utils.Utils;

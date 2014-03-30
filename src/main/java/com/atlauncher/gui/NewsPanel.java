@@ -65,5 +65,4 @@ public class NewsPanel extends JPanel {
         validate();
         repaint();
     }
-
 }

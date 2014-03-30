@@ -6,14 +6,18 @@
  */
 package com.atlauncher;
 
-import java.awt.Color;
-import java.awt.Image;
-import java.awt.MenuItem;
-import java.awt.PopupMenu;
-import java.awt.SystemTray;
-import java.awt.TrayIcon;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import com.atlauncher.data.Instance;
+import com.atlauncher.data.LogMessageType;
+import com.atlauncher.data.Settings;
+import com.atlauncher.gui.LauncherFrame;
+import com.atlauncher.gui.SetupDialog;
+import com.atlauncher.gui.SplashScreen;
+import com.atlauncher.gui.comp.TrayMenu;
+import com.atlauncher.task.TwitterAction;
+import com.atlauncher.utils.Utils;
+
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.net.URISyntaxException;
@@ -21,54 +25,31 @@ import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import javax.swing.BorderFactory;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-
-import com.atlauncher.data.Instance;
-import com.atlauncher.data.LogMessageType;
-import com.atlauncher.data.Settings;
-import com.atlauncher.gui.LauncherFrame;
-import com.atlauncher.gui.SetupDialog;
-import com.atlauncher.gui.SplashScreen;
-import com.atlauncher.utils.Utils;
-
 public class App {
     // Using this will help spread the workload across multiple threads allowing you to do many
     // tasks at once
     // Approach with caution though
     // Dedicated 2 threads to the TASKPOOL shouldnt have any problems with that little
     public static final ExecutorService TASKPOOL = Executors.newFixedThreadPool(2);
+    public static final PopupMenu TRAY_MENU;
 
     private static SystemTray TRAY = null;
+
+    private static Timer timer = new Timer(180000, new TwitterAction());
 
     public static Settings settings;
 
     // Don't move this declaration anywheres, its important due to Java Class Loading
     private static final Color BASE_COLOR = new Color(40, 45, 50);
 
-    @SuppressWarnings("serial")
-    public static final MenuItem CONSOLE_MENU_ITEM = new MenuItem("Show Console") {
-        {
-            this.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent event) {
-                    if (!App.settings.isConsoleVisible()) {
-                        App.settings.setConsoleVisible(true);
-                    } else {
-                        App.settings.setConsoleVisible(false);
-                    }
-                }
-            });
-        }
-    };
-
     static {
         // Setting the UI LAF here helps with loading the UI should improve performance
         try {
             setLAF();
             modifyLAF();
+
+            TRAY_MENU = new TrayMenu();
+            timer.setInitialDelay(60000);
 
             trySystemTrayIntegration();
         } catch (Exception ex) {
@@ -149,13 +130,6 @@ public class App {
             }
         }
 
-        if (settings.enableConsole()) {
-            settings.setConsoleVisible(true, false);
-            CONSOLE_MENU_ITEM.setLabel("Hide Console");
-        }
-
-        CONSOLE_MENU_ITEM.setEnabled(true);
-
         settings.log("Showing splash screen and loading everything");
         SplashScreen ss = new SplashScreen(); // Show Splash Screen
         settings.loadEverything(); // Loads everything that needs to be loaded
@@ -182,6 +156,7 @@ public class App {
             }
         }
 
+        timer.start();
         new LauncherFrame(open); // Open the Launcher
     }
 
@@ -215,62 +190,10 @@ public class App {
             TRAY.add(new TrayIcon(trayIconImage.getScaledInstance(trayIconWidth, -1,
                     Image.SCALE_SMOOTH), "tray_icon") {
                 {
-                    this.setPopupMenu(getSystemTrayMenu());
+                    this.setPopupMenu(App.TRAY_MENU);
                     this.setToolTip("ATLauncher");
                 }
             });
-            CONSOLE_MENU_ITEM.setEnabled(false);
         }
-    }
-
-    private static PopupMenu getSystemTrayMenu() {
-        PopupMenu menu = new PopupMenu();
-
-        menu.add(new MenuItem("Kill Minecraft") {
-            {
-                this.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent event) {
-                        SwingUtilities.invokeLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (App.settings.isMinecraftLaunched()) {
-                                    int ret = JOptionPane.showConfirmDialog(
-                                            App.settings.getParent(),
-                                            "<html><center>"
-                                                    + App.settings.getLocalizedString(
-                                                            "console.killsure", "<br/><br/>")
-                                                    + "</center></html>", App.settings
-                                                    .getLocalizedString("console.kill"),
-                                            JOptionPane.YES_OPTION);
-
-                                    if (ret == JOptionPane.YES_OPTION) {
-                                        // TODO: This won't remove the button from the console
-                                        App.settings.killMinecraft();
-                                    }
-                                }
-                            }
-                        });
-                    }
-                });
-            }
-        });
-
-        menu.add(CONSOLE_MENU_ITEM);
-
-        menu.addSeparator(); // Add Separator
-
-        menu.add(new MenuItem("Quit") {
-            {
-                this.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent event) {
-                        System.exit(0);
-                    }
-                });
-            }
-        });
-
-        return menu;
     }
 }

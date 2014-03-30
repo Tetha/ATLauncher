@@ -9,7 +9,7 @@ package com.atlauncher.gui;
 import com.atlauncher.App;
 import com.atlauncher.data.Account;
 import com.atlauncher.data.Status;
-import com.atlauncher.gui.comp.SocialMediaPanel;
+import com.atlauncher.gui.comp.panel.SocialMediaPanel;
 import com.atlauncher.utils.Utils;
 
 import javax.swing.*;

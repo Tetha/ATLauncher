@@ -6,8 +6,8 @@
  */
 package com.atlauncher.gui;
 
-import com.atlauncher.gui.comp.ConsoleActionsPanel;
-import com.atlauncher.gui.comp.SocialMediaPanel;
+import com.atlauncher.gui.comp.panel.ConsoleActionsPanel;
+import com.atlauncher.gui.comp.panel.SocialMediaPanel;
 
 import javax.swing.*;
 import java.awt.*;

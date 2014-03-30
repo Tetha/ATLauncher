@@ -23,10 +23,6 @@ public final class SocialMediaTab extends JPanel {
         this.add(this.TABS);
     }
 
-    private final class TwitterTab extends JPanel{
-
-    }
-
     private final class GithubTab extends JPanel{
 
     }

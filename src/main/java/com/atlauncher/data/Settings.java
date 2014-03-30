@@ -2499,13 +2499,11 @@ public class Settings {
      */
     public void setConsoleVisible(boolean visible, boolean updateBottomBar) {
         if (!visible) {
-            App.CONSOLE_MENU_ITEM.setLabel("Show Console");
             App.settings.log("Hiding console");
             if (updateBottomBar) {
                 this.bottomBar.hideConsole();
             }
         } else {
-            App.CONSOLE_MENU_ITEM.setLabel("Hide Console");
             App.settings.log("Showing console");
             if (updateBottomBar) {
                 this.bottomBar.showConsole();
