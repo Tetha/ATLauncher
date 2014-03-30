@@ -2287,8 +2287,6 @@ public class Settings {
             log("Killing Minecraft", LogMessageType.error, false);
             this.minecraftProcess.destroy();
             this.minecraftProcess = null;
-        } else {
-            log("Cannot kill Minecraft as there is no instance open!", LogMessageType.error, false);
         }
     }
 

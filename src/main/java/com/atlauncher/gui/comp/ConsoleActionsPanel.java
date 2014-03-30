@@ -79,6 +79,7 @@ public final class ConsoleActionsPanel extends JPanel {
             this.add(button, this.gbc);
             this.gbc.gridx++;
         }
+        this.hideKillMC();
     }
 
     public void showKillMC(){
