@@ -118,7 +118,7 @@ public class Utils {
         Font font = null;
         try {
             font = Font.createFont(Font.TRUETYPE_FONT,
-                    System.class.getResource(name + ".ttf").openStream());
+                    System.class.getResource("/" + name + ".ttf").openStream());
         } catch (FontFormatException e) {
             App.settings.logStackTrace(e);
         } catch (IOException e) {
