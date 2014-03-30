@@ -40,7 +40,7 @@ public class Utils {
     public static ImageIcon getIconImage(String path) {
         URL url = System.class.getResource(path.replace("/resources/", "/"));
 
-        System.out.println("Loading Icon: " + path.replace("/resources", "/"));
+        System.out.println("Loading Icon: " + path.replace("/resources/", "/"));
 
         if (url == null) {
             System.err.println("Unable to load resource " + path.replace("/resources/", "/"));
