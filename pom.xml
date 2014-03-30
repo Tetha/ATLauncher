@@ -4,7 +4,6 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.atlauncher</groupId>
     <artifactId>atlauncher</artifactId>
-    <version>3.1.23</version>
     <name>ATLauncher</name>
     <packaging>jar</packaging>
     <description>
@@ -106,9 +105,14 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <finalName>ATLauncher-${project.version}</finalName>
+                    <finalName>ATLauncher</finalName>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+    <version>3.1.22</version>
+    <organization>
+    	<name>ATLauncher</name>
+    	<url>http://www.github.com/ATLauncher/</url>
+    </organization>
 </project>
