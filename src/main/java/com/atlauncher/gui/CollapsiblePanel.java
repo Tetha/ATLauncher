@@ -30,7 +30,7 @@ public class CollapsiblePanel extends JPanel {
     Border collapsedBorderLine = BorderFactory.createTitledBorder(""); // no border
     Border expandedBorderLine = null; // default is used, etched lowered border on MAC????
     AbstractButton titleComponent; // displayed in the titled border
-    final static int COLLAPSED = 0, EXPANDED = 1; // Expand/Collapse button,image States
+    final static int COLLAPSED = 0, EXPANDED = 1; // Expand/Collapse button,assets.image States
     ImageIcon[] iconArrow = createExpandAndCollapseIcon();
     JButton arrow = createArrowButton();// the arrow
     JPanel panel;

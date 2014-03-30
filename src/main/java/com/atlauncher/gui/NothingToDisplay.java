@@ -22,10 +22,10 @@ import java.io.File;
  */
 public class NothingToDisplay extends JPanel {
 
-    private JPanel leftPanel; // Left panel with image
+    private JPanel leftPanel; // Left panel with assets.image
     private JPanel rightPanel; // Right panel with error message
     private JSplitPane splitPane; // The split pane
-    private JLabel errorImage; // The image to display
+    private JLabel errorImage; // The assets.image to display
     private JTextArea errorMessage; // Error message to show
 
     public NothingToDisplay(final String message) {

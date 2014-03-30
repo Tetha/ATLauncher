@@ -203,7 +203,7 @@ public class AccountPanel extends JPanel {
                     AuthenticationResponse response = (AuthenticationResponse) dialog
                             .getReturnValue();
                     if (!response.hasError()) {
-                        AuthenticationResponse resp = (AuthenticationResponse) response;
+                        AuthenticationResponse resp = response;
 
                         if (accountsComboBox.getSelectedIndex() == 0) {
                             account = new Account(username, password, resp.getSelectedProfile()

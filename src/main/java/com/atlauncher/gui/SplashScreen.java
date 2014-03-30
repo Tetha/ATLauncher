@@ -16,7 +16,7 @@ import java.awt.event.MouseEvent;
 
 public class SplashScreen extends JWindow {
 
-    private ImageIcon icon = Utils.getIconImage("/resources/SplashScreen.png");
+    private ImageIcon icon = Utils.getIconImage("SplashScreen.png");
 
     public SplashScreen() {
         setLayout(null);

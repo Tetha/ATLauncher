@@ -41,7 +41,7 @@ public class LauncherFrame extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
-        setIconImage(Utils.getImage("/resources/Icon.png"));
+        setIconImage(Utils.getImage("Icon.png"));
         setLayout(LAYOUT_MANAGER);
 
         App.settings.log("Setting up Look & Feel");

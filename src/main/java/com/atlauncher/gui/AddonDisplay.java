@@ -22,10 +22,10 @@ import java.awt.*;
  */
 public class AddonDisplay extends JPanel {
 
-    private JPanel leftPanel; // Left panel with image
+    private JPanel leftPanel; // Left panel with assets.image
     private JPanel rightPanel; // Right panel with description and actions
     private JSplitPane splitPane; // The split pane
-    private JLabel addonImage; // The image for the addon
+    private JLabel addonImage; // The assets.image for the addon
     private JTextArea addonDescription; // Description of the addon
     private JPanel addonActions; // All the actions that can be performed on the pack
     private JButton install; // Install button

@@ -39,7 +39,7 @@ public class SetupDialog extends JDialog {
         setSize(400, 200);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
-        setIconImage(Utils.getImage("/resources/Icon.png"));
+        setIconImage(Utils.getImage("Icon.png"));
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setResizable(false);
 

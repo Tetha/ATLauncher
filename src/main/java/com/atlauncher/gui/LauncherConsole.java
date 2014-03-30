@@ -44,7 +44,7 @@ public class LauncherConsole extends JFrame {
         setSize(WINDOW_SIZE);
         setTitle("ATLauncher Console %VERSION%");
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        setIconImage(Utils.getImage("/resources/Icon.png"));
+        setIconImage(Utils.getImage("Icon.png"));
         setMinimumSize(MINIMUM_SIZE);
         setLayout(LAYOUT_MANAGER);
 

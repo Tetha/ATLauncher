@@ -22,8 +22,8 @@ public class AccountsDropDownRenderer extends JLabel implements ListCellRenderer
     }
 
     /*
-     * This method finds the image and text corresponding to the selected value and returns the
-     * label, set up to display the text and image.
+     * This method finds the assets.image and text corresponding to the selected value and returns the
+     * label, set up to display the text and assets.image.
      */
     public Component getListCellRendererComponent(JList list, Object value, int index,
             boolean isSelected, boolean cellHasFocus) {

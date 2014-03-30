@@ -153,22 +153,22 @@ public class ConsoleBottomBar extends JPanel {
         killMinecraft = new JButton("Kill Minecraft");
         killMinecraft.setVisible(false);
 
-        facebookIcon = new JButton(Utils.getIconImage("/resources/FacebookIcon.png"));
+        facebookIcon = new JButton(Utils.getIconImage("FacebookIcon.png"));
         facebookIcon.setBorder(BorderFactory.createEmptyBorder());
         facebookIcon.setContentAreaFilled(false);
         facebookIcon.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        githubIcon = new JButton(Utils.getIconImage("/resources/GitHubIcon.png"));
+        githubIcon = new JButton(Utils.getIconImage("GitHubIcon.png"));
         githubIcon.setBorder(BorderFactory.createEmptyBorder());
         githubIcon.setContentAreaFilled(false);
         githubIcon.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        redditIcon = new JButton(Utils.getIconImage("/resources/RedditIcon.png"));
+        redditIcon = new JButton(Utils.getIconImage("RedditIcon.png"));
         redditIcon.setBorder(BorderFactory.createEmptyBorder());
         redditIcon.setContentAreaFilled(false);
         redditIcon.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        twitterIcon = new JButton(Utils.getIconImage("/resources/TwitterIcon.png"));
+        twitterIcon = new JButton(Utils.getIconImage("TwitterIcon.png"));
         twitterIcon.setBorder(BorderFactory.createEmptyBorder());
         twitterIcon.setContentAreaFilled(false);
         twitterIcon.setCursor(new Cursor(Cursor.HAND_CURSOR));

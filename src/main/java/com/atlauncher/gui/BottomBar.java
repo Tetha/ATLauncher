@@ -181,27 +181,27 @@ public class BottomBar extends JPanel {
             username.setSelectedItem(active);
         }
 
-        facebookIcon = new JButton(Utils.getIconImage("/resources/FacebookIcon.png"));
+        facebookIcon = new JButton(Utils.getIconImage("FacebookIcon.png"));
         facebookIcon.setBorder(BorderFactory.createEmptyBorder());
         facebookIcon.setContentAreaFilled(false);
         facebookIcon.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        githubIcon = new JButton(Utils.getIconImage("/resources/GitHubIcon.png"));
+        githubIcon = new JButton(Utils.getIconImage("GitHubIcon.png"));
         githubIcon.setBorder(BorderFactory.createEmptyBorder());
         githubIcon.setContentAreaFilled(false);
         githubIcon.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        redditIcon = new JButton(Utils.getIconImage("/resources/RedditIcon.png"));
+        redditIcon = new JButton(Utils.getIconImage("RedditIcon.png"));
         redditIcon.setBorder(BorderFactory.createEmptyBorder());
         redditIcon.setContentAreaFilled(false);
         redditIcon.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        twitterIcon = new JButton(Utils.getIconImage("/resources/TwitterIcon.png"));
+        twitterIcon = new JButton(Utils.getIconImage("TwitterIcon.png"));
         twitterIcon.setBorder(BorderFactory.createEmptyBorder());
         twitterIcon.setContentAreaFilled(false);
         twitterIcon.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        statusIcon = new JLabel(Utils.getIconImage("/resources/StatusWhite.png")) {
+        statusIcon = new JLabel(Utils.getIconImage("StatusWhite.png")) {
             public JToolTip createToolTip() {
                 JToolTip tip = super.createToolTip();
                 Border border = new CustomLineBorder(5, new Color(80, 170, 107), 2);
@@ -224,22 +224,22 @@ public class BottomBar extends JPanel {
             case UNKNOWN:
                 statusIcon.setToolTipText(App.settings
                         .getLocalizedString("status.minecraft.checking"));
-                statusIcon.setIcon(Utils.getIconImage("/resources/StatusWhite.png"));
+                statusIcon.setIcon(Utils.getIconImage("StatusWhite.png"));
                 break;
             case ONLINE:
                 statusIcon.setToolTipText(App.settings
                         .getLocalizedString("status.minecraft.online"));
-                statusIcon.setIcon(Utils.getIconImage("/resources/StatusGreen.png"));
+                statusIcon.setIcon(Utils.getIconImage("StatusGreen.png"));
                 break;
             case OFFLINE:
                 statusIcon.setToolTipText(App.settings
                         .getLocalizedString("status.minecraft.offline"));
-                statusIcon.setIcon(Utils.getIconImage("/resources/StatusRed.png"));
+                statusIcon.setIcon(Utils.getIconImage("StatusRed.png"));
                 break;
             case PARTIAL:
                 statusIcon.setToolTipText(App.settings
                         .getLocalizedString("status.minecraft.partial"));
-                statusIcon.setIcon(Utils.getIconImage("/resources/StatusYellow.png"));
+                statusIcon.setIcon(Utils.getIconImage("StatusYellow.png"));
                 break;
             default:
                 break;

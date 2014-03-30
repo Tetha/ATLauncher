@@ -90,7 +90,7 @@ public class SettingsPanel extends JPanel {
         topPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
-        helpIcon = Utils.getIconImage("/resources/Help.png");
+        helpIcon = Utils.getIconImage("Help.png");
 
         // Language
         gbc.gridx = 0;

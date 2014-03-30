@@ -35,7 +35,7 @@ public class RenameInstanceDialog extends JDialog {
         setSize(300, 150);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
-        setIconImage(Utils.getImage("/resources/Icon.png"));
+        setIconImage(Utils.getImage("Icon.png"));
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setResizable(false);
 

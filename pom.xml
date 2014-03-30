@@ -127,7 +127,7 @@
                             <jre>
                                 <minVersion>1.6.0</minVersion>
                             </jre>
-                            <icon>${basedir}/src/main/resources/Icon.ico</icon>
+                            <icon>src/main/resources/assets/image/Icon.ico</icon>
                         </configuration>
                         <goals>
                             <goal>launch4j</goal>
@@ -149,7 +149,7 @@
                             <jre>
                                 <minVersion>1.6.0</minVersion>
                             </jre>
-                            <icon>${basedir}/src/main/resources/Icon.ico</icon>
+                            <icon>src/main/resources/assets/image/Icon.ico</icon>
                         </configuration>
                         <goals>
                             <goal>launch4j</goal>

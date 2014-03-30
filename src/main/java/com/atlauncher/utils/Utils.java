@@ -38,12 +38,12 @@ import java.util.zip.ZipOutputStream;
 public class Utils {
 
     public static ImageIcon getIconImage(String path) {
-        URL url = System.class.getResource(path.replace("/resources/", "/"));
+        URL url = System.class.getResource("/assets/image/" + path);
 
-        System.out.println("Loading Icon: " + path.replace("/resources/", "/"));
+        System.out.println("Loading Icon: " + "/assets/image/" + path);
 
         if (url == null) {
-            System.err.println("Unable to load resource " + path.replace("/resources/", "/"));
+            System.err.println("Unable to load resource " + "/assets/image/" +  path);
             return null;
         }
 
@@ -72,10 +72,10 @@ public class Utils {
     }
 
     public static Image getImage(String path) {
-        URL url = System.class.getResource(path.replace("/resources/", "/"));
+        URL url = System.class.getResource("/assets/image/" + path);
 
         if (url == null) {
-            System.err.println("Unable to load resource " + path.replace("/resources/", "/"));
+            System.err.println("Unable to load resource " + "/assets/image/" + path);
             return null;
         }
 
@@ -118,7 +118,7 @@ public class Utils {
         Font font = null;
         try {
             font = Font.createFont(Font.TRUETYPE_FONT,
-                    System.class.getResource("/" + name + ".ttf").openStream());
+                    System.class.getResource("/assets/font/" + name + ".ttf").openStream());
         } catch (FontFormatException e) {
             App.settings.logStackTrace(e);
         } catch (IOException e) {

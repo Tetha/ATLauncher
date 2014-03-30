@@ -30,10 +30,10 @@ import java.util.Date;
  */
 public class InstanceDisplay extends CollapsiblePanel {
 
-    private JPanel leftPanel; // Left panel with image
+    private JPanel leftPanel; // Left panel with assets.image
     private JPanel rightPanel; // Right panel with description and actions
     private JSplitPane splitPane; // The split pane
-    private JLabel instanceImage; // The image for the instance
+    private JLabel instanceImage; // The assets.image for the instance
     private JTextArea instanceDescription; // Description of the instance
     private JSplitPane instanceActions; // All the actions that can be performed on the instance
     private JPanel instanceActionsTop; // All the actions that can be performed on the instance

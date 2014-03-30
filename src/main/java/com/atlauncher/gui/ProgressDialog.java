@@ -35,7 +35,7 @@ public class ProgressDialog extends JDialog {
         this.max = initMax;
         this.closedLogMessage = initClosedLogMessage;
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-        setIconImage(Utils.getImage("/resources/Icon.png"));
+        setIconImage(Utils.getImage("Icon.png"));
         setSize(300, 80);
         setTitle(title);
         setLocationRelativeTo(App.settings.getParent());

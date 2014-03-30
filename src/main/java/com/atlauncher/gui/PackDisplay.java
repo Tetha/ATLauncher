@@ -23,10 +23,10 @@ import java.awt.event.ActionListener;
  */
 public class PackDisplay extends CollapsiblePanel {
 
-    private JPanel leftPanel; // Left panel with image
+    private JPanel leftPanel; // Left panel with assets.image
     private JPanel rightPanel; // Right panel with description and actions
     private JSplitPane splitPane; // The split pane
-    private JLabel packImage; // The image for the pack
+    private JLabel packImage; // The assets.image for the pack
     private JTextArea packDescription; // Description of the pack
     private JSplitPane packActions; // All the actions that can be performed on the pack
     private JPanel packActionsTop; // All the actions that can be performed on the pack
