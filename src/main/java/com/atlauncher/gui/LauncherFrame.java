@@ -7,6 +7,7 @@
 package com.atlauncher.gui;
 
 import com.atlauncher.App;
+import com.atlauncher.gui.tab.SocialMediaTab;
 import com.atlauncher.utils.Utils;
 
 import javax.swing.*;
@@ -28,6 +29,7 @@ public class LauncherFrame extends JFrame {
     private InstancesPanel instancesPanel;
     private AccountPanel accountPanel;
     private SettingsPanel settingsPanel;
+    private final JPanel socialMediaTab = new SocialMediaTab();
 
     private BottomBar bottomBar;
 
@@ -104,6 +106,7 @@ public class LauncherFrame extends JFrame {
         tabbedPane.addTab(App.settings.getLocalizedString("tabs.instances"), instancesPanel);
         tabbedPane.addTab(App.settings.getLocalizedString("tabs.account"), accountPanel);
         tabbedPane.addTab(App.settings.getLocalizedString("tabs.settings"), settingsPanel);
+        tabbedPane.addTab("Social", this.socialMediaTab);
         tabbedPane.setBackground(BASE_COLOR.brighter());
         tabbedPane.setOpaque(true);
     }
