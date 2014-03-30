@@ -2,15 +2,11 @@ package com.atlauncher.gui.tab;
 
 import com.atlauncher.App;
 import com.atlauncher.data.Constants;
-import com.atlauncher.utils.Twitter2HTML;
-import com.atlauncher.utils.Utils;
+import com.atlauncher.gui.comp.panel.StatusPanel;
 import twitter4j.Status;
 import twitter4j.Twitter;
 
 import javax.swing.*;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
-import javax.swing.text.html.HTMLEditorKit;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,28 +16,12 @@ public final class TwitterTab extends JPanel implements ActionListener {
     private final Timer UPDATER = new Timer(300000, this);
 
     private final Twitter TWITTER = Constants.TWITTER_FACTORY.getInstance();
-
-    private final HTMLEditorKit HTML_KIT = new HTMLEditorKit(){{
-        this.setStyleSheet(Utils.createStyleSheet("twitter"));
-    }};
-
-    private final JEditorPane FEED = new JEditorPane("text/html", ""){{
-        this.setEditable(false);
-        this.setSelectionColor(Color.GRAY);
-        this.setEditorKit(TwitterTab.this.HTML_KIT);
-        this.addHyperlinkListener(new HyperlinkListener() {
-            @Override
-            public void hyperlinkUpdate(HyperlinkEvent event){
-                if(event.getEventType() == HyperlinkEvent.EventType.ACTIVATED){
-                    Utils.openBrowser(event.getURL());
-                }
-            }
-        });
-    }};
+    private final JPanel CONTENT = new JPanel(new GridBagLayout());
 
     public TwitterTab(){
         super(new BorderLayout());
-        this.add(new JScrollPane(this.FEED));
+
+        this.add(new JScrollPane(this.CONTENT), BorderLayout.CENTER);
 
         App.TASKPOOL.execute(new Runnable(){
             @Override
@@ -61,23 +41,20 @@ public final class TwitterTab extends JPanel implements ActionListener {
     throws Exception{
         App.settings.log("Updating Twitter");
 
-        this.FEED.setText("");
+        this.CONTENT.removeAll();
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets.set(2, 2, 2, 2);
+        gbc.fill = GridBagConstraints.BOTH;
 
         List<Status> statuses = this.TWITTER.getHomeTimeline();
 
-        StringBuilder text = new StringBuilder();
-        text.append("<html>");
-        text.append("<body>");
-
         for(Status status : statuses){
-            text.append(Twitter2HTML.toHTML(status)).append("\n");
+            this.CONTENT.add(new StatusPanel(status), gbc);
+            gbc.gridy++;
         }
-
-        text.append("</body>");
-        text.append("</html>");
-
-        this.FEED.setText(text.toString());
-        this.FEED.setCaretPosition(0);
     }
 
     @Override

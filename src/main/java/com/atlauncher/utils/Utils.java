@@ -37,6 +37,7 @@ import java.util.zip.ZipOutputStream;
 
 public class Utils {
     private static final Map<String, StyleSheet> sheets = new HashMap<String, StyleSheet>();
+    private static final Map<String, Font> fonts = new HashMap<String, Font>();
 
     public static ImageIcon getIconImage(String path) {
         URL url = System.class.getResource("/assets/image/" + path);
@@ -135,16 +136,26 @@ public class Utils {
     }
 
     public static Font makeFont(String name) {
-        Font font = null;
-        try {
-            font = Font.createFont(Font.TRUETYPE_FONT,
-                    System.class.getResource("/assets/font/" + name + ".ttf").openStream());
-        } catch (FontFormatException e) {
-            App.settings.logStackTrace(e);
-        } catch (IOException e) {
-            App.settings.logStackTrace(e);
+        try{
+            if(name != null){
+                if(fonts.containsKey(name)){
+                    return fonts.get(name);
+                } else{
+                    Font f = Font.createFont(
+                            Font.TRUETYPE_FONT,
+                            App.class.getResourceAsStream("/assets/font/" + name + ".ttf")
+                    );
+
+                    fonts.put(name, f);
+                    return f;
+                }
+            } else{
+                throw new NullPointerException("Font name cannot be null");
+            }
+        } catch(Exception ex){
+            App.settings.logStackTrace(ex);
+            return null;
         }
-        return font;
     }
 
     public static String osSlash() {

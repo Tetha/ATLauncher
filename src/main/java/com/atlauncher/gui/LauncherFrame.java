@@ -7,6 +7,7 @@
 package com.atlauncher.gui;
 
 import com.atlauncher.App;
+import com.atlauncher.gui.tab.NewsTab;
 import com.atlauncher.gui.tab.SocialMediaTab;
 import com.atlauncher.utils.Utils;
 
@@ -23,13 +24,13 @@ public class LauncherFrame extends JFrame {
     private final Color BASE_COLOR = new Color(40, 45, 50);
 
     private JTabbedPane tabbedPane;
-    private NewsPanel newsPanel;
     private PacksPanel packsPanel;
     private AddonsPanel addonsPanel;
     private InstancesPanel instancesPanel;
     private AccountPanel accountPanel;
     private SettingsPanel settingsPanel;
-    private final JPanel socialMediaTab = new SocialMediaTab();
+    private final JPanel SM_TAB = new SocialMediaTab();
+    private final JPanel NEWS_TAB = new NewsTab();
 
     private BottomBar bottomBar;
 
@@ -89,8 +90,6 @@ public class LauncherFrame extends JFrame {
         tabbedPane = new JTabbedPane(JTabbedPane.RIGHT);
         tabbedPane.setBackground(BASE_COLOR);
 
-        newsPanel = new NewsPanel();
-        App.settings.setNewsPanel(newsPanel);
         packsPanel = new PacksPanel();
         App.settings.setPacksPanel(packsPanel);
         addonsPanel = new AddonsPanel();
@@ -100,13 +99,13 @@ public class LauncherFrame extends JFrame {
         settingsPanel = new SettingsPanel();
 
         tabbedPane.setFont(Utils.makeFont("Oswald-Regular").deriveFont((float) 34));
-        tabbedPane.addTab(App.settings.getLocalizedString("tabs.news"), newsPanel);
+        tabbedPane.addTab(App.settings.getLocalizedString("tabs.news"), this.NEWS_TAB);
         tabbedPane.addTab(App.settings.getLocalizedString("tabs.packs"), packsPanel);
         // tabbedPane.addTab(App.settings.getLocalizedString("tabs.addons"), addonsPanel);
         tabbedPane.addTab(App.settings.getLocalizedString("tabs.instances"), instancesPanel);
         tabbedPane.addTab(App.settings.getLocalizedString("tabs.account"), accountPanel);
         tabbedPane.addTab(App.settings.getLocalizedString("tabs.settings"), settingsPanel);
-        tabbedPane.addTab("Social", this.socialMediaTab);
+        tabbedPane.addTab("Social", this.SM_TAB);
         tabbedPane.setBackground(BASE_COLOR.brighter());
         tabbedPane.setOpaque(true);
     }

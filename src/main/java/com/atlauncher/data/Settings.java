@@ -107,7 +107,6 @@ public class Settings {
     private ArrayList<Server> servers = new ArrayList<Server>(); // Servers for the Launcher
     private ArrayList<Server> triedServers = new ArrayList<Server>(); // Servers tried to connect to
     private InstancesPanel instancesPanel; // The instances panel
-    private NewsPanel newsPanel; // The news panel
     private PacksPanel packsPanel; // The packs panel
     private BottomBar bottomBar; // The bottom bar
     private boolean firstTimeRun = false; // If this is the first time the Launcher has been run
@@ -563,7 +562,6 @@ public class Settings {
                     downloadUpdatedFiles(); // Downloads updated files on the server
                 }
                 loadNews(); // Load the news
-                reloadNewsPanel(); // Reload news panel
                 loadLanguages(); // Load the Languages available in the Launcher
                 loadMinecraftVersions(); // Load info about the different Minecraft versions
                 loadPacks(); // Load the Packs available in the Launcher
@@ -1920,23 +1918,6 @@ public class Settings {
      */
     public void setPacksPanel(PacksPanel packsPanel) {
         this.packsPanel = packsPanel;
-    }
-
-    /**
-     * Sets the panel used for News
-     * 
-     * @param newsPanel
-     *            News Panel
-     */
-    public void setNewsPanel(NewsPanel newsPanel) {
-        this.newsPanel = newsPanel;
-    }
-
-    /**
-     * Reloads the panel used for News
-     */
-    public void reloadNewsPanel() {
-        this.newsPanel.reload(); // Reload the news panel
     }
 
     /**
