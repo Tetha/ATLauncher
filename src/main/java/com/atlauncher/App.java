@@ -13,7 +13,6 @@ import com.atlauncher.gui.LauncherFrame;
 import com.atlauncher.gui.SetupDialog;
 import com.atlauncher.gui.SplashScreen;
 import com.atlauncher.gui.comp.TrayMenu;
-import com.atlauncher.task.TwitterAction;
 import com.atlauncher.utils.Utils;
 
 import javax.swing.*;
@@ -35,8 +34,6 @@ public class App {
 
     private static SystemTray TRAY = null;
 
-    private static Timer timer = new Timer(180000, new TwitterAction());
-
     public static Settings settings;
 
     // Don't move this declaration anywheres, its important due to Java Class Loading
@@ -49,7 +46,6 @@ public class App {
             modifyLAF();
 
             TRAY_MENU = new TrayMenu();
-            timer.setInitialDelay(60000);
 
             trySystemTrayIntegration();
         } catch (Exception ex) {
@@ -156,7 +152,6 @@ public class App {
             }
         }
 
-        timer.start();
         new LauncherFrame(open); // Open the Launcher
     }
 

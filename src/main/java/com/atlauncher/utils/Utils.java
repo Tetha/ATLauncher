@@ -15,6 +15,7 @@ import com.atlauncher.data.mojang.OperatingSystem;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import javax.swing.*;
+import javax.swing.text.html.StyleSheet;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.io.*;
@@ -27,9 +28,7 @@ import java.nio.channels.FileChannel;
 import java.security.Key;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Deque;
-import java.util.Enumeration;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 import java.util.zip.ZipEntry;
@@ -37,6 +36,7 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
 public class Utils {
+    private static final Map<String, StyleSheet> sheets = new HashMap<String, StyleSheet>();
 
     public static ImageIcon getIconImage(String path) {
         URL url = System.class.getResource("/assets/image/" + path);
@@ -51,6 +51,25 @@ public class Utils {
         ImageIcon icon = new ImageIcon(url);
 
         return icon;
+    }
+
+    public static StyleSheet createStyleSheet(String name){
+        try{
+            if(sheets.containsKey(name)){
+                return sheets.get(name);
+            } else{
+                StyleSheet sheet = new StyleSheet();
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(App.class.getResourceAsStream("/assets/css/" + name + ".css")));
+                sheet.loadRules(reader, null);
+                reader.close();
+
+                return sheet;
+            }
+        } catch(Exception ex){
+            ex.printStackTrace(System.err);
+            return new StyleSheet();
+        }
     }
 
     public static ImageIcon getIconImage(File file) {

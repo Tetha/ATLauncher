@@ -22,9 +22,7 @@ public final class TwitterTab extends JPanel implements ActionListener {
     private final Twitter TWITTER = Constants.TWITTER_FACTORY.getInstance();
 
     private final HTMLEditorKit HTML_KIT = new HTMLEditorKit(){{
-        this.getStyleSheet().addRule("A {color:#00BBCC");
-        this.getStyleSheet().addRule("#newsHeader {font-weight:bold;font-size:14px;color:#339933;}");
-        this.getStyleSheet().addRule("#newsBody {font-size:10px;padding-left:20px;}");
+        this.setStyleSheet(Utils.createStyleSheet("twitter"));
     }};
 
     private final JEditorPane FEED = new JEditorPane("text/html", ""){{
@@ -72,7 +70,7 @@ public final class TwitterTab extends JPanel implements ActionListener {
         text.append("<body>");
 
         for(Status status : statuses){
-            text.append(Twitter2HTML.toHTML(status));
+            text.append(Twitter2HTML.toHTML(status)).append("\n");
         }
 
         text.append("</body>");
