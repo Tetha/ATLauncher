@@ -6,12 +6,15 @@
  */
 package com.atlauncher;
 
+import com.atlauncher.data.Add;
 import com.atlauncher.data.Instance;
 import com.atlauncher.data.LogMessageType;
 import com.atlauncher.data.Settings;
+import com.atlauncher.data.to;
 import com.atlauncher.gui.LauncherFrame;
 import com.atlauncher.gui.SetupDialog;
 import com.atlauncher.gui.SplashScreen;
+import com.atlauncher.gui.comp.ConsoleActionsPanel;
 import com.atlauncher.utils.Utils;
 
 import javax.swing.*;
@@ -215,7 +218,6 @@ public class App {
         }
     }
 
-    // TODO: Allow detection of when Minecraft is open, console is closed etc, to update the menu
     private static PopupMenu getSystemTrayMenu() {
         PopupMenu menu = new PopupMenu();
 
@@ -224,7 +226,26 @@ public class App {
                 this.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent event) {
-                        App.settings.killMinecraft();
+                        SwingUtilities.invokeLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (App.settings.isMinecraftLaunched()) {
+                                    int ret = JOptionPane.showConfirmDialog(
+                                            App.settings.getParent(),
+                                            "<html><center>"
+                                                    + App.settings.getLocalizedString(
+                                                            "console.killsure", "<br/><br/>")
+                                                    + "</center></html>", App.settings
+                                                    .getLocalizedString("console.kill"),
+                                            JOptionPane.YES_OPTION);
+
+                                    if (ret == JOptionPane.YES_OPTION) {
+                                        // TODO: This won't remove the button from the console
+                                        App.settings.killMinecraft();
+                                    }
+                                }
+                            }
+                        });
                     }
                 });
             }
