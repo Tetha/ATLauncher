@@ -209,25 +209,16 @@ public class App {
             }
         });
 
-        menu.add(new MenuItem("Show Console") {
-            {
-                this.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent event) {
-                        if (!App.settings.isConsoleVisible()) {
-                            App.settings.setConsoleVisible(true);
-                        }
-                    }
-                });
-            }
-        });
-
         menu.add(new MenuItem("Hide Console") {
             {
                 this.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent event) {
-                        if (App.settings.isConsoleVisible()) {
+                        if (!App.settings.isConsoleVisible()) {
+                            setLabel("Hide Console");
+                            App.settings.setConsoleVisible(true);
+                        } else{
+                            setLabel("Show Console");
                             App.settings.setConsoleVisible(false);
                         }
                     }
