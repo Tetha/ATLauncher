@@ -183,7 +183,9 @@ public class App {
             TRAY = SystemTray.getSystemTray();
 
             Image trayIconImage = Utils.getImage("/resources/Icon.png");
-            TRAY.add(new TrayIcon(trayIconImage, "tray_icon") {
+            int trayIconWidth = new TrayIcon(Utils.getImage("/resources/Icon.png")).getSize().width;
+            TRAY.add(new TrayIcon(trayIconImage.getScaledInstance(trayIconWidth, -1,
+                    Image.SCALE_SMOOTH), "tray_icon") {
                 {
                     this.setPopupMenu(getSystemTrayMenu());
                     this.setToolTip("ATLauncher");
