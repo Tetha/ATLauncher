@@ -199,8 +199,8 @@ public class CollapsiblePanel extends JPanel {
      */
     private ImageIcon[] createExpandAndCollapseIcon() {
         ImageIcon[] iconArrow = new ImageIcon[2];
-        iconArrow[COLLAPSED] = Utils.getIconImage("/resources/collapsed.png");
-        iconArrow[EXPANDED] = Utils.getIconImage("/resources/expanded.png");
+        iconArrow[COLLAPSED] = Utils.getIconImage("collapsed.png");
+        iconArrow[EXPANDED] = Utils.getIconImage("expanded.png");
         return iconArrow;
     }
 
