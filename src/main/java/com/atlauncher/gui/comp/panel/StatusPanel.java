@@ -4,6 +4,7 @@ import com.atlauncher.utils.Utils;
 import twitter4j.Status;
 
 import javax.swing.*;
+import javax.swing.text.html.HTMLEditorKit;
 import java.awt.*;
 
 public final class StatusPanel extends JPanel {
@@ -11,8 +12,12 @@ public final class StatusPanel extends JPanel {
         this.setFont(Utils.makeFont("Oswald-Regular").deriveFont(18.0F));
         this.setHorizontalAlignment(JLabel.LEFT);
     }};
-    private final JTextArea CONTENTS_AREA = new JTextArea(){{
+    private final HTMLEditorKit HTML_KIT = new HTMLEditorKit(){{
+        this.setStyleSheet(Utils.createStyleSheet("twitter"));
+    }};
+    private final JEditorPane CONTENTS_AREA = new JEditorPane("text/html", ""){{
         this.setFont(Utils.makeFont("Oswald-Regular").deriveFont(12.0F));
+        this.setEditorKit(StatusPanel.this.HTML_KIT);
     }};
 
     public StatusPanel(Status status){

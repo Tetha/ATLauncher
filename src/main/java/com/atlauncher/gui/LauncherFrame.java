@@ -18,7 +18,6 @@ import java.awt.event.WindowEvent;
 
 @SuppressWarnings("serial")
 public class LauncherFrame extends JFrame {
-
     // Size of initial window
     private final BorderLayout LAYOUT_MANAGER = new BorderLayout();
     private final Color BASE_COLOR = new Color(40, 45, 50);
