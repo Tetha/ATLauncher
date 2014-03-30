@@ -15,6 +15,7 @@ import com.atlauncher.gui.SplashScreen;
 import com.atlauncher.utils.Utils;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,6 +39,22 @@ public class App {
 
     // Don't move this declaration anywheres, its important due to Java Class Loading
     private static final Color BASE_COLOR = new Color(40, 45, 50);
+
+    @SuppressWarnings("serial")
+    public static final MenuItem CONSOLE_MENU_ITEM = new MenuItem("Show Console") {
+        {
+            this.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent event) {
+                    if (!App.settings.isConsoleVisible()) {
+                        App.settings.setConsoleVisible(true);
+                    } else {
+                        App.settings.setConsoleVisible(false);
+                    }
+                }
+            });
+        }
+    };
 
     static {
         // Setting the UI LAF here helps with loading the UI should improve performance
@@ -126,7 +143,10 @@ public class App {
 
         if (settings.enableConsole()) {
             settings.setConsoleVisible(true, false);
+            CONSOLE_MENU_ITEM.setLabel("Hide Console");
         }
+
+        CONSOLE_MENU_ITEM.setEnabled(true);
 
         settings.log("Showing splash screen and loading everything");
         SplashScreen ss = new SplashScreen(); // Show Splash Screen
@@ -191,6 +211,7 @@ public class App {
                     this.setToolTip("ATLauncher");
                 }
             });
+            CONSOLE_MENU_ITEM.setEnabled(false);
         }
     }
 
@@ -209,22 +230,7 @@ public class App {
             }
         });
 
-        menu.add(new MenuItem("Hide Console") {
-            {
-                this.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent event) {
-                        if (!App.settings.isConsoleVisible()) {
-                            setLabel("Hide Console");
-                            App.settings.setConsoleVisible(true);
-                        } else{
-                            setLabel("Show Console");
-                            App.settings.setConsoleVisible(false);
-                        }
-                    }
-                });
-            }
-        });
+        menu.add(CONSOLE_MENU_ITEM);
 
         menu.addSeparator(); // Add Separator
 
