@@ -98,8 +98,9 @@ public class App {
         settings = new Settings(); // Setup the Settings and wait for it to
                                    // finish
 
-        if(settings.enableConsole()){
+        if (settings.enableConsole()) {
             settings.setConsoleVisible(true, false);
+            ((TrayMenu) TRAY_MENU).setTCLabel("Hide Console");
         }
 
         settings.log("ATLauncher Version: " + settings.getVersion());

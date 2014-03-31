@@ -15,6 +15,7 @@ import com.atlauncher.data.mojang.auth.AuthenticationResponse;
 import com.atlauncher.exceptions.InvalidMinecraftVersion;
 import com.atlauncher.exceptions.InvalidPack;
 import com.atlauncher.gui.*;
+import com.atlauncher.gui.comp.TrayMenu;
 import com.atlauncher.utils.Authentication;
 import com.atlauncher.utils.Utils;
 import com.google.gson.Gson;
@@ -22,6 +23,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -36,6 +38,7 @@ import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
 import java.awt.*;
 import java.awt.Dialog.ModalityType;
 import java.awt.event.WindowAdapter;
@@ -556,7 +559,7 @@ public class Settings {
         dialog.setLayout(new FlowLayout());
         dialog.setResizable(false);
         dialog.add(new JLabel("Updating Launcher... Please Wait"));
-        App.TASKPOOL.execute(new Runnable(){
+        App.TASKPOOL.execute(new Runnable() {
             public void run() {
                 if (hasUpdatedFiles()) {
                     downloadUpdatedFiles(); // Downloads updated files on the server
@@ -1133,7 +1136,12 @@ public class Settings {
      * files
      */
     private void setupServers() {
-        servers.add(new Server("Auto", "files.atlcdn.net", true));             servers.add(new Server("Europe", "eu.atlcdn.net", true));             servers.add(new Server("US Central", "uscentral.atlcdn.net", true));             servers.add(new Server("US East", "useast.atlcdn.net", true));             servers.add(new Server("US West", "uswest.atlcdn.net", true));             servers.add(new Server("Master Server", "master.atlauncher.com", true));
+        servers.add(new Server("Auto", "files.atlcdn.net", true));
+        servers.add(new Server("Europe", "eu.atlcdn.net", true));
+        servers.add(new Server("US Central", "uscentral.atlcdn.net", true));
+        servers.add(new Server("US East", "useast.atlcdn.net", true));
+        servers.add(new Server("US West", "uswest.atlcdn.net", true));
+        servers.add(new Server("Master Server", "master.atlauncher.com", true));
     }
 
     public boolean disableServerGetNext() {
@@ -1495,6 +1503,8 @@ public class Settings {
     }
 
     public void setMinecraftLaunched(boolean launched) {
+        // Enable the kill minecraft button in the Tray menu
+        ((TrayMenu) App.TRAY_MENU).setMinecraftLaunched(true);
         this.minecraftLaunched = launched;
     }
 
