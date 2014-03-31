@@ -1,9 +1,11 @@
 package com.atlauncher.gui.comp.panel;
 
 import com.atlauncher.App;
+import com.atlauncher.gui.comp.TrayMenu;
 import com.atlauncher.utils.Utils;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;

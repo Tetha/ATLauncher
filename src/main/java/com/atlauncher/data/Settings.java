@@ -76,6 +76,7 @@ import com.atlauncher.gui.LauncherConsole;
 import com.atlauncher.gui.PacksPanel;
 import com.atlauncher.gui.ProgressDialog;
 import com.atlauncher.gui.comp.TrayMenu;
+import com.atlauncher.gui.comp.panel.ConsoleActionsPanel;
 import com.atlauncher.utils.Authentication;
 import com.atlauncher.utils.Utils;
 import com.google.gson.Gson;
@@ -2314,6 +2315,9 @@ public class Settings {
             this.minecraftProcess.destroy();
             this.minecraftProcess = null;
         }
+
+        // Disable button in Tray Menu. Do it here in case user clicked it when shouldn't be able to
+        ((TrayMenu) App.TRAY_MENU).setMinecraftLaunched(false);
     }
 
     /**
