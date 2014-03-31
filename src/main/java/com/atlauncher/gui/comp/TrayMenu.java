@@ -45,10 +45,10 @@ public final class TrayMenu extends PopupMenu {
                 public void actionPerformed(ActionEvent event) {
                     if (App.settings.isConsoleVisible()) {
                         App.settings.setConsoleVisible(false);
-                        setLabel("Show Console");
+                        setLabel(App.settings.getLocalizedString("console.show"));
                     } else {
                         App.settings.setConsoleVisible(true);
-                        setLabel("Hide Console");
+                        setLabel(App.settings.getLocalizedString("console.hide"));
                     }
                 }
             });
@@ -77,9 +77,10 @@ public final class TrayMenu extends PopupMenu {
     public TrayMenu() {
         super();
 
-        this.KILLMC_BUTTON.setLabel("Kill Minecraft");
         this.setMinecraftLaunched(false); // Default Kill MC item to be disabled
-        this.TC_BUTTON.setLabel("Show Console");
+
+        // Setup default labels until proper localization is able to be done
+        this.KILLMC_BUTTON.setLabel("Kill Minecraft");
         this.QUIT_BUTTON.setLabel("Quit");
 
         this.add(this.KILLMC_BUTTON);
@@ -87,4 +88,11 @@ public final class TrayMenu extends PopupMenu {
         this.addSeparator();
         this.add(this.QUIT_BUTTON);
     }
+
+    public void localize() {
+        this.KILLMC_BUTTON.setLabel(App.settings.getLocalizedString("console.kill"));
+        this.TC_BUTTON.setLabel(App.settings.getLocalizedString("console.show"));
+        this.QUIT_BUTTON.setLabel(App.settings.getLocalizedString("common.quit"));
+    }
+
 }

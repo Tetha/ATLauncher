@@ -100,7 +100,9 @@ public class App {
 
         if (settings.enableConsole()) {
             settings.setConsoleVisible(true, false);
-            ((TrayMenu) TRAY_MENU).setTCLabel("Hide Console");
+            ((TrayMenu) TRAY_MENU).setTCLabel("Hide Console"); // Set this until proper localization
+        } else {
+            ((TrayMenu) TRAY_MENU).setTCLabel("Show Console"); // Set this until proper localization
         }
 
         settings.log("ATLauncher Version: " + settings.getVersion());
@@ -134,6 +136,7 @@ public class App {
         settings.log("Showing splash screen and loading everything");
         SplashScreen ss = new SplashScreen(); // Show Splash Screen
         settings.loadEverything(); // Loads everything that needs to be loaded
+        ((TrayMenu) TRAY_MENU).localize();
         ss.close(); // Close the Splash Screen
         settings.log("Launcher finished loading everything");
 
@@ -196,4 +199,5 @@ public class App {
             });
         }
     }
+
 }
