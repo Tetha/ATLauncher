@@ -16,33 +16,39 @@ import java.util.List;
 public final class NewsTab extends JPanel implements ActionListener {
     private final Timer UPDATER = new Timer(300000, this);
 
-    private final HTMLEditorKit HTML_KIT = new HTMLEditorKit(){{
-        this.setStyleSheet(Utils.createStyleSheet("news"));
-    }};
+    private final HTMLEditorKit HTML_KIT = new HTMLEditorKit() {
+        {
+            this.setStyleSheet(Utils.createStyleSheet("news"));
+        }
+    };
 
-    private final JEditorPane NEWS = new JEditorPane("text/html", ""){{
-        this.setEditable(false);
-        this.setSelectionColor(Color.GRAY);
-        this.setEditorKit(NewsTab.this.HTML_KIT);
-        this.addHyperlinkListener(new HyperlinkListener() {
-            @Override
-            public void hyperlinkUpdate(HyperlinkEvent event){
+    private final JEditorPane NEWS = new JEditorPane("text/html", "") {
+        {
+            this.setEditable(false);
+            this.setSelectionColor(Color.GRAY);
+            this.setEditorKit(NewsTab.this.HTML_KIT);
+            this.addHyperlinkListener(new HyperlinkListener() {
+                @Override
+                public void hyperlinkUpdate(HyperlinkEvent event) {
+                    if (event.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                        Utils.openBrowser(event.getURL());
+                    }
+                }
+            });
+        }
+    };
 
-            }
-        });
-    }};
-
-    public NewsTab(){
+    public NewsTab() {
         super(new BorderLayout());
 
         this.add(new JScrollPane(this.NEWS));
 
-        App.TASKPOOL.execute(new Runnable(){
+        App.TASKPOOL.execute(new Runnable() {
             @Override
-            public void run(){
-                try{
+            public void run() {
+                try {
                     loadContent();
-                } catch(Exception ex){
+                } catch (Exception ex) {
                     App.settings.logStackTrace(ex);
                 }
             }
@@ -51,8 +57,7 @@ public final class NewsTab extends JPanel implements ActionListener {
         this.UPDATER.start();
     }
 
-    private void loadContent()
-    throws Exception{
+    private void loadContent() throws Exception {
         this.NEWS.setText("");
 
         StringBuilder builder = new StringBuilder();
@@ -60,10 +65,10 @@ public final class NewsTab extends JPanel implements ActionListener {
 
         List<News> collected = App.settings.getNews();
 
-        for(int i = 0; i < collected.size(); i++){
+        for (int i = 0; i < collected.size(); i++) {
             builder.append(collected.get(i));
 
-            if(i < collected.size() - 1){
+            if (i < collected.size() - 1) {
                 builder.append("<hr/>");
             }
         }
@@ -74,10 +79,10 @@ public final class NewsTab extends JPanel implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent event){
-        try{
+    public void actionPerformed(ActionEvent event) {
+        try {
             this.loadContent();
-        } catch(Exception ex){
+        } catch (Exception ex) {
             App.settings.logStackTrace(ex);
         }
     }
