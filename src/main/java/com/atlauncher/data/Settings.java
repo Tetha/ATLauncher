@@ -6,23 +6,51 @@
  */
 package com.atlauncher.data;
 
-import com.atlauncher.App;
-import com.atlauncher.Update;
-import com.atlauncher.data.mojang.DateTypeAdapter;
-import com.atlauncher.data.mojang.EnumTypeAdapterFactory;
-import com.atlauncher.data.mojang.FileTypeAdapter;
-import com.atlauncher.data.mojang.auth.AuthenticationResponse;
-import com.atlauncher.exceptions.InvalidMinecraftVersion;
-import com.atlauncher.exceptions.InvalidPack;
-import com.atlauncher.gui.*;
-import com.atlauncher.gui.comp.TrayMenu;
-import com.atlauncher.utils.Authentication;
-import com.atlauncher.utils.Utils;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
+import java.awt.BorderLayout;
+import java.awt.Dialog.ModalityType;
+import java.awt.FlowLayout;
+import java.awt.Window;
+import java.awt.event.WindowAdapter;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -34,20 +62,27 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import javax.swing.*;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import java.awt.*;
-import java.awt.Dialog.ModalityType;
-import java.awt.event.WindowAdapter;
-import java.io.*;
-import java.net.*;
-import java.util.*;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import com.atlauncher.App;
+import com.atlauncher.Update;
+import com.atlauncher.data.mojang.DateTypeAdapter;
+import com.atlauncher.data.mojang.EnumTypeAdapterFactory;
+import com.atlauncher.data.mojang.FileTypeAdapter;
+import com.atlauncher.data.mojang.auth.AuthenticationResponse;
+import com.atlauncher.exceptions.InvalidMinecraftVersion;
+import com.atlauncher.exceptions.InvalidPack;
+import com.atlauncher.gui.BottomBar;
+import com.atlauncher.gui.InstancesPanel;
+import com.atlauncher.gui.LauncherConsole;
+import com.atlauncher.gui.PacksPanel;
+import com.atlauncher.gui.ProgressDialog;
+import com.atlauncher.gui.comp.TrayMenu;
+import com.atlauncher.utils.Authentication;
+import com.atlauncher.utils.Utils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
 /**
  * Settings class for storing all data for the Launcher and the settings of the user
@@ -1696,7 +1731,7 @@ public class Settings {
             data += "&" + URLEncoder.encode("extra3", "UTF-8") + "="
                     + URLEncoder.encode(extra3, "UTF-8");
 
-            URL url = new URL("%API%");
+            URL url = new URL(Constants.API);
             URLConnection conn = url.openConnection();
             conn.setDoOutput(true);
             OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());

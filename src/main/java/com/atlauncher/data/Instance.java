@@ -714,13 +714,13 @@ public class Instance implements Serializable {
     }
 
     public void uploadCrashLog() {
-        App.TASKPOOL.execute(new Runnable(){
+        App.TASKPOOL.execute(new Runnable() {
             public void run() {
                 String result = Utils.uploadPaste("ATLauncher Log", App.settings.getLog());
-                if (result.contains("%PASTE%")) {
+                if (result.contains(Constants.PASTE_CHECK)) {
                     App.settings.apiCall(App.settings.getAccount().getMinecraftUsername(),
                             "reportcrash", realPack.getID() + "", getVersion(),
-                            result.replace("%PASTE%/view/", ""));
+                            result.replace(Constants.PASTE_CHECK + "/view/", ""));
                     App.settings.log("Log uploaded and reported to ModPack creator: " + result);
                 } else {
                     App.settings
