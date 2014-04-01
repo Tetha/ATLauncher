@@ -1,10 +1,13 @@
 package com.atlauncher.gui.diag;
 
+import com.atlauncher.App;
 import com.atlauncher.utils.Localizer;
 import com.atlauncher.utils.Utils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public final class AddPackDialog extends JDialog {
     private final TopPanel TOP_PANEL = new TopPanel();
@@ -17,7 +20,7 @@ public final class AddPackDialog extends JDialog {
         this.setLocationRelativeTo(null);
         this.setLayout(new BorderLayout());
         this.setIconImage(Utils.getImage("Icon.png"));
-        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setResizable(false);
 
         this.add(this.TOP_PANEL, BorderLayout.NORTH);
@@ -51,6 +54,46 @@ public final class AddPackDialog extends JDialog {
     }
 
     private final class BottomPanel extends JPanel{
+        private final JButton SAVE_BUTTON = new JButton(Localizer.localize("common.save")){{
+            this.addActionListener(new ActionListener(){
+                @Override
+                public void actionPerformed(ActionEvent event){
+                    String code = AddPackDialog.this.MIDDLE_PANEL.PC_FIELD.getText();
 
+                    if(App.settings.semiPublicPackExistsFromCode(code)){
+                        if(App.settings.addPack(code)){
+                            JOptionPane.showMessageDialog(
+                                    AddPackDialog.this,
+                                    Localizer.localize("pack.addedmessage"),
+                                    Localizer.localize("pack.packadded"),
+                                    JOptionPane.INFORMATION_MESSAGE
+                            );
+                        } else{
+                            JOptionPane.showMessageDialog(
+                                    AddPackDialog.this,
+                                    Localizer.localize("pack.packalreadyaddedmessage"),
+                                    Localizer.localize("pack.packalreadyadded"),
+                                    JOptionPane.ERROR_MESSAGE
+                            );
+                        }
+
+                        dispose();
+                    } else{
+                        JOptionPane.showMessageDialog(
+                                AddPackDialog.this,
+                                Localizer.localize("pack.packdoesntexist"),
+                                Localizer.localize("pack.packaddederror"),
+                                JOptionPane.ERROR_MESSAGE
+                        );
+                    }
+                }
+            });
+        }};
+
+        private BottomPanel(){
+            super(new FlowLayout());
+
+            this.add(this.SAVE_BUTTON);
+        }
     }
 }

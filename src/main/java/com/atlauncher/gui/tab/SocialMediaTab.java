@@ -1,5 +1,6 @@
 package com.atlauncher.gui.tab;
 
+import com.atlauncher.gui.layer.BlurLayerUI;
 import com.atlauncher.utils.Localizer;
 import com.atlauncher.utils.Utils;
 
@@ -13,6 +14,9 @@ public final class SocialMediaTab extends JPanel {
     private final JPanel GITHUB_TAB = new GitHubTab();
     private final PacksTab PACKS_TAB = new PacksTab();
 
+    public final BlurLayerUI BLUR_UI = new BlurLayerUI();
+    private final JLayer<JPanel> BLUR_LAYER = new JLayer<JPanel>(this.PACKS_TAB, this.BLUR_UI);
+
     public SocialMediaTab(){
         super(new GridLayout(1, 1));
 
@@ -22,6 +26,8 @@ public final class SocialMediaTab extends JPanel {
         this.TABS.addTab(Localizer.localize("common.search"), this.TWITTER_TAB);
         this.TABS.addTab("GitHub", this.GITHUB_TAB);
         this.TABS.addTab("Testing", this.PACKS_TAB);
+
+        this.PACKS_TAB.add(this.BLUR_LAYER);
 
         this.add(this.TABS);
     }

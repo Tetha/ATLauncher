@@ -50,7 +50,6 @@ public class PacksPanel extends JPanel {
         addPackButton = new JButton(Localizer.localize("pack.addpack"));
         addPackButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                new AddPackDialog();
                 reload();
             }
         });

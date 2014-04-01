@@ -29,7 +29,7 @@ public class LauncherFrame extends JFrame {
     private InstancesPanel instancesPanel;
     private AccountPanel accountPanel;
     private SettingsPanel settingsPanel;
-    private final JPanel SM_TAB = new SocialMediaTab();
+    public final SocialMediaTab SM_TAB = new SocialMediaTab();
     private final JPanel NEWS_TAB = new NewsTab();
     private final JPanel BOTTOM_PANEL = new MainBottomPanel();
 
@@ -79,6 +79,7 @@ public class LauncherFrame extends JFrame {
             }
         });
     }
+
 
     /**
      * Setup the individual tabs used in the Launcher sidebar

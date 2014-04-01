@@ -1,5 +1,8 @@
 package com.atlauncher.gui.comp.panel;
 
+import com.atlauncher.App;
+import com.atlauncher.gui.LauncherFrame;
+import com.atlauncher.gui.anim.BlurAnimation;
 import com.atlauncher.utils.Localizer;
 
 import javax.swing.*;
@@ -12,7 +15,12 @@ public final class PTabTopPanel extends JPanel {
         this.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent event){
-
+                SwingUtilities.invokeLater(new Runnable(){
+                    @Override
+                    public void run(){
+                        new BlurAnimation<JPanel>(((LauncherFrame) App.settings.getParent()).SM_TAB.BLUR_UI, 1000).start();
+                    }
+                });
             }
         });
     }};
