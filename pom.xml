@@ -25,7 +25,7 @@
 
     <!-- Make Sure to change the connection to your preferred method -->
     <scm>
-        <connection>scm:git:ssh:git@github.com:ATLauncher/ATLauncher.git</connection>
+        <connection>scm:git:ssh://github.com/ATLauncher/ATLauncher.git</connection>
         <developerConnection>scm:git:https://github.com/ATLauncher/ATLauncher.git</developerConnection>
         <url>http://github.com/ATLauncher/ATLauncher</url>
     </scm>
