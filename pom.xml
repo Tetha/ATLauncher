@@ -72,6 +72,22 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-scm-plugin</artifactId>
+                <version>1.9</version>
+                <executions>
+                    <execution>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>checkin</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <connectionType>connection</connectionType>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>
@@ -176,32 +192,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!--
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>osxappbundle-maven-plugin</artifactId>
-                <version>1.0-alpha-2</version>
-                <executions>
-                    <execution>
-                        <configuration>
-                            <mainClass>${mainclass}</mainClass>
-                            <bundleName>${project.name}</bundleName>
-                            <version>${project.version}</version>
-                            <internetEnable>true</internetEnable>
-                            <jvmVersion>1.6+</jvmVersion>
-                            <iconFile>${basedir}/src/main/resources/Icon.icns</iconFile>
-                            <javaApplicationStub>${basedir}/macapp/Contents/MacOS/JavaApplicationStub</javaApplicationStub>
-                            <dictionaryFile>${basedir}/macapp/Contents/Info.plist</dictionaryFile>
-                            <zipFile>${project.build.directory}/ATLauncher-${project.version}.zip</zipFile>
-                        </configuration>
-                        <goals>
-                            <goal>bundle</goal>
-                        </goals>
-                        <phase>package</phase>
-                    </execution>
-                </executions>
-            </plugin>
-            -->
         </plugins>
     </build>
 </project>
