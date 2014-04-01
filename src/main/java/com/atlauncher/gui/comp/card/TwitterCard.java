@@ -1,19 +1,17 @@
-package com.atlauncher.gui.comp.panel;
+package com.atlauncher.gui.comp.card;
 
-import com.atlauncher.gui.tab.NewsTab;
 import com.atlauncher.utils.Utils;
 
 import twitter4j.Status;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent.EventType;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.html.HTMLEditorKit;
 
 import java.awt.*;
 
-public final class StatusPanel extends JPanel {
+public final class TwitterCard extends JPanel {
 
     private final JLabel USERNAME_LABEL = new JLabel() {
         {
@@ -31,7 +29,7 @@ public final class StatusPanel extends JPanel {
     private final JEditorPane CONTENTS_AREA = new JEditorPane("text/html", "") {
         {
             this.setFont(Utils.makeFont("Oswald-Regular").deriveFont(12.0F));
-            this.setEditorKit(StatusPanel.this.HTML_KIT);
+            this.setEditorKit(TwitterCard.this.HTML_KIT);
             this.setEditable(false);
             this.addHyperlinkListener(new HyperlinkListener() {
                 @Override
@@ -44,7 +42,7 @@ public final class StatusPanel extends JPanel {
         }
     };
 
-    public StatusPanel(Status status) {
+    public TwitterCard(Status status) {
         super(new BorderLayout());
         this.setBorder(BorderFactory.createEtchedBorder(Color.WHITE, Color.BLACK));
 

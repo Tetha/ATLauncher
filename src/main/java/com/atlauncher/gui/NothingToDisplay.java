@@ -7,6 +7,7 @@
 package com.atlauncher.gui;
 
 import com.atlauncher.App;
+import com.atlauncher.utils.Localizer;
 import com.atlauncher.utils.Utils;
 
 import javax.swing.*;
@@ -34,12 +35,12 @@ public class NothingToDisplay extends JPanel {
         // Add titles border with name, Mac needs smaller font
         if (Utils.isMac()) {
             setBorder(new TitledBorder(null,
-                    App.settings.getLocalizedString("common.nothingtoshow"),
+                    Localizer.localize("common.nothingtoshow"),
                     TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(
                             "SansSerif", Font.BOLD, 14)));
         } else {
             setBorder(new TitledBorder(null,
-                    App.settings.getLocalizedString("common.nothingtoshow"),
+                    Localizer.localize("common.nothingtoshow"),
                     TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font(
                             "SansSerif", Font.BOLD, 15)));
         }

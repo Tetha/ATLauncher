@@ -10,6 +10,7 @@ import com.atlauncher.App;
 import com.atlauncher.data.Account;
 import com.atlauncher.data.Status;
 import com.atlauncher.gui.comp.panel.SocialMediaPanel;
+import com.atlauncher.utils.Localizer;
 import com.atlauncher.utils.Utils;
 
 import javax.swing.*;
@@ -88,9 +89,8 @@ public class BottomBar extends JPanel {
         });
         updateData.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                final ProgressDialog dialog = new ProgressDialog(App.settings
-                        .getLocalizedString("common.checkingforupdates"), 0, App.settings
-                        .getLocalizedString("common.checkingforupdates"), "Aborting Update Check!");
+                final ProgressDialog dialog = new ProgressDialog(Localizer.localize("common.checkingforupdates"), 0,
+                       Localizer.localize("common.checkingforupdates"), "Aborting Update Check!");
                 dialog.addThread(new Thread() {
                     public void run() {
                         if (App.settings.hasUpdatedFiles()) {
@@ -120,17 +120,17 @@ public class BottomBar extends JPanel {
      */
     private void createButtons() {
         if (App.settings.isConsoleVisible()) {
-            toggleConsole = new JButton(App.settings.getLocalizedString("console.hide"));
+            toggleConsole = new JButton(Localizer.localize("console.hide"));
         } else {
-            toggleConsole = new JButton(App.settings.getLocalizedString("console.show"));
+            toggleConsole = new JButton(Localizer.localize("console.show"));
         }
 
-        openFolder = new JButton(App.settings.getLocalizedString("common.openfolder"));
-        updateData = new JButton(App.settings.getLocalizedString("common.updatedata"));
+        openFolder = new JButton(Localizer.localize("common.openfolder"));
+        updateData = new JButton(Localizer.localize("common.updatedata"));
 
         username = new JComboBox<Account>();
         username.setRenderer(new AccountsDropDownRenderer());
-        fillerAccount = new Account(App.settings.getLocalizedString("account.select"));
+        fillerAccount = new Account(Localizer.localize("account.select"));
         username.addItem(fillerAccount);
         for (Account account : App.settings.getAccounts()) {
             username.addItem(account);
@@ -151,7 +151,7 @@ public class BottomBar extends JPanel {
             }
         };
         statusIcon.setBorder(BorderFactory.createEmptyBorder());
-        statusIcon.setToolTipText(App.settings.getLocalizedString("status.minecraft.checking"));
+        statusIcon.setToolTipText(Localizer.localize("status.minecraft.checking"));
     }
 
     /**
@@ -163,23 +163,19 @@ public class BottomBar extends JPanel {
     public void updateStatus(Status status) {
         switch (status) {
             case UNKNOWN:
-                statusIcon.setToolTipText(App.settings
-                        .getLocalizedString("status.minecraft.checking"));
+                statusIcon.setToolTipText(Localizer.localize("status.minecraft.checking"));
                 statusIcon.setIcon(Utils.getIconImage("StatusWhite.png"));
                 break;
             case ONLINE:
-                statusIcon.setToolTipText(App.settings
-                        .getLocalizedString("status.minecraft.online"));
+                statusIcon.setToolTipText(Localizer.localize("status.minecraft.online"));
                 statusIcon.setIcon(Utils.getIconImage("StatusGreen.png"));
                 break;
             case OFFLINE:
-                statusIcon.setToolTipText(App.settings
-                        .getLocalizedString("status.minecraft.offline"));
+                statusIcon.setToolTipText(Localizer.localize("status.minecraft.offline"));
                 statusIcon.setIcon(Utils.getIconImage("StatusRed.png"));
                 break;
             case PARTIAL:
-                statusIcon.setToolTipText(App.settings
-                        .getLocalizedString("status.minecraft.partial"));
+                statusIcon.setToolTipText(Localizer.localize("status.minecraft.partial"));
                 statusIcon.setIcon(Utils.getIconImage("StatusYellow.png"));
                 break;
             default:
@@ -191,14 +187,14 @@ public class BottomBar extends JPanel {
      * Changes the text on the toggleConsole button when the console is hidden
      */
     public void hideConsole() {
-        toggleConsole.setText(App.settings.getLocalizedString("console.show"));
+        toggleConsole.setText(Localizer.localize("console.show"));
     }
 
     /**
      * Changes the text on the toggleConsole button when the console is shown
      */
     public void showConsole() {
-        toggleConsole.setText(App.settings.getLocalizedString("console.hide"));
+        toggleConsole.setText(Localizer.localize("console.hide"));
     }
 
     public void reloadAccounts() {

@@ -8,6 +8,7 @@ package com.atlauncher.data;
 
 import com.atlauncher.App;
 import com.atlauncher.gui.ProgressDialog;
+import com.atlauncher.utils.Localizer;
 import com.atlauncher.utils.Utils;
 
 import javax.imageio.ImageIO;
@@ -149,9 +150,7 @@ public class Account implements Serializable {
         g.drawImage(leg, 4, 20, null);
         g.drawImage(leg, 8, 20, null);
 
-        ImageIcon icon = new ImageIcon(skin.getScaledInstance(128, 256, Image.SCALE_SMOOTH));
-
-        return icon;
+        return new ImageIcon(skin.getScaledInstance(128, 256, Image.SCALE_SMOOTH));
     }
 
     public boolean isReal() {
@@ -233,8 +232,8 @@ public class Account implements Serializable {
             }
             App.settings.log("Downloading skin for " + getMinecraftUsername());
             final ProgressDialog dialog = new ProgressDialog(
-                    App.settings.getLocalizedString("account.downloadingskin"), 0,
-                    App.settings.getLocalizedString("account.downloadingminecraftskin",
+                    Localizer.localize("account.downloadingskin"), 0,
+                    Localizer.localize("account.downloadingminecraftskin",
                             getMinecraftUsername()), "Aborting downloading Minecraft skin for "
                             + getMinecraftUsername());
             dialog.addThread(new Thread() {
@@ -259,7 +258,7 @@ public class Account implements Serializable {
                     }
                     App.settings.reloadAccounts();
                     dialog.close();
-                };
+                }
             });
             dialog.start();
             skinUpdating = false;

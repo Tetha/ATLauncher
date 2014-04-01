@@ -9,6 +9,7 @@ package com.atlauncher.gui;
 import com.atlauncher.App;
 import com.atlauncher.data.Instance;
 import com.atlauncher.data.LogMessageType;
+import com.atlauncher.utils.Localizer;
 import com.atlauncher.utils.Utils;
 
 import javax.swing.*;
@@ -30,7 +31,7 @@ public class RenameInstanceDialog extends JDialog {
     private JButton saveButton;
 
     public RenameInstanceDialog(final Instance instance) {
-        super(null, App.settings.getLocalizedString("instance.renaminginstance"),
+        super(null, Localizer.localize("instance.renaminginstance"),
                 ModalityType.APPLICATION_MODAL);
         setSize(300, 150);
         setLocationRelativeTo(null);
@@ -41,7 +42,7 @@ public class RenameInstanceDialog extends JDialog {
 
         // Top Panel Stuff
         top = new JPanel();
-        top.add(new JLabel(App.settings.getLocalizedString("instance.renaminginstance")));
+        top.add(new JLabel(Localizer.localize("instance.renaminginstance")));
 
         // Middle Panel Stuff
         middle = new JPanel();
@@ -51,7 +52,7 @@ public class RenameInstanceDialog extends JDialog {
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.BASELINE_TRAILING;
-        instanceNameLabel = new JLabel(App.settings.getLocalizedString("instance.name") + ": ");
+        instanceNameLabel = new JLabel(Localizer.localize("instance.name") + ": ");
         middle.add(instanceNameLabel, gbc);
 
         gbc.gridx++;
@@ -63,14 +64,13 @@ public class RenameInstanceDialog extends JDialog {
         // Bottom Panel Stuff
         bottom = new JPanel();
         bottom.setLayout(new FlowLayout());
-        saveButton = new JButton(App.settings.getLocalizedString("common.save"));
+        saveButton = new JButton(Localizer.localize("common.save"));
         saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (App.settings.isInstance(instanceName.getText())) {
                     JOptionPane.showMessageDialog(RenameInstanceDialog.this,
-                            App.settings.getLocalizedString("instance.alreadyinstance",
-                                    instanceName.getText()), App.settings
-                                    .getLocalizedString("common.error"), JOptionPane.ERROR_MESSAGE);
+                            Localizer.localize("instance.alreadyinstance",
+                                    instanceName.getText()), Localizer.localize("common.error"), JOptionPane.ERROR_MESSAGE);
                 } else {
                     if (instance.rename(instanceName.getText())) {
                         App.settings.saveInstances();
@@ -81,10 +81,9 @@ public class RenameInstanceDialog extends JDialog {
                         JOptionPane.showMessageDialog(
                                 RenameInstanceDialog.this,
                                 "<html><center>"
-                                        + App.settings.getLocalizedString("instance.errorrenaming",
+                                        + Localizer.localize("instance.errorrenaming",
                                                 instance.getName() + "<br/><br/>")
-                                        + "</center></html>", App.settings
-                                        .getLocalizedString("common.error"),
+                                        + "</center></html>", Localizer.localize("common.error"),
                                 JOptionPane.ERROR_MESSAGE);
                     }
                     close();

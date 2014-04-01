@@ -7,6 +7,7 @@
 package com.atlauncher.gui;
 
 import com.atlauncher.App;
+import com.atlauncher.utils.Localizer;
 import com.atlauncher.utils.Utils;
 
 import javax.swing.*;
@@ -71,7 +72,7 @@ public class FileChooserDialog extends JDialog {
 
         gbc.gridx++;
         gbc.anchor = GridBagConstraints.BASELINE_LEADING;
-        selectButton = new JButton(App.settings.getLocalizedString("common.select"));
+        selectButton = new JButton(Localizer.localize("common.select"));
         selectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

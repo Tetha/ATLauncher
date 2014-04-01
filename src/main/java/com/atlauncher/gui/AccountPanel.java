@@ -11,6 +11,7 @@ import com.atlauncher.data.Account;
 import com.atlauncher.data.LogMessageType;
 import com.atlauncher.data.mojang.auth.AuthenticationResponse;
 import com.atlauncher.utils.Authentication;
+import com.atlauncher.utils.Localizer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -61,7 +62,7 @@ public class AccountPanel extends JPanel {
         gbc.insets = TOP_INSETS;
         gbc.anchor = GridBagConstraints.CENTER;
 
-        fillerAccount = new Account(App.settings.getLocalizedString("account.add"));
+        fillerAccount = new Account(Localizer.localize("account.add"));
 
         accountsComboBox = new JComboBox<Account>();
         accountsComboBox.addItem(fillerAccount);
@@ -77,14 +78,14 @@ public class AccountPanel extends JPanel {
                         usernameField.setText("");
                         passwordField.setText("");
                         rememberField.setSelected(false);
-                        leftButton.setText(App.settings.getLocalizedString("common.add"));
-                        rightButton.setText(App.settings.getLocalizedString("common.clear"));
+                        leftButton.setText(Localizer.localize("common.add"));
+                        rightButton.setText(Localizer.localize("common.clear"));
                     } else {
                         usernameField.setText(account.getUsername());
                         passwordField.setText(account.getPassword());
                         rememberField.setSelected(account.isRemembered());
-                        leftButton.setText(App.settings.getLocalizedString("common.save"));
-                        rightButton.setText(App.settings.getLocalizedString("common.delete"));
+                        leftButton.setText(Localizer.localize("common.save"));
+                        rightButton.setText(Localizer.localize("common.delete"));
                     }
                     userSkin.setIcon(account.getMinecraftSkin());
                 }
@@ -97,7 +98,7 @@ public class AccountPanel extends JPanel {
         gbc.gridwidth = 1;
         gbc.insets = LABEL_INSETS;
         gbc.anchor = GridBagConstraints.BASELINE_TRAILING;
-        usernameLabel = new JLabel(App.settings.getLocalizedString("account.usernameemail") + ":");
+        usernameLabel = new JLabel(Localizer.localize("account.usernameemail") + ":");
         bottomPanel.add(usernameLabel, gbc);
 
         gbc.gridx++;
@@ -110,7 +111,7 @@ public class AccountPanel extends JPanel {
         gbc.gridy++;
         gbc.insets = LABEL_INSETS;
         gbc.anchor = GridBagConstraints.BASELINE_TRAILING;
-        passwordLabel = new JLabel(App.settings.getLocalizedString("account.password") + ":");
+        passwordLabel = new JLabel(Localizer.localize("account.password") + ":");
         bottomPanel.add(passwordLabel, gbc);
 
         gbc.gridx++;
@@ -123,7 +124,7 @@ public class AccountPanel extends JPanel {
         gbc.gridy++;
         gbc.insets = LABEL_INSETS;
         gbc.anchor = GridBagConstraints.BASELINE_TRAILING;
-        rememberLabel = new JLabel(App.settings.getLocalizedString("account.remember") + ":");
+        rememberLabel = new JLabel(Localizer.localize("account.remember") + ":");
         bottomPanel.add(rememberLabel, gbc);
 
         gbc.gridx++;
@@ -139,14 +140,14 @@ public class AccountPanel extends JPanel {
         gbc.anchor = GridBagConstraints.CENTER;
         buttons = new JPanel();
         buttons.setLayout(new FlowLayout());
-        leftButton = new JButton(App.settings.getLocalizedString("common.add"));
+        leftButton = new JButton(Localizer.localize("common.add"));
         leftButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (App.settings.isInOfflineMode()) {
-                    String[] options = { App.settings.getLocalizedString("common.ok") };
+                    String[] options = { Localizer.localize("common.ok") };
                     JOptionPane.showOptionDialog(App.settings.getParent(),
-                            App.settings.getLocalizedString("account.offlinemode"),
-                            App.settings.getLocalizedString("common.offline"),
+                            Localizer.localize("account.offlinemode"),
+                            Localizer.localize("common.offline"),
                             JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options,
                             options[0]);
                 } else {
@@ -156,19 +157,18 @@ public class AccountPanel extends JPanel {
                     boolean remember = rememberField.isSelected();
                     if (App.settings.isAccountByName(username)
                             && accountsComboBox.getSelectedIndex() == 0) {
-                        String[] options = { App.settings.getLocalizedString("common.ok") };
+                        String[] options = { Localizer.localize("common.ok") };
                         JOptionPane.showOptionDialog(App.settings.getParent(),
-                                App.settings.getLocalizedString("account.exists"),
-                                App.settings.getLocalizedString("account.notadded"),
+                                Localizer.localize("account.exists"),
+                                Localizer.localize("account.notadded"),
                                 JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null,
                                 options, options[0]);
                         return;
                     }
 
                     App.settings.log("Logging into Minecraft!");
-                    final ProgressDialog dialog = new ProgressDialog(App.settings
-                            .getLocalizedString("account.loggingin"), 0, App.settings
-                            .getLocalizedString("account.loggingin"), "Aborting login for "
+                    final ProgressDialog dialog = new ProgressDialog(
+                            Localizer.localize("account.loggingin"), 0, Localizer.localize("account.loggingin"), "Aborting login for "
                             + usernameField.getText());
                     final String username1 = username;
                     dialog.addThread(new Thread() {
@@ -210,11 +210,11 @@ public class AccountPanel extends JPanel {
                                     .getName(), remember);
                             App.settings.addAccount(account);
                             App.settings.log("Added Account " + account);
-                            String[] options = { App.settings.getLocalizedString("common.yes"),
-                                    App.settings.getLocalizedString("common.no") };
+                            String[] options = { Localizer.localize("common.yes"),
+                                    Localizer.localize("common.no") };
                             int ret = JOptionPane.showOptionDialog(App.settings.getParent(),
-                                    App.settings.getLocalizedString("account.addedswitch"),
-                                    App.settings.getLocalizedString("account.added"),
+                                    Localizer.localize("account.addedswitch"),
+                                    Localizer.localize("account.added"),
                                     JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,
                                     null, options, options[0]);
                             if (ret == 0) {
@@ -229,10 +229,10 @@ public class AccountPanel extends JPanel {
                             }
                             account.setRemember(remember);
                             App.settings.log("Edited Account " + account);
-                            String[] options = { App.settings.getLocalizedString("common.ok") };
+                            String[] options = { Localizer.localize("common.ok") };
                             JOptionPane.showOptionDialog(App.settings.getParent(),
-                                    App.settings.getLocalizedString("account.editeddone"),
-                                    App.settings.getLocalizedString("account.edited"),
+                                    Localizer.localize("account.editeddone"),
+                                    Localizer.localize("account.edited"),
                                     JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,
                                     null, options, options[0]);
                         }
@@ -246,11 +246,11 @@ public class AccountPanel extends JPanel {
                         accountsComboBox.setSelectedItem(account);
                     } else {
                         App.settings.log(response.getErrorMessage(), LogMessageType.error, false);
-                        String[] options = { App.settings.getLocalizedString("common.ok") };
+                        String[] options = { Localizer.localize("common.ok") };
                         JOptionPane.showOptionDialog(App.settings.getParent(), "<html><center>"
-                                + App.settings.getLocalizedString("account.incorrect")
+                                + Localizer.localize("account.incorrect")
                                 + "<br/><br/>" + response.getErrorMessage() + "</center></html>",
-                                App.settings.getLocalizedString("account.notadded"),
+                                Localizer.localize("account.notadded"),
                                 JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null,
                                 options, options[0]);
                     }
@@ -268,9 +268,9 @@ public class AccountPanel extends JPanel {
                     Account account = (Account) accountsComboBox.getSelectedItem();
                     int res = JOptionPane.showConfirmDialog(
                             App.settings.getParent(),
-                            App.settings.getLocalizedString("account.deletesure",
+                            Localizer.localize("account.deletesure",
                                     usernameField.getText()),
-                            App.settings.getLocalizedString("account.delete"),
+                            Localizer.localize("account.delete"),
                             JOptionPane.YES_NO_OPTION);
                     if (res == JOptionPane.YES_OPTION) {
                         App.settings.removeAccount(account);
@@ -293,7 +293,7 @@ public class AccountPanel extends JPanel {
 
         contextMenu = new JPopupMenu();
 
-        updateSkin = new JMenuItem(App.settings.getLocalizedString("account.reloadskin"));
+        updateSkin = new JMenuItem(Localizer.localize("account.reloadskin"));
         updateSkin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 final Account account = ((Account) accountsComboBox.getSelectedItem());

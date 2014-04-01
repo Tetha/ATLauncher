@@ -7,6 +7,7 @@
 package com.atlauncher.data;
 
 import com.atlauncher.App;
+import com.atlauncher.utils.Localizer;
 import com.atlauncher.utils.Utils;
 import com.atlauncher.workers.InstanceInstaller;
 
@@ -328,17 +329,17 @@ public class Mod {
                             Utils.openBrowser(getURL());
                         }
                         String[] options = new String[] {
-                                App.settings.getLocalizedString("common.openfolder"),
-                                App.settings.getLocalizedString("instance.ivedownloaded") };
+                                Localizer.localize("common.openfolder"),
+                                Localizer.localize("instance.ivedownloaded") };
                         retValue = JOptionPane.showOptionDialog(
                                 App.settings.getParent(),
                                 "<html><center>"
-                                        + App.settings.getLocalizedString("instance.browseropened",
+                                        + Localizer.localize("instance.browseropened",
                                                 (serverFile == null ? (isFilePattern() ? getName()
                                                         : getFile()) : (isFilePattern() ? getName()
                                                         : getServerFile())))
                                         + "<br/><br/>"
-                                        + App.settings.getLocalizedString("instance.pleasesave")
+                                        + Localizer.localize("instance.pleasesave")
                                         + "<br/><br/>"
                                         + (App.settings.isUsingMacApp() ? App.settings
                                                 .getUsersDownloadsDir().getAbsolutePath()
@@ -348,7 +349,7 @@ public class Mod {
                                                         + " or<br/>"
                                                         + App.settings.getUsersDownloadsDir()))
                                         + "</center></html>",
-                                App.settings.getLocalizedString("common.downloading")
+                                Localizer.localize("common.downloading")
                                         + " "
                                         + (serverFile == null ? (isFilePattern() ? getName()
                                                 : getFile()) : (isFilePattern() ? getName()
@@ -497,16 +498,15 @@ public class Mod {
 
             while (!fileLocation.exists()) {
                 Utils.openBrowser(getServerURL());
-                String[] options = new String[] { App.settings
-                        .getLocalizedString("instance.ivedownloaded") };
+                String[] options = new String[] { Localizer.localize("instance.ivedownloaded") };
                 int retValue = JOptionPane
                         .showOptionDialog(
                                 App.settings.getParent(),
                                 "<html><center>"
-                                        + App.settings.getLocalizedString("instance.browseropened",
+                                        + Localizer.localize("instance.browseropened",
                                                 (serverFile == null ? getFile() : getServerFile()))
                                         + "<br/><br/>"
-                                        + App.settings.getLocalizedString("instance.pleasesave")
+                                        + Localizer.localize("instance.pleasesave")
                                         + "<br/><br/>"
                                         + (App.settings.isUsingMacApp() ? App.settings
                                                 .getUsersDownloadsDir().getAbsolutePath()
@@ -514,7 +514,7 @@ public class Mod {
                                                         + " or<br/>"
                                                         + App.settings.getUsersDownloadsDir())
                                         + "</center></html>",
-                                App.settings.getLocalizedString("common.downloading") + " "
+                                Localizer.localize("common.downloading") + " "
                                         + (serverFile == null ? getFile() : getServerFile()),
                                 JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null,
                                 options, options[0]);

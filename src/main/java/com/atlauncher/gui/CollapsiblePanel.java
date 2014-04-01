@@ -10,6 +10,7 @@ import com.atlauncher.App;
 import com.atlauncher.data.Instance;
 import com.atlauncher.data.Pack;
 import com.atlauncher.utils.Utils;
+import twitter4j.Status;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -36,6 +37,7 @@ public class CollapsiblePanel extends JPanel {
     JPanel panel;
     Pack pack = null;
     Instance instance = null;
+    Status status = null;
     boolean collapsed; // stores current state of the collapsible panel
 
     /**
@@ -362,14 +364,6 @@ public class CollapsiblePanel extends JPanel {
                     break;
             }
             return insets;
-        }
-
-        public JComponent getTitleComponent() {
-            return component;
-        }
-
-        public void setTitleComponent(JComponent component) {
-            this.component = component;
         }
 
         public Rectangle getComponentRect(Rectangle rect, Insets borderInsets) {

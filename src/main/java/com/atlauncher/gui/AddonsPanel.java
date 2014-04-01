@@ -8,6 +8,7 @@ package com.atlauncher.gui;
 
 import com.atlauncher.App;
 import com.atlauncher.data.Addon;
+import com.atlauncher.utils.Localizer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,7 +33,7 @@ public class AddonsPanel extends JPanel {
         gbc.fill = GridBagConstraints.BOTH;
 
         if (App.settings.getAddons().size() == 0) {
-            panel.add(new NothingToDisplay(App.settings.getLocalizedString("addon.nodisplay", "\n\n")), gbc);
+            panel.add(new NothingToDisplay(Localizer.localize("addon.nodisplay", "\n\n")), gbc);
         } else {
             for (Addon addon : App.settings.getAddons()) {
                 panel.add(new AddonDisplay(addon), gbc);

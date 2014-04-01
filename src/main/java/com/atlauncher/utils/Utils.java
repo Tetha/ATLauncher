@@ -73,6 +73,10 @@ public class Utils {
         }
     }
 
+    public static String capitalize(String text){
+        return text.substring(0, 1).toUpperCase() + text.substring(1);
+    }
+
     public static ImageIcon getIconImage(File file) {
         if (!file.exists()) {
             System.err.println("Unable to load file " + file.getAbsolutePath());

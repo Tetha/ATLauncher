@@ -13,7 +13,10 @@ import com.atlauncher.gui.LauncherFrame;
 import com.atlauncher.gui.SetupDialog;
 import com.atlauncher.gui.SplashScreen;
 import com.atlauncher.gui.comp.TrayMenu;
+import com.atlauncher.utils.Localizer;
 import com.atlauncher.utils.Utils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,14 +33,14 @@ public class App {
     // Approach with caution though
     // Dedicated 2 threads to the TASKPOOL shouldnt have any problems with that little
     public static final ExecutorService TASKPOOL = Executors.newFixedThreadPool(2);
+    public static final Logger LOGGER = LogManager.getLogger();
     public static final PopupMenu TRAY_MENU;
+    // Don't move this declaration anywheres, its important due to Java Class Loading
+    private static final Color BASE_COLOR = new Color(40, 45, 50);
 
     private static SystemTray TRAY = null;
 
     public static Settings settings;
-
-    // Don't move this declaration anywheres, its important due to Java Class Loading
-    private static final Color BASE_COLOR = new Color(40, 45, 50);
 
     static {
         // Setting the UI LAF here helps with loading the UI should improve performance
@@ -47,6 +50,8 @@ public class App {
 
             TRAY_MENU = new TrayMenu();
 
+            Localizer.INSTANCE.isLoaded("English");
+
             trySystemTrayIntegration();
         } catch (Exception ex) {
             throw new RuntimeException(ex);
@@ -55,6 +60,7 @@ public class App {
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static void main(String[] args) {
+        LOGGER.info("Testing");
         Locale.setDefault(Locale.ENGLISH); // Set English as the default locale
         System.setProperty("java.net.preferIPv4Stack", "true");
         String autoLaunch = null;

@@ -8,6 +8,8 @@ package com.atlauncher.gui;
 
 import com.atlauncher.App;
 import com.atlauncher.data.LogMessageType;
+import com.atlauncher.gui.comp.panel.ConsoleBottomPanel;
+import com.atlauncher.utils.Localizer;
 import com.atlauncher.utils.Utils;
 
 import javax.swing.*;
@@ -35,7 +37,7 @@ public class LauncherConsole extends JFrame {
     private JEditorPane console;
     private HTMLEditorKit kit;
     private HTMLDocument doc;
-    private ConsoleBottomBar bottomBar;
+    private ConsoleBottomPanel bottomBar;
     private JPopupMenu contextMenu; // Right click menu
 
     private JMenuItem copy;
@@ -62,7 +64,7 @@ public class LauncherConsole extends JFrame {
 
         setupContextMenu(); // Setup the right click menu
 
-        bottomBar = new ConsoleBottomBar();
+        bottomBar = new ConsoleBottomPanel();
 
         scrollPane = new JScrollPane(console, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -157,7 +159,7 @@ public class LauncherConsole extends JFrame {
     /**
      * Logs a stack trace to the console window
      * 
-     * @param text
+     * @param e
      *            The text to show in the console
      */
     @Deprecated
@@ -289,7 +291,7 @@ public class LauncherConsole extends JFrame {
     }
 
     public void setupLanguage() {
-        copy.setText(App.settings.getLocalizedString("common.copy"));
+        copy.setText(Localizer.localize("common.clear"));
         bottomBar.setupLanguage();
     }
 

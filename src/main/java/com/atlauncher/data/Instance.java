@@ -12,6 +12,7 @@ import com.atlauncher.gui.ProgressDialog;
 import com.atlauncher.mclauncher.LegacyMCLauncher;
 import com.atlauncher.mclauncher.MCLauncher;
 import com.atlauncher.utils.Authentication;
+import com.atlauncher.utils.Localizer;
 import com.atlauncher.utils.Utils;
 
 import javax.swing.*;
@@ -479,10 +480,10 @@ public class Instance implements Serializable {
     public boolean launch() {
         final Account account = App.settings.getAccount();
         if (account == null) {
-            String[] options = { App.settings.getLocalizedString("common.ok") };
+            String[] options = { Localizer.localize("common.ok") };
             JOptionPane.showOptionDialog(App.settings.getParent(),
-                    App.settings.getLocalizedString("instance.noaccount"),
-                    App.settings.getLocalizedString("instance.noaccountselected"),
+                    Localizer.localize("instance.noaccount"),
+                    Localizer.localize("instance.noaccountselected"),
                     JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options,
                     options[0]);
             App.settings.setMinecraftLaunched(false);
@@ -490,14 +491,14 @@ public class Instance implements Serializable {
         } else {
             if ((App.settings.getMemory() < this.memory)
                     && (this.memory <= Utils.getSafeMaximumRam())) {
-                String[] options = { App.settings.getLocalizedString("common.yes"),
-                        App.settings.getLocalizedString("common.no") };
+                String[] options = { Localizer.localize("common.yes"),
+                        Localizer.localize("common.no") };
                 int ret = JOptionPane.showOptionDialog(
                         App.settings.getParent(),
                         "<html><center>"
-                                + App.settings.getLocalizedString("instance.insufficientram", "<b>"
+                                + Localizer.localize("instance.insufficientram", "<b>"
                                         + this.memory + "</b> MB<br/><br/>") + "</center></html>",
-                        App.settings.getLocalizedString("instance.insufficientramtitle"),
+                        Localizer.localize("instance.insufficientramtitle"),
                         JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options,
                         options[0]);
                 if (ret != 0) {
@@ -509,15 +510,14 @@ public class Instance implements Serializable {
                 }
             }
             if (App.settings.getPermGen() < this.permgen) {
-                String[] options = { App.settings.getLocalizedString("common.yes"),
-                        App.settings.getLocalizedString("common.no") };
+                String[] options = { Localizer.localize("common.yes"),
+                        Localizer.localize("common.no") };
                 int ret = JOptionPane.showOptionDialog(
                         App.settings.getParent(),
                         "<html><center>"
-                                + App.settings.getLocalizedString("instance.insufficientpermgen",
+                                + Localizer.localize("instance.insufficientpermgen",
                                         "<b>" + this.permgen + "</b> MB<br/><br/>")
-                                + "</center></html>", App.settings
-                                .getLocalizedString("instance.insufficientpermgentitle"),
+                                + "</center></html>", Localizer.localize("instance.insufficientpermgentitle"),
                         JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options,
                         options[0]);
                 if (ret != 0) {
@@ -534,13 +534,13 @@ public class Instance implements Serializable {
                 if (!account.isRemembered()) {
                     JPanel panel = new JPanel();
                     panel.setLayout(new BorderLayout());
-                    JLabel passwordLabel = new JLabel(App.settings.getLocalizedString(
+                    JLabel passwordLabel = new JLabel(Localizer.localize(
                             "instance.enterpassword", account.getMinecraftUsername()));
                     JPasswordField passwordField = new JPasswordField();
                     panel.add(passwordLabel, BorderLayout.NORTH);
                     panel.add(passwordField, BorderLayout.CENTER);
                     int ret = JOptionPane.showConfirmDialog(App.settings.getParent(), panel,
-                            App.settings.getLocalizedString("instance.enterpasswordtitle"),
+                            Localizer.localize("instance.enterpasswordtitle"),
                             JOptionPane.OK_CANCEL_OPTION);
                     if (ret == JOptionPane.OK_OPTION) {
                         password = new String(passwordField.getPassword());
@@ -554,8 +554,8 @@ public class Instance implements Serializable {
                 App.settings.log("Logging into Minecraft!");
                 final String pass = password;
                 final ProgressDialog dialog = new ProgressDialog(
-                        App.settings.getLocalizedString("account.loggingin"), 0,
-                        App.settings.getLocalizedString("account.loggingin"), "Aborting login for "
+                        Localizer.localize("account.loggingin"), 0,
+                        Localizer.localize("account.loggingin"), "Aborting login for "
                                 + account.getMinecraftUsername());
                 dialog.addThread(new Thread() {
                     public void run() {
@@ -570,14 +570,13 @@ public class Instance implements Serializable {
                 sess = (AuthenticationResponse) dialog.getReturnValue();
                 if (sess.hasError()) {
                     App.settings.log(sess.getErrorMessage(), LogMessageType.error, false);
-                    String[] options = { App.settings.getLocalizedString("common.ok") };
+                    String[] options = { Localizer.localize("common.ok") };
                     JOptionPane.showOptionDialog(
                             App.settings.getParent(),
                             "<html><center>"
-                                    + App.settings.getLocalizedString("instance.errorloggingin",
+                                    + Localizer.localize("instance.errorloggingin",
                                             "<br/><br/>" + sess.getErrorMessage())
-                                    + "</center></html>", App.settings
-                                    .getLocalizedString("instance.errorloggingintitle"),
+                                    + "</center></html>", Localizer.localize("instance.errorloggingintitle"),
                             JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options,
                             options[0]);
                     App.settings.setMinecraftLaunched(false);

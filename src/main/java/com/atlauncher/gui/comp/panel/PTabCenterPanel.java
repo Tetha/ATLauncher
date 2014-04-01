@@ -4,6 +4,7 @@ import com.atlauncher.App;
 import com.atlauncher.data.Pack;
 import com.atlauncher.gui.NothingToDisplay;
 import com.atlauncher.gui.PackDisplay;
+import com.atlauncher.utils.Localizer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,13 +37,15 @@ public final class PTabCenterPanel extends JPanel {
             Pack p = packs.get(i);
 
             if(p.canInstall()){
-                this.CONTENT.add(new PackDisplay(p), this.gbc);
+                PackDisplay disp = new PackDisplay(p);
+
+                this.CONTENT.add(disp, this.gbc);
                 this.gbc.gridy++;
             }
         }
 
         if(i == 0){
-            this.CONTENT.add(new NothingToDisplay(App.settings.getLocalizedString("pack.nodisplay", "\n\n")), this.gbc);
+            this.CONTENT.add(new NothingToDisplay(Localizer.localize("pack.nodisplay", "\n\n")), this.gbc);
         }
     }
 

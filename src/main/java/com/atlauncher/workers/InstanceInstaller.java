@@ -12,6 +12,7 @@ import com.atlauncher.data.*;
 import com.atlauncher.data.mojang.*;
 import com.atlauncher.gui.ModsChooser;
 import com.atlauncher.utils.Base64;
+import com.atlauncher.utils.Localizer;
 import com.atlauncher.utils.Utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -529,7 +530,7 @@ public class InstanceInstaller extends SwingWorker<Boolean, Void> {
     private void installMods(ArrayList<Mod> mods) {
         for (Mod mod : mods) {
             if (!isCancelled()) {
-                fireTask(App.settings.getLocalizedString("common.installing") + " " + mod.getName());
+                fireTask(Localizer.localize("common.installing") + " " + mod.getName());
                 addPercent(mods.size() / 40);
                 mod.install(this);
             }
@@ -659,7 +660,7 @@ public class InstanceInstaller extends SwingWorker<Boolean, Void> {
     }
 
     private void downloadResources() {
-        fireTask(App.settings.getLocalizedString("instance.downloadingresources"));
+        fireTask(Localizer.localize("instance.downloadingresources"));
         fireSubProgressUnknown();
         ExecutorService executor = Executors.newFixedThreadPool(8);
         ArrayList<Downloadable> downloads = getResources();
@@ -679,7 +680,7 @@ public class InstanceInstaller extends SwingWorker<Boolean, Void> {
                 @Override
                 public void run() {
                     if (download.needToDownload()) {
-                        fireTask(App.settings.getLocalizedString("common.downloading") + " "
+                        fireTask(Localizer.localize("common.downloading") + " "
                                 + download.getFilename());
                         download.download(true);
                     } else {
@@ -695,7 +696,7 @@ public class InstanceInstaller extends SwingWorker<Boolean, Void> {
     }
 
     private void downloadLibraries() {
-        fireTask(App.settings.getLocalizedString("instance.downloadinglibraries"));
+        fireTask(Localizer.localize("instance.downloadinglibraries"));
         fireSubProgressUnknown();
         ExecutorService executor;
         ArrayList<Downloadable> downloads = getLibraries();
@@ -729,7 +730,7 @@ public class InstanceInstaller extends SwingWorker<Boolean, Void> {
                 @Override
                 public void run() {
                     if (download.needToDownload()) {
-                        fireTask(App.settings.getLocalizedString("common.downloading") + " "
+                        fireTask(Localizer.localize("common.downloading") + " "
                                 + download.getFilename());
                         download.download(true);
                     }
@@ -789,7 +790,7 @@ public class InstanceInstaller extends SwingWorker<Boolean, Void> {
 
         for (Mod mod : mods) {
             if (!downloads.contains(mod) && !isCancelled()) {
-                fireTask(App.settings.getLocalizedString("common.downloading") + " "
+                fireTask(Localizer.localize("common.downloading") + " "
                         + (mod.isFilePattern() ? mod.getName() : mod.getFile()));
                 mod.download(this);
                 fireSubProgress(-1); // Hide the subprogress bar
@@ -798,7 +799,7 @@ public class InstanceInstaller extends SwingWorker<Boolean, Void> {
     }
 
     private void organiseLibraries() {
-        fireTask(App.settings.getLocalizedString("instance.organisinglibraries"));
+        fireTask(Localizer.localize("instance.organisinglibraries"));
         fireSubProgressUnknown();
         if (!isServer) {
             for (String libraryFile : forgeLibraries) {
@@ -1057,7 +1058,7 @@ public class InstanceInstaller extends SwingWorker<Boolean, Void> {
 
     public void configurePack() {
         // Download the configs zip file
-        fireTask(App.settings.getLocalizedString("instance.downloadingconfigs"));
+        fireTask(Localizer.localize("instance.downloadingconfigs"));
         File configs = new File(App.settings.getTempDir(), "Configs.zip");
         String path = "packs/" + pack.getSafeName() + "/versions/" + version.getVersion()
                 + "/Configs.zip";
@@ -1068,7 +1069,7 @@ public class InstanceInstaller extends SwingWorker<Boolean, Void> {
 
         // Extract the configs zip file
         fireSubProgressUnknown();
-        fireTask(App.settings.getLocalizedString("instance.extractingconfigs"));
+        fireTask(Localizer.localize("instance.extractingconfigs"));
         Utils.unzip(configs, getRootDirectory());
         Utils.delete(configs);
     }
@@ -1212,8 +1213,8 @@ public class InstanceInstaller extends SwingWorker<Boolean, Void> {
                 if (this.isCancelled()) {
                     return false;
                 }
-                String[] options = { App.settings.getLocalizedString("common.ok"),
-                        App.settings.getLocalizedString("common.cancel") };
+                String[] options = { Localizer.localize("common.ok"),
+                        Localizer.localize("common.cancel") };
                 JEditorPane ep = new JEditorPane("text/html", "<html>"
                         + this.pack.getUpdateMessage(this.version.getVersion()) + "</html>");
                 ep.setEditable(false);
@@ -1228,7 +1229,7 @@ public class InstanceInstaller extends SwingWorker<Boolean, Void> {
                 int ret = JOptionPane.showOptionDialog(
                         App.settings.getParent(),
                         ep,
-                        App.settings.getLocalizedString("common.reinstalling") + " "
+                        Localizer.localize("common.reinstalling") + " "
                                 + this.pack.getName(), JOptionPane.DEFAULT_OPTION,
                         JOptionPane.WARNING_MESSAGE, null, options, options[0]);
                 if (ret != 0) {
@@ -1243,8 +1244,8 @@ public class InstanceInstaller extends SwingWorker<Boolean, Void> {
                 if (this.isCancelled()) {
                     return false;
                 }
-                String[] options = { App.settings.getLocalizedString("common.ok"),
-                        App.settings.getLocalizedString("common.cancel") };
+                String[] options = { Localizer.localize("common.ok"),
+                        Localizer.localize("common.cancel") };
                 JEditorPane ep = new JEditorPane("text/html", "<html>"
                         + this.pack.getInstallMessage(this.version.getVersion()) + "</html>");
                 ep.setEditable(false);
@@ -1259,7 +1260,7 @@ public class InstanceInstaller extends SwingWorker<Boolean, Void> {
                 int ret = JOptionPane.showOptionDialog(
                         App.settings.getParent(),
                         ep,
-                        App.settings.getLocalizedString("common.installing") + " "
+                        Localizer.localize("common.installing") + " "
                                 + this.pack.getName(), JOptionPane.DEFAULT_OPTION,
                         JOptionPane.WARNING_MESSAGE, null, options, options[0]);
                 if (ret != 0) {
@@ -1364,7 +1365,7 @@ public class InstanceInstaller extends SwingWorker<Boolean, Void> {
         }
         addPercent(5);
         if (isServer && hasJarMods()) {
-            fireTask(App.settings.getLocalizedString("server.extractingjar"));
+            fireTask(Localizer.localize("server.extractingjar"));
             fireSubProgressUnknown();
             Utils.unzip(getMinecraftJar(), getTempJarDirectory());
         }
@@ -1374,7 +1375,7 @@ public class InstanceInstaller extends SwingWorker<Boolean, Void> {
         addPercent(5);
         if (selectedMods.size() != 0) {
             addPercent(40);
-            fireTask(App.settings.getLocalizedString("instance.downloadingmods"));
+            fireTask(Localizer.localize("instance.downloadingmods"));
             downloadMods(selectedMods);
             if (isCancelled()) {
                 return false;
@@ -1389,12 +1390,12 @@ public class InstanceInstaller extends SwingWorker<Boolean, Void> {
         }
         doCaseConversions(getModsDirectory());
         if (isServer && hasJarMods()) {
-            fireTask(App.settings.getLocalizedString("server.zippingjar"));
+            fireTask(Localizer.localize("server.zippingjar"));
             fireSubProgressUnknown();
             Utils.zip(getTempJarDirectory(), getMinecraftJar());
         }
         if (extractedTexturePack) {
-            fireTask(App.settings.getLocalizedString("instance.zippingtexturepackfiles"));
+            fireTask(Localizer.localize("instance.zippingtexturepackfiles"));
             fireSubProgressUnknown();
             if (!getTexturePacksDirectory().exists()) {
                 getTexturePacksDirectory().mkdir();
@@ -1403,7 +1404,7 @@ public class InstanceInstaller extends SwingWorker<Boolean, Void> {
                     "TexturePack.zip"));
         }
         if (extractedResourcePack) {
-            fireTask(App.settings.getLocalizedString("instance.zippingresourcepackfiles"));
+            fireTask(Localizer.localize("instance.zippingresourcepackfiles"));
             fireSubProgressUnknown();
             if (!getResourcePacksDirectory().exists()) {
                 getResourcePacksDirectory().mkdir();

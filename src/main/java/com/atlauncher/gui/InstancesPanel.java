@@ -8,6 +8,7 @@ package com.atlauncher.gui;
 
 import com.atlauncher.App;
 import com.atlauncher.data.Instance;
+import com.atlauncher.utils.Localizer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,7 +43,7 @@ public class InstancesPanel extends JPanel {
         topPanel = new JPanel();
         topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-        clearButton = new JButton(App.settings.getLocalizedString("common.clear"));
+        clearButton = new JButton(Localizer.localize("common.clear"));
         clearButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 searchBox.setText("");
@@ -71,7 +72,7 @@ public class InstancesPanel extends JPanel {
         });
         topPanel.add(searchBox);
 
-        searchButton = new JButton(App.settings.getLocalizedString("common.search"));
+        searchButton = new JButton(Localizer.localize("common.search"));
         searchButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 reload();
@@ -88,7 +89,7 @@ public class InstancesPanel extends JPanel {
         });
         topPanel.add(hasUpdate);
 
-        hasUpdateLabel = new JLabel(App.settings.getLocalizedString("instance.hasupdate"));
+        hasUpdateLabel = new JLabel(Localizer.localize("instance.hasupdate"));
         topPanel.add(hasUpdateLabel);
 
         add(topPanel, BorderLayout.NORTH);
@@ -138,7 +139,7 @@ public class InstancesPanel extends JPanel {
         }
         if (count == 0) {
             panel.add(
-                    new NothingToDisplay(App.settings.getLocalizedString("instance.nodisplay",
+                    new NothingToDisplay(Localizer.localize("instance.nodisplay",
                             "\n\n")), gbc);
         }
 

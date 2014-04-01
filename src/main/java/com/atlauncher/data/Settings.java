@@ -6,52 +6,24 @@
  */
 package com.atlauncher.data;
 
-import java.awt.BorderLayout;
-import java.awt.Dialog.ModalityType;
-import java.awt.FlowLayout;
-import java.awt.Window;
-import java.awt.event.WindowAdapter;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.EOFException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
+import com.atlauncher.App;
+import com.atlauncher.Update;
+import com.atlauncher.data.mojang.DateTypeAdapter;
+import com.atlauncher.data.mojang.EnumTypeAdapterFactory;
+import com.atlauncher.data.mojang.FileTypeAdapter;
+import com.atlauncher.data.mojang.auth.AuthenticationResponse;
+import com.atlauncher.exceptions.InvalidMinecraftVersion;
+import com.atlauncher.exceptions.InvalidPack;
+import com.atlauncher.gui.*;
+import com.atlauncher.gui.comp.TrayMenu;
+import com.atlauncher.utils.Authentication;
+import com.atlauncher.utils.Localizer;
+import com.atlauncher.utils.Utils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -62,28 +34,19 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.atlauncher.App;
-import com.atlauncher.Update;
-import com.atlauncher.data.mojang.DateTypeAdapter;
-import com.atlauncher.data.mojang.EnumTypeAdapterFactory;
-import com.atlauncher.data.mojang.FileTypeAdapter;
-import com.atlauncher.data.mojang.auth.AuthenticationResponse;
-import com.atlauncher.exceptions.InvalidMinecraftVersion;
-import com.atlauncher.exceptions.InvalidPack;
-import com.atlauncher.gui.BottomBar;
-import com.atlauncher.gui.InstancesPanel;
-import com.atlauncher.gui.LauncherConsole;
-import com.atlauncher.gui.PacksPanel;
-import com.atlauncher.gui.ProgressDialog;
-import com.atlauncher.gui.comp.TrayMenu;
-import com.atlauncher.gui.comp.panel.ConsoleActionsPanel;
-import com.atlauncher.utils.Authentication;
-import com.atlauncher.utils.Utils;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
+import javax.swing.*;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.awt.*;
+import java.awt.Dialog.ModalityType;
+import java.awt.event.WindowAdapter;
+import java.io.*;
+import java.net.*;
+import java.util.*;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Settings class for storing all data for the Launcher and the settings of the user
@@ -93,7 +56,6 @@ import com.google.gson.reflect.TypeToken;
 public class Settings {
 
     // Users Settings
-    private Language language; // Language for the Launcher
     private Server server; // Server to use for the Launcher
     private String forgeLoggingLevel; // Logging level to use when running Minecraft with Forge
     private int ram; // RAM to use when launching Minecraft
@@ -126,7 +88,6 @@ public class Settings {
     // Packs, Addons, Instances and Accounts
     private List<DownloadableFile> launcherFiles; // Files the Launcher needs to download
     private List<News> news; // News
-    private List<Language> languages; // Languages for the Launcher
     private List<MinecraftVersion> minecraftVersions; // Minecraft versions
     private List<Pack> packs; // Packs in the Launcher
     private ArrayList<Instance> instances = new ArrayList<Instance>(); // Users Installed Instances
@@ -176,6 +137,22 @@ public class Settings {
         loadStartingProperties(); // Get users Console preference and Java Path
     }
 
+    public String[] collectLanguages(){
+        File[] files = this.getLanguagesDir().listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.endsWith(".lang");
+            }
+        });
+        String[] names = new String[files.length];
+
+        for(int i = 0; i < names.length; i++){
+            names[i] = files[i].getName().replace(".lang", "");
+        }
+
+        return names;
+    }
+
     public boolean checkAuthKey() {
         log("[Background] Checking Auth Key Started!");
         if (getAccounts().size() == 0) {
@@ -213,13 +190,13 @@ public class Settings {
                 if (!this.account.isRemembered()) {
                     JPanel panel = new JPanel();
                     panel.setLayout(new BorderLayout());
-                    JLabel passwordLabel = new JLabel(App.settings.getLocalizedString(
-                            "instance.enterpassword", account.getMinecraftUsername()));
+                    JLabel passwordLabel = new JLabel(Localizer.localize(
+                            "instance.enterpassword"));
                     JPasswordField passwordField = new JPasswordField();
                     panel.add(passwordLabel, BorderLayout.NORTH);
                     panel.add(passwordField, BorderLayout.CENTER);
                     int ret = JOptionPane.showConfirmDialog(App.settings.getParent(), panel,
-                            App.settings.getLocalizedString("instance.enterpasswordtitle"),
+                            Localizer.localize("instance.enterpasswordtitle"),
                             JOptionPane.OK_CANCEL_OPTION);
                     if (ret == JOptionPane.OK_OPTION) {
                         password = new String(passwordField.getPassword());
@@ -241,13 +218,13 @@ public class Settings {
                                 JOptionPane.ERROR_MESSAGE);
                         JPanel panel = new JPanel();
                         panel.setLayout(new BorderLayout());
-                        JLabel passwordLabel = new JLabel(App.settings.getLocalizedString(
-                                "instance.enterpassword", account.getMinecraftUsername()));
+                        JLabel passwordLabel = new JLabel(Localizer.localize(
+                                "instance.enterpassword"));
                         JPasswordField passwordField = new JPasswordField();
                         panel.add(passwordLabel, BorderLayout.NORTH);
                         panel.add(passwordField, BorderLayout.CENTER);
                         int ret = JOptionPane.showConfirmDialog(App.settings.getParent(), panel,
-                                App.settings.getLocalizedString("instance.enterpasswordtitle"),
+                                Localizer.localize("instance.enterpasswordtitle"),
                                 JOptionPane.OK_CANCEL_OPTION);
                         if (ret == JOptionPane.OK_OPTION) {
                             password = new String(passwordField.getPassword());
@@ -325,7 +302,6 @@ public class Settings {
             downloadUpdatedFiles(); // Downloads updated files on the server
         }
         loadNews(); // Load the news
-        loadLanguages(); // Load the Languages available in the Launcher
         loadMinecraftVersions(); // Load info about the different Minecraft versions
         loadPacks(); // Load the Packs available in the Launcher
         loadUsers(); // Load the Testers and Allowed Players for the packs
@@ -354,12 +330,12 @@ public class Settings {
             }
         }.start();
         if (Utils.isWindows() && this.javaPath.contains("x86")) {
-            String[] options = { App.settings.getLocalizedString("common.yes"),
-                    App.settings.getLocalizedString("common.no") };
+            String[] options = { Localizer.localize("common.yes"),
+                    Localizer.localize("common.no") };
             int ret = JOptionPane.showOptionDialog(App.settings.getParent(), "<html><center>"
-                    + App.settings.getLocalizedString("settings.running32bit", "<br/><br/>")
+                    + Localizer.localize("settings.running32bit") + "<br/><br/>"
                     + "</center></html>",
-                    App.settings.getLocalizedString("settings.running32bittitle"),
+                    Localizer.localize("settings.running32bittitle"),
                     JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options,
                     options[0]);
             if (ret == 0) {
@@ -379,8 +355,8 @@ public class Settings {
         File indexesDir = new File(this.resourcesDir, "indexes");
         if (!indexesDir.exists() || !indexesDir.isDirectory()) {
             final ProgressDialog dialog = new ProgressDialog(
-                    getLocalizedString("settings.rearrangingresources"), 0,
-                    getLocalizedString("settings.rearrangingresources"), null);
+                    Localizer.localize("settings.rearrangingresources"), 0,
+                    Localizer.localize("settings.rearrangingresources"), null);
             Thread thread = new Thread() {
                 public void run() {
                     File indexesDir = new File(getResourcesDir(), "indexes");
@@ -601,7 +577,6 @@ public class Settings {
                     downloadUpdatedFiles(); // Downloads updated files on the server
                 }
                 loadNews(); // Load the news
-                loadLanguages(); // Load the Languages available in the Launcher
                 loadMinecraftVersions(); // Load info about the different Minecraft versions
                 loadPacks(); // Load the Packs available in the Launcher
                 reloadPacksPanel(); // Reload packs panel
@@ -906,6 +881,7 @@ public class Settings {
             this.enableDebugConsole = Boolean.parseBoolean(properties.getProperty(
                     "enabledebugconsole", "false"));
             this.authKey = properties.getProperty("authkey", "");
+
             if (!properties.containsKey("usingcustomjavapath")) {
                 this.usingCustomJavaPath = false;
                 this.javaPath = Utils.getJavaHome();
@@ -935,13 +911,6 @@ public class Settings {
                     .parseBoolean(properties.getProperty("firsttimerun", "true"));
 
             String lang = properties.getProperty("language", "English");
-            if (isLanguageByName(lang)) {
-                this.language = getLanguageByName(lang);
-            } else {
-                log("Invalid language " + lang + ". Defaulting to English!",
-                        LogMessageType.warning, false);
-                this.language = getLanguageByName("English"); // Language not found, use default
-            }
 
             this.forgeLoggingLevel = properties.getProperty("forgelogginglevel", "INFO");
             if (!this.forgeLoggingLevel.equalsIgnoreCase("SEVERE")
@@ -1062,7 +1031,6 @@ public class Settings {
         try {
             properties.setProperty("firsttimerun", "false");
             properties.setProperty("authkey", this.authKey);
-            properties.setProperty("language", this.language.getName());
             properties.setProperty("server", this.server.getName());
             properties.setProperty("forgelogginglevel", this.forgeLoggingLevel);
             properties.setProperty("ram", this.ram + "");
@@ -1130,7 +1098,6 @@ public class Settings {
         reloadAccounts();
         try {
             properties.setProperty("firsttimerun", "false");
-            properties.setProperty("language", this.language.getName());
             properties.setProperty("server", this.server.getName());
             properties.setProperty("ram", this.ram + "");
             properties.setProperty("windowwidth", this.windowWidth + "");
@@ -1225,27 +1192,6 @@ public class Settings {
             logStackTrace(e);
         } catch (FileNotFoundException e) {
             logStackTrace(e);
-        }
-    }
-
-    /**
-     * Loads the languages for use in the Launcher
-     */
-    private void loadLanguages() {
-        try {
-            java.lang.reflect.Type type = new TypeToken<List<Language>>() {
-            }.getType();
-            this.languages = gson.fromJson(
-                    new FileReader(new File(getJSONDir(), "languages.json")), type);
-        } catch (JsonSyntaxException e) {
-            logStackTrace(e);
-        } catch (JsonIOException e) {
-            logStackTrace(e);
-        } catch (FileNotFoundException e) {
-            logStackTrace(e);
-        }
-        for (Language lang : this.languages) {
-            lang.setupLanguage();
         }
     }
 
@@ -1872,15 +1818,6 @@ public class Settings {
     }
 
     /**
-     * Get the Languages available in the Launcher
-     * 
-     * @return The Languages available in the Launcher
-     */
-    public List<Language> getLanguages() {
-        return this.languages;
-    }
-
-    /**
      * Get the Servers available in the Launcher
      * 
      * @return The Servers available in the Launcher
@@ -2124,22 +2061,6 @@ public class Settings {
     }
 
     /**
-     * Finds a Language from the given name
-     * 
-     * @param name
-     *            Name of the Language to find
-     * @return Language if the language is found from the name
-     */
-    private Language getLanguageByName(String name) {
-        for (Language language : languages) {
-            if (language.getName().equalsIgnoreCase(name)) {
-                return language;
-            }
-        }
-        return null;
-    }
-
-    /**
      * Finds a Server from the given name
      * 
      * @param name
@@ -2169,22 +2090,6 @@ public class Settings {
             }
         }
         return null;
-    }
-
-    /**
-     * Finds if a language is available
-     * 
-     * @param name
-     *            The name of the Language
-     * @return true if found, false if not
-     */
-    public boolean isLanguageByName(String name) {
-        for (Language language : languages) {
-            if (language.getName().equalsIgnoreCase(name)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**
@@ -2318,25 +2223,6 @@ public class Settings {
 
         // Disable button in Tray Menu. Do it here in case user clicked it when shouldn't be able to
         ((TrayMenu) App.TRAY_MENU).setMinecraftLaunched(false);
-    }
-
-    /**
-     * Gets the users current active Language
-     * 
-     * @return The users set language
-     */
-    public Language getLanguage() {
-        return this.language;
-    }
-
-    /**
-     * Sets the users current active Language
-     * 
-     * @param language
-     *            The language to set to
-     */
-    public void setLanguage(Language language) {
-        this.language = language;
     }
 
     /**
@@ -2618,14 +2504,6 @@ public class Settings {
 
     public String getUserAgent() {
         return this.userAgent + " ATLauncher/" + this.version.replace("%VERSION%", "3.1");
-    }
-
-    public String getLocalizedString(String string) {
-        return language.getString(string);
-    }
-
-    public String getLocalizedString(String string, String replace) {
-        return language.getString(string).replace("%s", replace);
     }
 
     public void restartLauncher() {

@@ -6,8 +6,8 @@
  */
 package com.atlauncher.gui;
 
-import com.atlauncher.App;
 import com.atlauncher.data.Addon;
+import com.atlauncher.utils.Localizer;
 import com.atlauncher.utils.Utils;
 
 import javax.swing.*;
@@ -65,7 +65,7 @@ public class AddonDisplay extends JPanel {
 
         addonActions = new JPanel();
         addonActions.setLayout(new FlowLayout());
-        install = new JButton(App.settings.getLocalizedString("common.install"));
+        install = new JButton(Localizer.localize("common.install"));
         addonActions.add(install);
 
         leftPanel.add(addonImage, BorderLayout.CENTER);

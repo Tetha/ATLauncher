@@ -2,7 +2,7 @@ package com.atlauncher.gui.tab;
 
 import com.atlauncher.App;
 import com.atlauncher.data.Constants;
-import com.atlauncher.gui.comp.panel.StatusPanel;
+import com.atlauncher.gui.comp.card.TwitterCard;
 import twitter4j.Status;
 import twitter4j.Twitter;
 
@@ -52,7 +52,7 @@ public final class TwitterTab extends JPanel implements ActionListener {
         List<Status> statuses = this.TWITTER.getHomeTimeline();
 
         for(Status status : statuses){
-            this.CONTENT.add(new StatusPanel(status), gbc);
+            this.CONTENT.add(new TwitterCard(status), gbc);
             gbc.gridy++;
         }
     }

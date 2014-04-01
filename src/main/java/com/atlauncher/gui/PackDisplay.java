@@ -8,6 +8,7 @@ package com.atlauncher.gui;
 
 import com.atlauncher.App;
 import com.atlauncher.data.Pack;
+import com.atlauncher.utils.Localizer;
 import com.atlauncher.utils.Utils;
 
 import javax.swing.*;
@@ -77,22 +78,22 @@ public class PackDisplay extends CollapsiblePanel {
         packActions.setLeftComponent(packActionsTop);
         packActions.setRightComponent(packActionsBottom);
 
-        newInstance = new JButton(App.settings.getLocalizedString("common.newinstance"));
+        newInstance = new JButton(Localizer.localize("common.newinstance"));
         newInstance.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (App.settings.isInOfflineMode()) {
-                    String[] options = { App.settings.getLocalizedString("common.ok") };
+                    String[] options = { Localizer.localize("common.ok") };
                     JOptionPane.showOptionDialog(App.settings.getParent(),
-                            App.settings.getLocalizedString("pack.offlinenewinstance"),
-                            App.settings.getLocalizedString("common.offline"),
+                            Localizer.localize("pack.offlinenewinstance"),
+                            Localizer.localize("common.offline"),
                             JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options,
                             options[0]);
                 } else {
                     if (App.settings.getAccount() == null) {
-                        String[] options = { App.settings.getLocalizedString("common.ok") };
+                        String[] options = { Localizer.localize("common.ok") };
                         JOptionPane.showOptionDialog(App.settings.getParent(),
-                                App.settings.getLocalizedString("instance.cannotcreate"),
-                                App.settings.getLocalizedString("instance.noaccountselected"),
+                                Localizer.localize("instance.cannotcreate"),
+                                Localizer.localize("instance.noaccountselected"),
                                 JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null,
                                 options, options[0]);
                     } else {
@@ -102,22 +103,22 @@ public class PackDisplay extends CollapsiblePanel {
             }
         });
 
-        createServer = new JButton(App.settings.getLocalizedString("common.createserver"));
+        createServer = new JButton(Localizer.localize("common.createserver"));
         createServer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (App.settings.isInOfflineMode()) {
-                    String[] options = { App.settings.getLocalizedString("common.ok") };
+                    String[] options = { Localizer.localize("common.ok") };
                     JOptionPane.showOptionDialog(App.settings.getParent(),
-                            App.settings.getLocalizedString("pack.offlinecreateserver"),
-                            App.settings.getLocalizedString("common.offline"),
+                            Localizer.localize("pack.offlinecreateserver"),
+                            Localizer.localize("common.offline"),
                             JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options,
                             options[0]);
                 } else {
                     if (App.settings.getAccount() == null) {
-                        String[] options = { App.settings.getLocalizedString("common.ok") };
+                        String[] options = { Localizer.localize("common.ok") };
                         JOptionPane.showOptionDialog(App.settings.getParent(),
-                                App.settings.getLocalizedString("instance.cannotcreate"),
-                                App.settings.getLocalizedString("instance.noaccountselected"),
+                                Localizer.localize("instance.cannotcreate"),
+                                Localizer.localize("instance.noaccountselected"),
                                 JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null,
                                 options, options[0]);
                     } else {
@@ -127,14 +128,14 @@ public class PackDisplay extends CollapsiblePanel {
             }
         });
 
-        support = new JButton(App.settings.getLocalizedString("common.support"));
+        support = new JButton(Localizer.localize("common.support"));
         support.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Utils.openBrowser(pack.getSupportURL());
             }
         });
 
-        website = new JButton(App.settings.getLocalizedString("common.website"));
+        website = new JButton(Localizer.localize("common.website"));
         website.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Utils.openBrowser(pack.getWebsiteURL());
@@ -148,7 +149,7 @@ public class PackDisplay extends CollapsiblePanel {
         packActionsTop.add(newInstance);
         packActionsTop.add(createServer);
         if (pack.isSemiPublic() && !pack.isTester()) {
-            removePack = new JButton(App.settings.getLocalizedString("pack.removepack"));
+            removePack = new JButton(Localizer.localize("pack.removepack"));
             removePack.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     App.settings.removePack(pack.getCode());

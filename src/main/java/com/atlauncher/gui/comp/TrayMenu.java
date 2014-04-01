@@ -1,6 +1,7 @@
 package com.atlauncher.gui.comp;
 
 import com.atlauncher.App;
+import com.atlauncher.utils.Localizer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,10 +22,9 @@ public final class TrayMenu extends PopupMenu {
                                 int ret = JOptionPane.showConfirmDialog(
                                         App.settings.getParent(),
                                         "<html><center>"
-                                                + App.settings.getLocalizedString(
-                                                        "console.killsure", "<br/><br/>")
-                                                + "</center></html>", App.settings
-                                                .getLocalizedString("console.kill"),
+                                                + Localizer.localize(
+                                                "console.killsure", "<br/><br/>")
+                                                + "</center></html>", Localizer.localize("console.kill"),
                                         JOptionPane.YES_OPTION);
 
                                 if (ret == JOptionPane.YES_OPTION) {
@@ -45,10 +45,10 @@ public final class TrayMenu extends PopupMenu {
                 public void actionPerformed(ActionEvent event) {
                     if (App.settings.isConsoleVisible()) {
                         App.settings.setConsoleVisible(false);
-                        setLabel(App.settings.getLocalizedString("console.show"));
+                        setLabel(Localizer.localize("console.show"));
                     } else {
                         App.settings.setConsoleVisible(true);
-                        setLabel(App.settings.getLocalizedString("console.hide"));
+                        setLabel(Localizer.localize("console.hide"));
                     }
                 }
             });
@@ -90,9 +90,9 @@ public final class TrayMenu extends PopupMenu {
     }
 
     public void localize() {
-        this.KILLMC_BUTTON.setLabel(App.settings.getLocalizedString("console.kill"));
-        this.TC_BUTTON.setLabel(App.settings.getLocalizedString("console.show"));
-        this.QUIT_BUTTON.setLabel(App.settings.getLocalizedString("common.quit"));
+        this.KILLMC_BUTTON.setLabel(Localizer.localize("console.kill"));
+        this.TC_BUTTON.setLabel(Localizer.localize("console.show"));
+        this.QUIT_BUTTON.setLabel(Localizer.localize("common.quit"));
     }
 
 }

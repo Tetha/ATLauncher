@@ -7,6 +7,7 @@
 package com.atlauncher.gui;
 
 import com.atlauncher.App;
+import com.atlauncher.utils.Localizer;
 import com.atlauncher.utils.Utils;
 
 import javax.swing.*;
@@ -28,7 +29,7 @@ public class AddPackDialog extends JDialog {
     private JButton saveButton;
 
     public AddPackDialog() {
-        super(null, App.settings.getLocalizedString("pack.addpack"), ModalityType.APPLICATION_MODAL);
+        super(null, Localizer.localize("pack.addpack"), ModalityType.APPLICATION_MODAL);
         setSize(300, 150);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
@@ -38,7 +39,7 @@ public class AddPackDialog extends JDialog {
 
         // Top Panel Stuff
         top = new JPanel();
-        top.add(new JLabel(App.settings.getLocalizedString("pack.addpack")));
+        top.add(new JLabel(Localizer.localize("pack.addpack")));
 
         // Middle Panel Stuff
         middle = new JPanel();
@@ -48,7 +49,7 @@ public class AddPackDialog extends JDialog {
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.BASELINE_TRAILING;
-        packCodeLabel = new JLabel(App.settings.getLocalizedString("pack.packcode") + ": ");
+        packCodeLabel = new JLabel(Localizer.localize("pack.packcode") + ": ");
         middle.add(packCodeLabel, gbc);
 
         gbc.gridx++;
@@ -59,27 +60,27 @@ public class AddPackDialog extends JDialog {
         // Bottom Panel Stuff
         bottom = new JPanel();
         bottom.setLayout(new FlowLayout());
-        saveButton = new JButton(App.settings.getLocalizedString("common.save"));
+        saveButton = new JButton(Localizer.localize("common.save"));
         saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (App.settings.semiPublicPackExistsFromCode(packCode.getText())) {
                     if (App.settings.addPack(packCode.getText())) {
                         JOptionPane.showMessageDialog(AddPackDialog.this,
-                                App.settings.getLocalizedString("pack.packaddedmessage"),
-                                App.settings.getLocalizedString("pack.packadded"),
+                                Localizer.localize("pack.packaddedmessage"),
+                                Localizer.localize("pack.packadded"),
                                 JOptionPane.INFORMATION_MESSAGE);
                     } else {
                         JOptionPane.showMessageDialog(AddPackDialog.this,
-                                App.settings.getLocalizedString("pack.packalreadyaddedmessage"),
-                                App.settings.getLocalizedString("pack.packalreadyadded"),
+                                Localizer.localize("pack.packalreadyaddedmessage"),
+                                Localizer.localize("pack.packalreadyadded"),
                                 JOptionPane.ERROR_MESSAGE);
                     }
                     setVisible(false);
                     dispose();
                 } else {
                     JOptionPane.showMessageDialog(AddPackDialog.this,
-                            App.settings.getLocalizedString("pack.packdoesntexist"),
-                            App.settings.getLocalizedString("pack.packaddederror"),
+                            Localizer.localize("pack.packdoesntexist"),
+                            Localizer.localize("pack.packaddederror"),
                             JOptionPane.ERROR_MESSAGE);
                 }
             }

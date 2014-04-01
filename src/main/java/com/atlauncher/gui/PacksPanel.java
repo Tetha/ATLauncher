@@ -8,6 +8,7 @@ package com.atlauncher.gui;
 
 import com.atlauncher.App;
 import com.atlauncher.data.Pack;
+import com.atlauncher.utils.Localizer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,7 +47,7 @@ public class PacksPanel extends JPanel {
         topPanel = new JPanel();
         topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-        addPackButton = new JButton(App.settings.getLocalizedString("pack.addpack"));
+        addPackButton = new JButton(Localizer.localize("pack.addpack"));
         addPackButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 new AddPackDialog();
@@ -55,7 +56,7 @@ public class PacksPanel extends JPanel {
         });
         topPanel.add(addPackButton);
 
-        clearButton = new JButton(App.settings.getLocalizedString("common.clear"));
+        clearButton = new JButton(Localizer.localize("common.clear"));
         clearButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 searchBox.setText("");
@@ -79,7 +80,7 @@ public class PacksPanel extends JPanel {
         });
         topPanel.add(searchBox);
 
-        searchButton = new JButton(App.settings.getLocalizedString("common.search"));
+        searchButton = new JButton(Localizer.localize("common.search"));
         searchButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 reload();
@@ -96,7 +97,7 @@ public class PacksPanel extends JPanel {
         });
         topPanel.add(servers);
 
-        serversLabel = new JLabel(App.settings.getLocalizedString("pack.cancreateserver"));
+        serversLabel = new JLabel(Localizer.localize("pack.cancreateserver"));
         topPanel.add(serversLabel);
 
         privatePacks = new JCheckBox();
@@ -108,7 +109,7 @@ public class PacksPanel extends JPanel {
         });
         topPanel.add(privatePacks);
 
-        privatePacksLabel = new JLabel(App.settings.getLocalizedString("pack.privatepacksonly"));
+        privatePacksLabel = new JLabel(Localizer.localize("pack.privatepacksonly"));
         topPanel.add(privatePacksLabel);
 
         add(topPanel, BorderLayout.NORTH);
@@ -166,7 +167,7 @@ public class PacksPanel extends JPanel {
         }
         if (count == 0) {
             panel.add(
-                    new NothingToDisplay(App.settings.getLocalizedString("pack.nodisplay", "\n\n")),
+                    new NothingToDisplay(Localizer.localize("pack.nodisplay", "\n\n")),
                     gbc);
         }
 

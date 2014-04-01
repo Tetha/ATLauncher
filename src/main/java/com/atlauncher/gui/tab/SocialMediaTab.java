@@ -1,5 +1,6 @@
 package com.atlauncher.gui.tab;
 
+import com.atlauncher.utils.Localizer;
 import com.atlauncher.utils.Utils;
 
 import javax.swing.*;
@@ -18,7 +19,7 @@ public final class SocialMediaTab extends JPanel {
         this.TABS.setBackground(new Color(40, 45, 50).brighter());
         this.TABS.setFont(Utils.makeFont("Oswald-Regular").deriveFont((float) 34));
         this.TABS.setOpaque(true);
-        this.TABS.addTab("Twitter", this.TWITTER_TAB);
+        this.TABS.addTab(Localizer.localize("common.search"), this.TWITTER_TAB);
         this.TABS.addTab("GitHub", this.GITHUB_TAB);
         this.TABS.addTab("Testing", this.PACKS_TAB);
 

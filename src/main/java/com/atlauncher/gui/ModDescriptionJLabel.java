@@ -6,7 +6,7 @@
  */
 package com.atlauncher.gui;
 
-import com.atlauncher.App;
+import com.atlauncher.utils.Localizer;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
@@ -22,10 +22,10 @@ public class ModDescriptionJLabel extends JLabel {
         this.description = descriptionn;
         super.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent me) {
-                Object[] options = { App.settings.getLocalizedString("common.ok") };
+                Object[] options = { Localizer.localize("common.ok") };
                 JOptionPane.showOptionDialog(null, "<html><center>" + description
                         + "</center></html>",
-                        App.settings.getLocalizedString("instance.moddescription"),
+                        Localizer.localize("instance.moddescription"),
                         JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options,
                         options[0]);
             }

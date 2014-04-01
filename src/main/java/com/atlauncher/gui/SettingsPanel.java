@@ -7,8 +7,8 @@
 package com.atlauncher.gui;
 
 import com.atlauncher.App;
-import com.atlauncher.data.Language;
 import com.atlauncher.data.Server;
+import com.atlauncher.utils.Localizer;
 import com.atlauncher.utils.Utils;
 
 import javax.swing.*;
@@ -27,7 +27,7 @@ public class SettingsPanel extends JPanel {
     private ImageIcon helpIcon;
 
     private JLabel languageLabel;
-    private JComboBox<Language> language;
+    private JComboBox<String> language;
 
     private JLabel downloadServerLabel;
     private JComboBox<Server> server;
@@ -97,7 +97,7 @@ public class SettingsPanel extends JPanel {
         gbc.gridy = 0;
         gbc.insets = LABEL_INSETS;
         gbc.anchor = GridBagConstraints.BASELINE_TRAILING;
-        languageLabel = new JLabel(App.settings.getLocalizedString("settings.language") + ":") {
+        languageLabel = new JLabel(Localizer.localize("settings.language") + ":") {
             public JToolTip createToolTip() {
                 JToolTip tip = super.createToolTip();
                 Border border = new CustomLineBorder(5, new Color(80, 170, 107), 2);
@@ -106,17 +106,17 @@ public class SettingsPanel extends JPanel {
             }
         };
         languageLabel.setIcon(helpIcon);
-        languageLabel.setToolTipText(App.settings.getLocalizedString("settings.languagehelp"));
+        languageLabel.setToolTipText(Localizer.localize("settings.languagehelp"));
         topPanel.add(languageLabel, gbc);
 
         gbc.gridx++;
         gbc.insets = FIELD_INSETS;
         gbc.anchor = GridBagConstraints.BASELINE_LEADING;
-        language = new JComboBox<Language>();
-        for (Language languagee : App.settings.getLanguages()) {
+        language = new JComboBox<String>();
+        for (String languagee : App.settings.collectLanguages()) {
             language.addItem(languagee);
         }
-        language.setSelectedItem(App.settings.getLanguage());
+        language.setSelectedItem(Localizer.INSTANCE.getLanguage());
         topPanel.add(language, gbc);
 
         // Forge Logging Level
@@ -125,7 +125,7 @@ public class SettingsPanel extends JPanel {
         gbc.insets = LABEL_INSETS;
         gbc.anchor = GridBagConstraints.BASELINE_TRAILING;
         forgeLoggingLevelLabel = new JLabel(
-                App.settings.getLocalizedString("settings.forgelogginglevel") + ":") {
+                Localizer.localize("settings.forgelogginglevel") + ":") {
             public JToolTip createToolTip() {
                 JToolTip tip = super.createToolTip();
                 Border border = new CustomLineBorder(5, new Color(80, 170, 107), 2);
@@ -135,7 +135,7 @@ public class SettingsPanel extends JPanel {
         };
         forgeLoggingLevelLabel.setIcon(helpIcon);
         forgeLoggingLevelLabel.setToolTipText("<html><center>"
-                + App.settings.getLocalizedString("settings.forgelogginglevelhelp", "<br/><br/>")
+                + Localizer.localize("settings.forgelogginglevelhelp", "<br/><br/>")
                 + "</center></html>");
         topPanel.add(forgeLoggingLevelLabel, gbc);
 
@@ -158,7 +158,7 @@ public class SettingsPanel extends JPanel {
         gbc.gridy++;
         gbc.insets = LABEL_INSETS;
         gbc.anchor = GridBagConstraints.BASELINE_TRAILING;
-        downloadServerLabel = new JLabel(App.settings.getLocalizedString("settings.downloadserver")
+        downloadServerLabel = new JLabel(Localizer.localize("settings.downloadserver")
                 + ":") {
             public JToolTip createToolTip() {
                 JToolTip tip = super.createToolTip();
@@ -168,8 +168,7 @@ public class SettingsPanel extends JPanel {
             }
         };
         downloadServerLabel.setIcon(helpIcon);
-        downloadServerLabel.setToolTipText(App.settings
-                .getLocalizedString("settings.downloadserverhelp"));
+        downloadServerLabel.setToolTipText(Localizer.localize("settings.downloadserverhelp"));
         topPanel.add(downloadServerLabel, gbc);
 
         gbc.gridx++;
@@ -189,7 +188,7 @@ public class SettingsPanel extends JPanel {
         gbc.gridy++;
         gbc.insets = LABEL_INSETS;
         gbc.anchor = GridBagConstraints.BASELINE_TRAILING;
-        memoryLabel = new JLabel(App.settings.getLocalizedString("settings.memory") + ":") {
+        memoryLabel = new JLabel(Localizer.localize("settings.memory") + ":") {
             public JToolTip createToolTip() {
                 JToolTip tip = super.createToolTip();
                 Border border = new CustomLineBorder(5, new Color(80, 170, 107), 2);
@@ -199,10 +198,10 @@ public class SettingsPanel extends JPanel {
         };
         memoryLabel.setIcon(helpIcon);
         if (Utils.is64Bit())
-            memoryLabel.setToolTipText(App.settings.getLocalizedString("settings.memoryhelp"));
+            memoryLabel.setToolTipText(Localizer.localize("settings.memoryhelp"));
         else
             memoryLabel.setToolTipText("<html><center>"
-                    + App.settings.getLocalizedString("settings.memoryhelp32bit", "<br/>")
+                    + Localizer.localize("settings.memoryhelp32bit", "<br/>")
                     + "</center></html>");
         topPanel.add(memoryLabel, gbc);
 
@@ -222,7 +221,7 @@ public class SettingsPanel extends JPanel {
         gbc.gridy++;
         gbc.insets = LABEL_INSETS;
         gbc.anchor = GridBagConstraints.BASELINE_TRAILING;
-        permGenLabel = new JLabel(App.settings.getLocalizedString("settings.permgen") + ":") {
+        permGenLabel = new JLabel(Localizer.localize("settings.permgen") + ":") {
             public JToolTip createToolTip() {
                 JToolTip tip = super.createToolTip();
                 Border border = new CustomLineBorder(5, new Color(80, 170, 107), 2);
@@ -231,7 +230,7 @@ public class SettingsPanel extends JPanel {
             }
         };
         permGenLabel.setIcon(helpIcon);
-        permGenLabel.setToolTipText(App.settings.getLocalizedString("settings.permgenhelp"));
+        permGenLabel.setToolTipText(Localizer.localize("settings.permgenhelp"));
         topPanel.add(permGenLabel, gbc);
 
         gbc.gridx++;
@@ -247,7 +246,7 @@ public class SettingsPanel extends JPanel {
         gbc.gridwidth = 1;
         gbc.insets = LABEL_INSETS_SMALL;
         gbc.anchor = GridBagConstraints.BASELINE_TRAILING;
-        windowSizeLabel = new JLabel(App.settings.getLocalizedString("settings.windowsize") + ":") {
+        windowSizeLabel = new JLabel(Localizer.localize("settings.windowsize") + ":") {
             public JToolTip createToolTip() {
                 JToolTip tip = super.createToolTip();
                 Border border = new CustomLineBorder(5, new Color(80, 170, 107), 2);
@@ -256,7 +255,7 @@ public class SettingsPanel extends JPanel {
             }
         };
         windowSizeLabel.setIcon(helpIcon);
-        windowSizeLabel.setToolTipText(App.settings.getLocalizedString("settings.windowsizehelp"));
+        windowSizeLabel.setToolTipText(Localizer.localize("settings.windowsizehelp"));
         topPanel.add(windowSizeLabel, gbc);
 
         gbc.gridx++;
@@ -309,7 +308,7 @@ public class SettingsPanel extends JPanel {
         gbc.gridwidth = 1;
         gbc.insets = LABEL_INSETS_SMALL;
         gbc.anchor = GridBagConstraints.BASELINE_TRAILING;
-        javaPathLabel = new JLabel(App.settings.getLocalizedString("settings.javapath") + ":") {
+        javaPathLabel = new JLabel(Localizer.localize("settings.javapath") + ":") {
             public JToolTip createToolTip() {
                 JToolTip tip = super.createToolTip();
                 Border border = new CustomLineBorder(5, new Color(80, 170, 107), 2);
@@ -319,7 +318,7 @@ public class SettingsPanel extends JPanel {
         };
         javaPathLabel.setIcon(helpIcon);
         javaPathLabel.setToolTipText("<html><center>"
-                + App.settings.getLocalizedString("settings.javapathhelp", "<br/>")
+                + Localizer.localize("settings.javapathhelp", "<br/>")
                 + "</center></html>");
         topPanel.add(javaPathLabel, gbc);
 
@@ -330,7 +329,7 @@ public class SettingsPanel extends JPanel {
         javaPathPanel.setLayout(new FlowLayout());
         javaPath = new JTextField(20);
         javaPath.setText(App.settings.getJavaPath());
-        javaPathResetButton = new JButton(App.settings.getLocalizedString("settings.javapathreset"));
+        javaPathResetButton = new JButton(Localizer.localize("settings.javapathreset"));
         javaPathResetButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 javaPath.setText(Utils.getJavaHome());
@@ -348,7 +347,7 @@ public class SettingsPanel extends JPanel {
         gbc.gridy++;
         gbc.insets = LABEL_INSETS;
         gbc.anchor = GridBagConstraints.BASELINE_TRAILING;
-        javaParametersLabel = new JLabel(App.settings.getLocalizedString("settings.javaparameters")
+        javaParametersLabel = new JLabel(Localizer.localize("settings.javaparameters")
                 + ":") {
             public JToolTip createToolTip() {
                 JToolTip tip = super.createToolTip();
@@ -358,8 +357,7 @@ public class SettingsPanel extends JPanel {
             }
         };
         javaParametersLabel.setIcon(helpIcon);
-        javaParametersLabel.setToolTipText(App.settings
-                .getLocalizedString("settings.javaparametershelp"));
+        javaParametersLabel.setToolTipText(Localizer.localize("settings.javaparametershelp"));
         topPanel.add(javaParametersLabel, gbc);
 
         gbc.gridx++;
@@ -376,7 +374,7 @@ public class SettingsPanel extends JPanel {
         gbc.insets = LABEL_INSETS;
         gbc.anchor = GridBagConstraints.BASELINE_TRAILING;
         startMinecraftMaximisedLabel = new JLabel(
-                App.settings.getLocalizedString("settings.startminecraftmaximised") + "?") {
+                Localizer.localize("settings.startminecraftmaximised") + "?") {
             public JToolTip createToolTip() {
                 JToolTip tip = super.createToolTip();
                 Border border = new CustomLineBorder(5, new Color(80, 170, 107), 2);
@@ -385,8 +383,7 @@ public class SettingsPanel extends JPanel {
             }
         };
         startMinecraftMaximisedLabel.setIcon(helpIcon);
-        startMinecraftMaximisedLabel.setToolTipText(App.settings
-                .getLocalizedString("settings.startminecraftmaximisedhelp"));
+        startMinecraftMaximisedLabel.setToolTipText(Localizer.localize("settings.startminecraftmaximisedhelp"));
         topPanel.add(startMinecraftMaximisedLabel, gbc);
 
         gbc.gridx++;
@@ -404,7 +401,7 @@ public class SettingsPanel extends JPanel {
         gbc.gridy++;
         gbc.insets = LABEL_INSETS;
         gbc.anchor = GridBagConstraints.BASELINE_TRAILING;
-        advancedBackupLabel = new JLabel(App.settings.getLocalizedString("settings.advancedbackup")
+        advancedBackupLabel = new JLabel(Localizer.localize("settings.advancedbackup")
                 + "?") {
             public JToolTip createToolTip() {
                 JToolTip tip = super.createToolTip();
@@ -415,7 +412,7 @@ public class SettingsPanel extends JPanel {
         };
         advancedBackupLabel.setIcon(helpIcon);
         advancedBackupLabel.setToolTipText("<html><center>"
-                + App.settings.getLocalizedString("settings.advancedbackuphelp", "<br/>")
+                + Localizer.localize("settings.advancedbackuphelp", "<br/>")
                 + "</center></html>");
         topPanel.add(advancedBackupLabel, gbc);
 
@@ -435,7 +432,7 @@ public class SettingsPanel extends JPanel {
         gbc.insets = LABEL_INSETS;
         gbc.anchor = GridBagConstraints.BASELINE_TRAILING;
         sortPacksAlphabeticallyLabel = new JLabel(
-                App.settings.getLocalizedString("settings.sortpacksalphabetically") + "?") {
+                Localizer.localize("settings.sortpacksalphabetically") + "?") {
             public JToolTip createToolTip() {
                 JToolTip tip = super.createToolTip();
                 Border border = new CustomLineBorder(5, new Color(80, 170, 107), 2);
@@ -444,8 +441,7 @@ public class SettingsPanel extends JPanel {
             }
         };
         sortPacksAlphabeticallyLabel.setIcon(helpIcon);
-        sortPacksAlphabeticallyLabel.setToolTipText(App.settings
-                .getLocalizedString("settings.sortpacksalphabeticallyhelp"));
+        sortPacksAlphabeticallyLabel.setToolTipText(Localizer.localize("settings.sortpacksalphabeticallyhelp"));
         topPanel.add(sortPacksAlphabeticallyLabel, gbc);
 
         gbc.gridx++;
@@ -464,7 +460,7 @@ public class SettingsPanel extends JPanel {
         gbc.insets = LABEL_INSETS;
         gbc.anchor = GridBagConstraints.BASELINE_TRAILING;
         keepLauncherOpenLabel = new JLabel(
-                App.settings.getLocalizedString("settings.keeplauncheropen") + "?") {
+                Localizer.localize("settings.keeplauncheropen") + "?") {
             public JToolTip createToolTip() {
                 JToolTip tip = super.createToolTip();
                 Border border = new CustomLineBorder(5, new Color(80, 170, 107), 2);
@@ -473,8 +469,7 @@ public class SettingsPanel extends JPanel {
             }
         };
         keepLauncherOpenLabel.setIcon(helpIcon);
-        keepLauncherOpenLabel.setToolTipText(App.settings
-                .getLocalizedString("settings.keeplauncheropenhelp"));
+        keepLauncherOpenLabel.setToolTipText(Localizer.localize("settings.keeplauncheropenhelp"));
         topPanel.add(keepLauncherOpenLabel, gbc);
 
         gbc.gridx++;
@@ -492,7 +487,7 @@ public class SettingsPanel extends JPanel {
         gbc.gridy++;
         gbc.insets = LABEL_INSETS;
         gbc.anchor = GridBagConstraints.BASELINE_TRAILING;
-        enableConsoleLabel = new JLabel(App.settings.getLocalizedString("settings.console") + "?") {
+        enableConsoleLabel = new JLabel(Localizer.localize("settings.console") + "?") {
             public JToolTip createToolTip() {
                 JToolTip tip = super.createToolTip();
                 Border border = new CustomLineBorder(5, new Color(80, 170, 107), 2);
@@ -501,7 +496,7 @@ public class SettingsPanel extends JPanel {
             }
         };
         enableConsoleLabel.setIcon(helpIcon);
-        enableConsoleLabel.setToolTipText(App.settings.getLocalizedString("settings.consolehelp"));
+        enableConsoleLabel.setToolTipText(Localizer.localize("settings.consolehelp"));
         topPanel.add(enableConsoleLabel, gbc);
 
         gbc.gridx++;
@@ -520,7 +515,7 @@ public class SettingsPanel extends JPanel {
         gbc.insets = LABEL_INSETS;
         gbc.anchor = GridBagConstraints.BASELINE_TRAILING;
         enableDebugConsoleLabel = new JLabel(
-                App.settings.getLocalizedString("settings.debugconsole") + "?") {
+                Localizer.localize("settings.debugconsole") + "?") {
             public JToolTip createToolTip() {
                 JToolTip tip = super.createToolTip();
                 Border border = new CustomLineBorder(5, new Color(80, 170, 107), 2);
@@ -529,8 +524,7 @@ public class SettingsPanel extends JPanel {
             }
         };
         enableDebugConsoleLabel.setIcon(helpIcon);
-        enableDebugConsoleLabel.setToolTipText(App.settings
-                .getLocalizedString("settings.debugconsolehelp"));
+        enableDebugConsoleLabel.setToolTipText(Localizer.localize("settings.debugconsolehelp"));
         topPanel.add(enableDebugConsoleLabel, gbc);
 
         gbc.gridx++;
@@ -549,7 +543,7 @@ public class SettingsPanel extends JPanel {
         gbc.insets = LABEL_INSETS;
         gbc.anchor = GridBagConstraints.BASELINE_TRAILING;
         enableLeaderboardsLabel = new JLabel(
-                App.settings.getLocalizedString("settings.leaderboards") + "?") {
+                Localizer.localize("settings.leaderboards") + "?") {
             public JToolTip createToolTip() {
                 JToolTip tip = super.createToolTip();
                 Border border = new CustomLineBorder(5, new Color(80, 170, 107), 2);
@@ -558,8 +552,7 @@ public class SettingsPanel extends JPanel {
             }
         };
         enableLeaderboardsLabel.setIcon(helpIcon);
-        enableLeaderboardsLabel.setToolTipText(App.settings
-                .getLocalizedString("settings.leaderboardshelp"));
+        enableLeaderboardsLabel.setToolTipText(Localizer.localize("settings.leaderboardshelp"));
         topPanel.add(enableLeaderboardsLabel, gbc);
 
         gbc.gridx++;
@@ -577,7 +570,7 @@ public class SettingsPanel extends JPanel {
         gbc.gridy++;
         gbc.insets = LABEL_INSETS;
         gbc.anchor = GridBagConstraints.BASELINE_TRAILING;
-        enableLoggingLabel = new JLabel(App.settings.getLocalizedString("settings.logging") + "?") {
+        enableLoggingLabel = new JLabel(Localizer.localize("settings.logging") + "?") {
             public JToolTip createToolTip() {
                 JToolTip tip = super.createToolTip();
                 Border border = new CustomLineBorder(5, new Color(80, 170, 107), 2);
@@ -587,7 +580,7 @@ public class SettingsPanel extends JPanel {
         };
         enableLoggingLabel.setIcon(helpIcon);
         enableLoggingLabel.setToolTipText("<html><center>"
-                + App.settings.getLocalizedString("settings.logginghelp", "<br/>")
+                + Localizer.localize("settings.logginghelp", "<br/>")
                 + "</center></html>");
         topPanel.add(enableLoggingLabel, gbc);
 
@@ -603,7 +596,7 @@ public class SettingsPanel extends JPanel {
         // End Components
 
         bottomPanel = new JPanel();
-        saveButton = new JButton(App.settings.getLocalizedString("common.save"));
+        saveButton = new JButton(Localizer.localize("common.save"));
         saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 File jPath = new File(javaPath.getText(), "bin");
@@ -611,9 +604,9 @@ public class SettingsPanel extends JPanel {
                     JOptionPane.showMessageDialog(
                             App.settings.getParent(),
                             "<html><center>"
-                                    + App.settings.getLocalizedString("settings.javapathincorrect",
+                                    + Localizer.localize("settings.javapathincorrect",
                                             "<br/><br/>") + "</center></html>",
-                            App.settings.getLocalizedString("settings.help"),
+                            Localizer.localize("settings.help"),
                             JOptionPane.PLAIN_MESSAGE);
                     return;
                 }
@@ -623,21 +616,20 @@ public class SettingsPanel extends JPanel {
                     JOptionPane.showMessageDialog(
                             App.settings.getParent(),
                             "<html><center>"
-                                    + App.settings.getLocalizedString(
+                                    + Localizer.localize(
                                             "settings.javaparametersincorrect", "<br/><br/>")
-                                    + "</center></html>", App.settings
-                                    .getLocalizedString("settings.help"), JOptionPane.PLAIN_MESSAGE);
+                                    + "</center></html>", Localizer.localize("settings.help"), JOptionPane.PLAIN_MESSAGE);
                     return;
                 }
                 boolean reboot = false;
                 boolean reloadPacksPanel = false;
-                if (language.getSelectedItem() != App.settings.getLanguage()) {
+                if (language.getSelectedItem() != Localizer.INSTANCE.getLanguage()) {
                     reboot = true;
                 }
                 if (sortPacksAlphabetically.isSelected() != App.settings.sortPacksAlphabetically()) {
                     reloadPacksPanel = true;
                 }
-                App.settings.setLanguage((Language) language.getSelectedItem());
+                Localizer.INSTANCE.setCurrent((String) language.getSelectedItem());
                 App.settings.setServer((Server) server.getSelectedItem());
                 App.settings.setForgeLoggingLevel((String) forgeLoggingLevel.getSelectedItem());
                 App.settings.setMemory(Integer.parseInt(((String) memory.getSelectedItem())
@@ -666,10 +658,10 @@ public class SettingsPanel extends JPanel {
                 if (reloadPacksPanel) {
                     App.settings.reloadPacksPanel();
                 }
-                String[] options = { App.settings.getLocalizedString("common.ok") };
+                String[] options = { Localizer.localize("common.ok") };
                 JOptionPane.showOptionDialog(App.settings.getParent(),
-                        App.settings.getLocalizedString("settings.saved"),
-                        App.settings.getLocalizedString("settings.saved"),
+                        Localizer.localize("settings.saved"),
+                        Localizer.localize("settings.saved"),
                         JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options,
                         options[0]);
             }

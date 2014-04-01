@@ -9,6 +9,7 @@ package com.atlauncher.gui;
 import com.atlauncher.App;
 import com.atlauncher.data.LogMessageType;
 import com.atlauncher.data.Mod;
+import com.atlauncher.utils.Localizer;
 import com.atlauncher.utils.Utils;
 import com.atlauncher.workers.InstanceInstaller;
 
@@ -31,7 +32,7 @@ public class ModsChooser extends JDialog {
     private boolean wasClosed = false;
 
     public ModsChooser(InstanceInstaller installerr) {
-        super(App.settings.getParent(), App.settings.getLocalizedString("instance.selectmods"),
+        super(App.settings.getParent(), Localizer.localize("instance.selectmods"),
                 ModalityType.APPLICATION_MODAL);
         this.installer = installerr;
         setSize(550, 450);
@@ -66,11 +67,11 @@ public class ModsChooser extends JDialog {
         labels.setEnabled(false);
         split.setRightComponent(labels);
 
-        JLabel topLabelLeft = new JLabel(App.settings.getLocalizedString("instance.requiredmods"));
+        JLabel topLabelLeft = new JLabel(Localizer.localize("instance.requiredmods"));
         topLabelLeft.setHorizontalAlignment(SwingConstants.CENTER);
         labels.setLeftComponent(topLabelLeft);
 
-        JLabel topLabelRight = new JLabel(App.settings.getLocalizedString("instance.optionalmods"));
+        JLabel topLabelRight = new JLabel(Localizer.localize("instance.optionalmods"));
         topLabelRight.setHorizontalAlignment(SwingConstants.CENTER);
         labels.setRightComponent(topLabelRight);
 
@@ -107,9 +108,9 @@ public class ModsChooser extends JDialog {
         selectAllButton = new JButton();
 
         if (installer.hasRecommendedMods()) {
-            selectAllButton.setText(App.settings.getLocalizedString("instance.selectrecommended"));
+            selectAllButton.setText(Localizer.localize("instance.selectrecommended"));
         } else {
-            selectAllButton.setText(App.settings.getLocalizedString("instance.selectall"));
+            selectAllButton.setText(Localizer.localize("instance.selectall"));
         }
 
         selectAllButton.addActionListener(new ActionListener() {
@@ -144,7 +145,7 @@ public class ModsChooser extends JDialog {
         });
         bottomPanel.add(selectAllButton);
 
-        clearAllButton = new JButton(App.settings.getLocalizedString("instance.clearall"));
+        clearAllButton = new JButton(Localizer.localize("instance.clearall"));
         clearAllButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 for (ModsJCheckBox check : modCheckboxes) {
@@ -168,7 +169,7 @@ public class ModsChooser extends JDialog {
         });
         bottomPanel.add(clearAllButton);
 
-        JButton installButton = new JButton(App.settings.getLocalizedString("common.install"));
+        JButton installButton = new JButton(Localizer.localize("common.install"));
         installButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 dispose();

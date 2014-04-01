@@ -1,11 +1,10 @@
 package com.atlauncher.gui.comp.panel;
 
 import com.atlauncher.App;
-import com.atlauncher.gui.comp.TrayMenu;
+import com.atlauncher.utils.Localizer;
 import com.atlauncher.utils.Utils;
 
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
@@ -48,9 +47,9 @@ public final class ConsoleActionsPanel extends JPanel {
                         int ret = JOptionPane.showConfirmDialog(
                                 App.settings.getParent(),
                                 "<html><center>" +
-                                        App.settings.getLocalizedString("console.killsure", "<br/><br/>") +
+                                        Localizer.localize("console.killsure", "<br/><br/>") +
                                 "</center></html>",
-                                App.settings.getLocalizedString("console.kill"),
+                                Localizer.localize("console.kill"),
                                 JOptionPane.YES_OPTION
                         );
 
@@ -93,9 +92,9 @@ public final class ConsoleActionsPanel extends JPanel {
     }
 
     public void localize(){
-        this.CLEAR_BUTTON.setText(App.settings.getLocalizedString("console.clear"));
-        this.COPYLOG_BUTTON.setText(App.settings.getLocalizedString("console.copy"));
-        this.UPLOADLOG_BUTTON.setText(App.settings.getLocalizedString("console.upload"));
-        this.KILLMC_BUTTON.setText(App.settings.getLocalizedString("console.kill"));
+        this.CLEAR_BUTTON.setText(Localizer.localize("console.clear"));
+        this.COPYLOG_BUTTON.setText(Localizer.localize("console.copy"));
+        this.UPLOADLOG_BUTTON.setText(Localizer.localize("console.upload"));
+        this.KILLMC_BUTTON.setText(Localizer.localize("console.kill"));
     }
 }

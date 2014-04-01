@@ -10,6 +10,7 @@ import com.atlauncher.App;
 import com.atlauncher.data.Instance;
 import com.atlauncher.data.Pack;
 import com.atlauncher.data.PackVersion;
+import com.atlauncher.utils.Localizer;
 import com.atlauncher.utils.Utils;
 import com.atlauncher.workers.InstanceInstaller;
 
@@ -58,17 +59,17 @@ public class InstanceInstallerDialog extends JDialog {
         super(App.settings.getParent(), ModalityType.APPLICATION_MODAL);
         if (object instanceof Pack) {
             pack = (Pack) object;
-            setTitle(App.settings.getLocalizedString("common.installing") + " " + pack.getName());
+            setTitle(Localizer.localize("common.installing") + " " + pack.getName());
             if (isServer) {
-                setTitle(App.settings.getLocalizedString("common.installing") + " "
-                        + pack.getName() + " " + App.settings.getLocalizedString("common.server"));
+                setTitle(Localizer.localize("common.installing") + " "
+                        + pack.getName() + " " + Localizer.localize("common.server"));
                 this.isServer = true;
             }
         } else {
             instance = (Instance) object;
             pack = instance.getRealPack();
             isReinstall = true; // We're reinstalling
-            setTitle(App.settings.getLocalizedString("common.reinstalling") + " "
+            setTitle(Localizer.localize("common.reinstalling") + " "
                     + instance.getName());
         }
         setSize(400, 225);
@@ -78,8 +79,8 @@ public class InstanceInstallerDialog extends JDialog {
 
         // Top Panel Stuff
         top = new JPanel();
-        top.add(new JLabel(((isReinstall) ? App.settings.getLocalizedString("common.reinstalling")
-                : App.settings.getLocalizedString("common.installing")) + " " + pack.getName()));
+        top.add(new JLabel(((isReinstall) ? Localizer.localize("common.reinstalling")
+                : Localizer.localize("common.installing")) + " " + pack.getName()));
 
         // Middle Panel Stuff
         middle = new JPanel();
@@ -90,7 +91,7 @@ public class InstanceInstallerDialog extends JDialog {
         gbc.gridy = 0;
         if (!this.isServer) {
             gbc.anchor = GridBagConstraints.BASELINE_TRAILING;
-            instanceNameLabel = new JLabel(App.settings.getLocalizedString("instance.name") + ": ");
+            instanceNameLabel = new JLabel(Localizer.localize("instance.name") + ": ");
             middle.add(instanceNameLabel, gbc);
 
             gbc.gridx++;
@@ -106,7 +107,7 @@ public class InstanceInstallerDialog extends JDialog {
             gbc.gridy++;
         }
         gbc.anchor = GridBagConstraints.BASELINE_TRAILING;
-        versionLabel = new JLabel(App.settings.getLocalizedString("instance.versiontoinstall")
+        versionLabel = new JLabel(Localizer.localize("instance.versiontoinstall")
                 + ": ");
         middle.add(versionLabel, gbc);
 
@@ -150,7 +151,7 @@ public class InstanceInstallerDialog extends JDialog {
                 gbc.gridy++;
                 gbc.anchor = GridBagConstraints.BASELINE_TRAILING;
                 installForLabel = new JLabel(
-                        App.settings.getLocalizedString("instance.installjustforme") + "? ");
+                        Localizer.localize("instance.installjustforme") + "? ");
                 middle.add(installForLabel, gbc);
 
                 gbc.gridx++;
@@ -164,9 +165,9 @@ public class InstanceInstallerDialog extends JDialog {
         bottom = new JPanel();
         bottom.setLayout(new FlowLayout());
         install = new JButton(
-                ((isReinstall) ? (isUpdate ? App.settings.getLocalizedString("common.update")
-                        : App.settings.getLocalizedString("common.reinstall"))
-                        : App.settings.getLocalizedString("common.install")));
+                ((isReinstall) ? (isUpdate ? Localizer.localize("common.update")
+                        : Localizer.localize("common.reinstall"))
+                        : Localizer.localize("common.install")));
         install.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (!isReinstall && !isServer
@@ -176,13 +177,12 @@ public class InstanceInstallerDialog extends JDialog {
                         int ret = JOptionPane.showConfirmDialog(
                                 App.settings.getParent(),
                                 "<html><center>"
-                                        + App.settings.getLocalizedString("common.error")
+                                        + Localizer.localize("common.error")
                                         + "<br/><br/>"
-                                        + App.settings.getLocalizedString(
+                                        + Localizer.localize(
                                                 "instance.alreadyinstance1",
                                                 instanceNameField.getText() + "<br/><br/>")
-                                        + "</center></html>", App.settings
-                                        .getLocalizedString("common.error"),
+                                        + "</center></html>", Localizer.localize("common.error"),
                                 JOptionPane.ERROR_MESSAGE);
                         if (ret != JOptionPane.YES_OPTION) {
                             return;
@@ -195,27 +195,26 @@ public class InstanceInstallerDialog extends JDialog {
                         JOptionPane.showMessageDialog(
                                 App.settings.getParent(),
                                 "<html><center>"
-                                        + App.settings.getLocalizedString("common.error")
+                                        + Localizer.localize("common.error")
                                         + "<br/><br/>"
-                                        + App.settings.getLocalizedString(
+                                        + Localizer.localize(
                                                 "instance.alreadyinstance",
                                                 instanceNameField.getText() + "<br/><br/>")
-                                        + "</center></html>", App.settings
-                                        .getLocalizedString("common.error"),
+                                        + "</center></html>", Localizer.localize("common.error"),
                                 JOptionPane.ERROR_MESSAGE);
                         return;
                     }
                 }
                 final PackVersion version = (PackVersion) versionsDropDown.getSelectedItem();
                 final JDialog dialog = new JDialog(App.settings.getParent(),
-                        ((isReinstall) ? App.settings.getLocalizedString("common.reinstalling")
-                                : App.settings.getLocalizedString("common.installing"))
+                        ((isReinstall) ? Localizer.localize("common.reinstalling")
+                                : Localizer.localize("common.installing"))
                                 + " "
                                 + pack.getName()
                                 + " "
                                 + version.getVersion()
                                 + ((isServer) ? " "
-                                        + App.settings.getLocalizedString("common.server") : ""),
+                                        + Localizer.localize("common.server") : ""),
                         ModalityType.DOCUMENT_MODAL);
                 dialog.setLocationRelativeTo(App.settings.getParent());
                 dialog.setSize(300, 100);
@@ -223,10 +222,10 @@ public class InstanceInstallerDialog extends JDialog {
 
                 JPanel topPanel = new JPanel();
                 topPanel.setLayout(new BorderLayout());
-                final JLabel doing = new JLabel(App.settings.getLocalizedString(
+                final JLabel doing = new JLabel(Localizer.localize(
                         "instance.startingprocess",
-                        ((isReinstall) ? App.settings.getLocalizedString("common.reinstall")
-                                : App.settings.getLocalizedString("common.install"))));
+                        ((isReinstall) ? Localizer.localize("common.reinstall")
+                                : Localizer.localize("common.install"))));
                 doing.setHorizontalAlignment(JLabel.CENTER);
                 doing.setVerticalAlignment(JLabel.TOP);
                 topPanel.add(doing);
@@ -258,22 +257,20 @@ public class InstanceInstallerDialog extends JDialog {
                                     + " "
                                     + version.getVersion()
                                     + " "
-                                    + App.settings.getLocalizedString("common.wasnt")
+                                    + Localizer.localize("common.wasnt")
                                     + " "
-                                    + ((isReinstall) ? App.settings
-                                            .getLocalizedString("common.reinstalled")
-                                            : App.settings.getLocalizedString("common.installed"))
+                                    + ((isReinstall) ? Localizer.localize("common.reinstalled")
+                                            : Localizer.localize("common.installed"))
                                     + "<br/><br/>"
-                                    + App.settings.getLocalizedString("instance.checkerrorlogs");
+                                    + Localizer.localize("instance.checkerrorlogs");
                             title = pack.getName()
                                     + " "
                                     + version.getVersion()
                                     + " "
-                                    + App.settings.getLocalizedString("common.not")
+                                    + Localizer.localize("common.not")
                                     + " "
-                                    + ((isReinstall) ? App.settings
-                                            .getLocalizedString("common.reinstalled")
-                                            : App.settings.getLocalizedString("common.installed"));
+                                    + ((isReinstall) ? Localizer.localize("common.reinstalled")
+                                            : Localizer.localize("common.installed"));
                             if (isReinstall) {
                                 if (shouldCoruptInstance()) {
                                     App.settings.setInstanceUnplayable(instance);
@@ -293,22 +290,18 @@ public class InstanceInstallerDialog extends JDialog {
                                         + " "
                                         + version.getVersion()
                                         + " "
-                                        + App.settings.getLocalizedString("common.hasbeen")
+                                        + Localizer.localize("common.hasbeen")
                                         + " "
-                                        + ((isReinstall) ? App.settings
-                                                .getLocalizedString("common.reinstalled")
-                                                : App.settings
-                                                        .getLocalizedString("common.installed"))
+                                        + ((isReinstall) ? Localizer.localize("common.reinstalled")
+                                                : Localizer.localize("common.installed"))
                                         + "<br/><br/>"
-                                        + ((isServer) ? App.settings
-                                                .getLocalizedString("instance.finditserver",
+                                        + ((isServer) ? Localizer.localize("instance.finditserver",
                                                         "<br/><br/>"
                                                                 + this.getRootDirectory()
                                                                         .getAbsolutePath())
-                                                : App.settings
-                                                        .getLocalizedString("instance.findit"));
+                                                : Localizer.localize("instance.findit"));
                                 title = pack.getName() + " " + version.getVersion() + " "
-                                        + App.settings.getLocalizedString("common.installed");
+                                        + Localizer.localize("common.installed");
                                 if (isReinstall) {
                                     instance.setVersion(version.getVersion());
                                     instance.setMinecraftVersion(version.getMinecraftVersion()
@@ -367,20 +360,18 @@ public class InstanceInstallerDialog extends JDialog {
                                             + " "
                                             + version.getVersion()
                                             + " "
-                                            + App.settings.getLocalizedString("common.wasnt")
+                                            + Localizer.localize("common.wasnt")
                                             + " "
-                                            + App.settings.getLocalizedString("common.reinstalled")
+                                            + Localizer.localize("common.reinstalled")
                                             + "<br/><br/>"
-                                            + (this.shouldCoruptInstance() ? App.settings
-                                                    .getLocalizedString("instance.nolongerplayable")
+                                            + (this.shouldCoruptInstance() ? Localizer.localize("instance.nolongerplayable")
                                                     : "")
                                             + "<br/><br/>"
-                                            + App.settings
-                                                    .getLocalizedString("instance.checkerrorlogs")
+                                            + Localizer.localize("instance.checkerrorlogs")
                                             + "!";
                                     title = pack.getName() + " " + version.getVersion() + " "
-                                            + App.settings.getLocalizedString("common.not") + " "
-                                            + App.settings.getLocalizedString("common.reinstalled");
+                                            + Localizer.localize("common.not") + " "
+                                            + Localizer.localize("common.reinstalled");
                                     if (this.shouldCoruptInstance()) {
                                         App.settings.setInstanceUnplayable(instance);
                                     }
@@ -392,16 +383,15 @@ public class InstanceInstallerDialog extends JDialog {
                                             + " "
                                             + version.getVersion()
                                             + " "
-                                            + App.settings.getLocalizedString("common.wasnt")
+                                            + Localizer.localize("common.wasnt")
                                             + " "
-                                            + App.settings.getLocalizedString("common.installed")
+                                            + Localizer.localize("common.installed")
                                             + "<br/><br/>"
-                                            + App.settings
-                                                    .getLocalizedString("instance.checkerrorlogs")
+                                            + Localizer.localize("instance.checkerrorlogs")
                                             + "!";
                                     title = pack.getName() + " " + version.getVersion() + " "
-                                            + App.settings.getLocalizedString("common.not") + " "
-                                            + App.settings.getLocalizedString("common.installed");
+                                            + Localizer.localize("common.not") + " "
+                                            + Localizer.localize("common.installed");
                                 }
                             }
                         }
@@ -491,7 +481,7 @@ public class InstanceInstallerDialog extends JDialog {
 
             }
         });
-        cancel = new JButton(App.settings.getLocalizedString("common.cancel"));
+        cancel = new JButton(Localizer.localize("common.cancel"));
         cancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 dispose();

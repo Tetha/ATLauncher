@@ -7,8 +7,10 @@
 package com.atlauncher.gui;
 
 import com.atlauncher.App;
+import com.atlauncher.gui.comp.panel.MainBottomPanel;
 import com.atlauncher.gui.tab.NewsTab;
 import com.atlauncher.gui.tab.SocialMediaTab;
+import com.atlauncher.utils.Localizer;
 import com.atlauncher.utils.Utils;
 
 import javax.swing.*;
@@ -24,14 +26,12 @@ public class LauncherFrame extends JFrame {
 
     private JTabbedPane tabbedPane;
     private PacksPanel packsPanel;
-    private AddonsPanel addonsPanel;
     private InstancesPanel instancesPanel;
     private AccountPanel accountPanel;
     private SettingsPanel settingsPanel;
     private final JPanel SM_TAB = new SocialMediaTab();
     private final JPanel NEWS_TAB = new NewsTab();
-
-    private BottomBar bottomBar;
+    private final JPanel BOTTOM_PANEL = new MainBottomPanel();
 
     public LauncherFrame(boolean show) {
         App.settings.log("Launcher opening");
@@ -47,7 +47,6 @@ public class LauncherFrame extends JFrame {
         setLayout(LAYOUT_MANAGER);
 
         App.settings.log("Setting up Look & Feel");
-        setupBottomBar(); // Setup the Bottom Bar
         App.settings.log("Finished Setting up Bottom Bar");
 
         App.settings.log("Setting up Tabs");
@@ -55,7 +54,7 @@ public class LauncherFrame extends JFrame {
         App.settings.log("Finished Setting up Tabs");
 
         add(tabbedPane, BorderLayout.CENTER);
-        add(bottomBar, BorderLayout.SOUTH);
+        add(this.BOTTOM_PANEL, BorderLayout.SOUTH);
 
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent arg0) {
@@ -77,7 +76,6 @@ public class LauncherFrame extends JFrame {
         App.TASKPOOL.execute(new Runnable() {
             public void run() {
                 App.settings.checkMojangStatus(); // Check Minecraft status
-                bottomBar.updateStatus(App.settings.getMojangStatus());
             }
         });
     }
@@ -91,29 +89,20 @@ public class LauncherFrame extends JFrame {
 
         packsPanel = new PacksPanel();
         App.settings.setPacksPanel(packsPanel);
-        addonsPanel = new AddonsPanel();
         instancesPanel = new InstancesPanel();
         App.settings.setInstancesPanel(instancesPanel);
         accountPanel = new AccountPanel();
         settingsPanel = new SettingsPanel();
 
         tabbedPane.setFont(Utils.makeFont("Oswald-Regular").deriveFont((float) 34));
-        tabbedPane.addTab(App.settings.getLocalizedString("tabs.news"), this.NEWS_TAB);
-        tabbedPane.addTab(App.settings.getLocalizedString("tabs.packs"), packsPanel);
-        // tabbedPane.addTab(App.settings.getLocalizedString("tabs.addons"), addonsPanel);
-        tabbedPane.addTab(App.settings.getLocalizedString("tabs.instances"), instancesPanel);
-        tabbedPane.addTab(App.settings.getLocalizedString("tabs.account"), accountPanel);
-        tabbedPane.addTab(App.settings.getLocalizedString("tabs.settings"), settingsPanel);
+        tabbedPane.addTab(Localizer.localize("tabs.news"), this.NEWS_TAB);
+        tabbedPane.addTab(Localizer.localize("tabs.packs"), packsPanel);
+        // tabbedPane.addTab(Localizer.localize("tabs.addons"), addonsPanel);
+        tabbedPane.addTab(Localizer.localize("tabs.instances"), instancesPanel);
+        tabbedPane.addTab(Localizer.localize("tabs.account"), accountPanel);
+        tabbedPane.addTab(Localizer.localize("tabs.settings"), settingsPanel);
         tabbedPane.addTab("Social", this.SM_TAB);
         tabbedPane.setBackground(BASE_COLOR.brighter());
         tabbedPane.setOpaque(true);
-    }
-
-    /**
-     * Setup the bottom bar of the Launcher
-     */
-    private void setupBottomBar() {
-        bottomBar = new BottomBar();
-        App.settings.setBottomBar(bottomBar);
     }
 }

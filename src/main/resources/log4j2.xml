@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Appenders>
+        <System name="System" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%d{HH:mm:SS}] [%-5level] %msg%n"/>
+        </System>
+    </Appenders>
+    <Loggers>
+        <Root level="error">
+            <Appender-Ref ref="System"/>
+        </Root>
+    </Loggers>
+</Configuration>
