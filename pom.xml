@@ -23,6 +23,12 @@
         <mainclass>com.atlauncher.App</mainclass>
     </properties>
 
+    <scm>
+        <connection>scm:git:https://github.com/ATLauncher/ATLauncher.git</connection>
+        <developerConnection>scm:git:https://github.com/ATLauncher/ATLauncher.git</developerConnection>
+        <url>http://github.com/ATLauncher/ATLauncher</url>
+    </scm>
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
