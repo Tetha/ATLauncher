@@ -11,6 +11,8 @@ import com.atlauncher.data.Action;
 import com.atlauncher.data.*;
 import com.atlauncher.data.mojang.*;
 import com.atlauncher.gui.ModsChooser;
+import com.atlauncher.type.Instance;
+import com.atlauncher.type.Pack;
 import com.atlauncher.utils.Base64;
 import com.atlauncher.utils.Localizer;
 import com.atlauncher.utils.Utils;

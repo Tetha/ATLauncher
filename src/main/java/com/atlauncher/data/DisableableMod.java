@@ -11,6 +11,7 @@
 package com.atlauncher.data;
 
 import com.atlauncher.App;
+import com.atlauncher.type.Instance;
 import com.atlauncher.utils.Utils;
 
 import java.awt.*;

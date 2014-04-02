@@ -1,109 +1,44 @@
-/**
- * Copyright 2013-2014 by ATLauncher and Contributors
- *
- * This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 Unported License.
- * To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.
- */
 package com.atlauncher.gui;
 
 import com.atlauncher.App;
 import com.atlauncher.gui.comp.panel.MainBottomPanel;
-import com.atlauncher.gui.tab.NewsTab;
-import com.atlauncher.gui.tab.SocialMediaTab;
-import com.atlauncher.utils.Localizer;
+import com.atlauncher.gui.tab.*;
 import com.atlauncher.utils.Utils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
-@SuppressWarnings("serial")
-public class LauncherFrame extends JFrame {
-    // Size of initial window
-    private final BorderLayout LAYOUT_MANAGER = new BorderLayout();
-    private final Color BASE_COLOR = new Color(40, 45, 50);
+public final class LauncherFrame extends JFrame {
+    private final NewsTab NEWS_TAB = new NewsTab();
+    private final SocialMediaTab SM_TAB = new SocialMediaTab();
+    private final InstanceTab INSTANCE_TAB = new InstanceTab();
+    private final PacksTab PACKS_TAB = new PacksTab();
+    private final AccountTab ACCOUNT_TAB = new AccountTab();
+    private final SettingsTab SETTINGS_TAB = new SettingsTab();
 
-    private JTabbedPane tabbedPane;
-    private PacksPanel packsPanel;
-    private InstancesPanel instancesPanel;
-    private AccountPanel accountPanel;
-    private SettingsPanel settingsPanel;
-    public final SocialMediaTab SM_TAB = new SocialMediaTab();
-    private final JPanel NEWS_TAB = new NewsTab();
-    private final JPanel BOTTOM_PANEL = new MainBottomPanel();
+    private final MainBottomPanel BOTTOM_PANEL = new MainBottomPanel();
+    private final JTabbedPane TABS = new JTabbedPane(JTabbedPane.RIGHT){{
+        this.setFont(Utils.makeFont("Oswald-Regular").deriveFont(34.0F));
+        this.setBackground(App.BASE_COLOR.brighter());
+        this.setOpaque(true);
 
-    public LauncherFrame(boolean show) {
-        App.settings.log("Launcher opening");
-        App.settings.log("Made By Bob*");
-        App.settings.log("*(Not Actually)");
-        App.settings.setParentFrame(this);
-        setSize(new Dimension(1000, 600));
-        setTitle("ATLauncher %VERSION%");
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setResizable(false);
-        setIconImage(Utils.getImage("Icon.png"));
-        setLayout(LAYOUT_MANAGER);
+        this.addTab("News", LauncherFrame.this.NEWS_TAB);
+        this.add("Packs", LauncherFrame.this.PACKS_TAB);
+        this.add("Instances", LauncherFrame.this.INSTANCE_TAB);
+        this.add("Account", LauncherFrame.this.ACCOUNT_TAB);
+        this.add("Settings", LauncherFrame.this.SETTINGS_TAB);
+        this.addTab("Social", LauncherFrame.this.SM_TAB);
+    }};
 
-        App.settings.log("Setting up Look & Feel");
-        App.settings.log("Finished Setting up Bottom Bar");
+    public LauncherFrame(){
+        super("ATLauncher - %VERSION%");
+        this.setMinimumSize(new Dimension(1000, 640));
+        this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setResizable(false);
+        this.setIconImage(Utils.getImage("Icon.png"));
 
-        App.settings.log("Setting up Tabs");
-        setupTabs(); // Setup the JTabbedPane
-        App.settings.log("Finished Setting up Tabs");
-
-        add(tabbedPane, BorderLayout.CENTER);
-        add(this.BOTTOM_PANEL, BorderLayout.SOUTH);
-
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent arg0) {
-                dispose();
-            }
-        });
-
-        if (show) {
-            App.settings.log("Showing Launcher");
-            setVisible(true);
-        }
-
-        App.settings.addConsoleListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent arg0) {
-                App.settings.setConsoleVisible(false);
-            }
-        });
-
-        App.TASKPOOL.execute(new Runnable() {
-            public void run() {
-                App.settings.checkMojangStatus(); // Check Minecraft status
-            }
-        });
-    }
-
-
-    /**
-     * Setup the individual tabs used in the Launcher sidebar
-     */
-    private void setupTabs() {
-        tabbedPane = new JTabbedPane(JTabbedPane.RIGHT);
-        tabbedPane.setBackground(BASE_COLOR);
-
-        packsPanel = new PacksPanel();
-        App.settings.setPacksPanel(packsPanel);
-        instancesPanel = new InstancesPanel();
-        App.settings.setInstancesPanel(instancesPanel);
-        accountPanel = new AccountPanel();
-        settingsPanel = new SettingsPanel();
-
-        tabbedPane.setFont(Utils.makeFont("Oswald-Regular").deriveFont((float) 34));
-        tabbedPane.addTab(Localizer.localize("tabs.news"), this.NEWS_TAB);
-        tabbedPane.addTab(Localizer.localize("tabs.packs"), packsPanel);
-        // tabbedPane.addTab(Localizer.localize("tabs.addons"), addonsPanel);
-        tabbedPane.addTab(Localizer.localize("tabs.instances"), instancesPanel);
-        tabbedPane.addTab(Localizer.localize("tabs.account"), accountPanel);
-        tabbedPane.addTab(Localizer.localize("tabs.settings"), settingsPanel);
-        tabbedPane.addTab("Social", this.SM_TAB);
-        tabbedPane.setBackground(BASE_COLOR.brighter());
-        tabbedPane.setOpaque(true);
+        this.add(this.TABS, BorderLayout.CENTER);
+        this.add(this.BOTTOM_PANEL, BorderLayout.SOUTH);
     }
 }

@@ -14,8 +14,14 @@ import com.atlauncher.data.mojang.FileTypeAdapter;
 import com.atlauncher.data.mojang.auth.AuthenticationResponse;
 import com.atlauncher.exceptions.InvalidMinecraftVersion;
 import com.atlauncher.exceptions.InvalidPack;
-import com.atlauncher.gui.*;
+import com.atlauncher.gui.InstancesPanel;
+import com.atlauncher.gui.LauncherConsole;
+import com.atlauncher.gui.PacksPanel;
+import com.atlauncher.gui.ProgressDialog;
 import com.atlauncher.gui.comp.TrayMenu;
+import com.atlauncher.type.Account;
+import com.atlauncher.type.Instance;
+import com.atlauncher.type.Pack;
 import com.atlauncher.utils.Authentication;
 import com.atlauncher.utils.Localizer;
 import com.atlauncher.utils.Utils;
@@ -28,19 +34,10 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 import javax.swing.*;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.awt.Dialog.ModalityType;
-import java.awt.event.WindowAdapter;
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -91,7 +88,6 @@ public class Settings {
     private List<MinecraftVersion> minecraftVersions; // Minecraft versions
     private List<Pack> packs; // Packs in the Launcher
     private ArrayList<Instance> instances = new ArrayList<Instance>(); // Users Installed Instances
-    private ArrayList<Addon> addons = new ArrayList<Addon>(); // Addons in the Launcher
     private ArrayList<Account> accounts = new ArrayList<Account>(); // Accounts in the Launcher
 
     // Directories and Files for the Launcher
@@ -108,7 +104,6 @@ public class Settings {
     private ArrayList<Server> triedServers = new ArrayList<Server>(); // Servers tried to connect to
     private InstancesPanel instancesPanel; // The instances panel
     private PacksPanel packsPanel; // The packs panel
-    private BottomBar bottomBar; // The bottom bar
     private boolean firstTimeRun = false; // If this is the first time the Launcher has been run
     private boolean offlineMode = false; // If offline mode is enabled
     private boolean usingMacApp = false; // If the user is using the Mac App
@@ -130,11 +125,7 @@ public class Settings {
         builder.registerTypeAdapter(File.class, new FileTypeAdapter());
         builder.setPrettyPrinting();
         Settings.altGson = builder.create();
-        setupFiles(); // Setup all the file and directory variables
-        checkFolders(); // Checks the setup of the folders and makes sure they're there
-        clearTempDir(); // Cleans all files in the Temp Dir
         rotateLogFiles(); // Rotates the log files
-        loadStartingProperties(); // Get users Console preference and Java Path
     }
 
     public String[] collectLanguages(){
@@ -293,6 +284,17 @@ public class Settings {
         instancesDataFile = new File(configsDir, "instancesdata");
         userDataFile = new File(configsDir, "userdata");
         propertiesFile = new File(configsDir, "ATLauncher.conf");
+    }
+
+    public void loadUpdates(){
+        this.loadNews();
+        this.loadNews();
+        this.loadMinecraftVersions();
+        this.loadPacks();
+        this.loadUsers();
+        this.loadInstances();
+        this.loadAccounts();
+        this.reloadInstancesPanel();
     }
 
     public void loadEverything() {
@@ -527,7 +529,7 @@ public class Settings {
                     @Override
                     public void run() {
                         if (download.needToDownload()) {
-                            log("Downloading Launcher File " + download.getFile().getName());
+                            App.LOGGER.info("Downloading Launcher File " + download.getFile().getName());
                             download.download(false);
                         }
                     }
@@ -547,7 +549,7 @@ public class Settings {
         if (isInOfflineMode()) {
             return false;
         }
-        log("Checking for updated files!");
+        App.LOGGER.info("Checking for updated files!");
         ArrayList<Downloadable> downloads = getLauncherFiles();
         if (downloads == null) {
             this.offlineMode = true;
@@ -581,7 +583,6 @@ public class Settings {
                 loadPacks(); // Load the Packs available in the Launcher
                 reloadPacksPanel(); // Reload packs panel
                 loadUsers(); // Load the Testers and Allowed Players for the packs
-                // loadAddons(); // Load the Addons available in the Launcher
                 loadInstances(); // Load the users installed Instances
                 reloadInstancesPanel(); // Reload instances panel
                 dialog.setVisible(false); // Remove the dialog
@@ -809,25 +810,6 @@ public class Settings {
                     options[0]);
             System.exit(0);
         }
-    }
-
-    /**
-     * Returns the instancesdata file
-     * 
-     * @return File object for the instancesdata file
-     */
-    public File getInstancesDataFile() {
-        return instancesDataFile;
-    }
-
-    /**
-     * Sets the main parent JFrame reference for the Launcher
-     * 
-     * @param parent
-     *            The Launcher main JFrame
-     */
-    public void setParentFrame(JFrame parent) {
-        this.parent = parent;
     }
 
     /**
@@ -1095,7 +1077,6 @@ public class Settings {
         }
         reloadPacksPanel();
         reloadInstancesPanel();
-        reloadAccounts();
         try {
             properties.setProperty("firsttimerun", "false");
             properties.setProperty("server", this.server.getName());
@@ -1277,56 +1258,6 @@ public class Settings {
     }
 
     /**
-     * Loads the Addons for use in the Launcher
-     */
-    private void loadAddons() {
-        if (this.addons.size() != 0) {
-            this.addons = new ArrayList<Addon>();
-        }
-        try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            Document document = builder.parse(new File(configsDir, "addons.xml"));
-            document.getDocumentElement().normalize();
-            NodeList nodeList = document.getElementsByTagName("addon");
-            for (int i = 0; i < nodeList.getLength(); i++) {
-                Node node = nodeList.item(i);
-                if (node.getNodeType() == Node.ELEMENT_NODE) {
-                    Element element = (Element) node;
-                    int id = Integer.parseInt(element.getAttribute("id"));
-                    String name = element.getAttribute("name");
-                    String[] versions;
-                    if (element.getAttribute("versions").isEmpty()) {
-                        versions = new String[0];
-                    } else {
-                        versions = element.getAttribute("versions").split(",");
-                    }
-                    String description = element.getAttribute("description");
-                    Pack forPack;
-                    Pack pack = getPackByID(id);
-                    if (pack != null) {
-                        forPack = pack;
-                    } else {
-                        log("Addon " + name + " is not available for any packs!",
-                                LogMessageType.warning, false);
-                        continue;
-                    }
-                    Addon addon = new Addon(id, name, versions, description, forPack);
-                    addons.add(addon);
-                }
-            }
-        } catch (SAXException e) {
-            logStackTrace(e);
-        } catch (ParserConfigurationException e) {
-            logStackTrace(e);
-        } catch (IOException e) {
-            logStackTrace(e);
-        } catch (InvalidPack e) {
-            log(e.getMessage(), LogMessageType.error, false);
-        }
-    }
-
-    /**
      * Loads the user installed Instances
      */
     private void loadInstances() {
@@ -1468,16 +1399,6 @@ public class Settings {
         }
         accounts.remove(account);
         saveAccounts();
-        reloadAccounts();
-    }
-
-    /**
-     * Finds out if this is the first time the Launcher has been run
-     * 
-     * @return true if the Launcher hasn't been run and setup yet, false for otherwise
-     */
-    public boolean isFirstTimeRun() {
-        return this.firstTimeRun;
     }
 
     public boolean isMinecraftLaunched() {
@@ -1488,15 +1409,6 @@ public class Settings {
         // Enable the kill minecraft button in the Tray menu
         ((TrayMenu) App.TRAY_MENU).setMinecraftLaunched(true);
         this.minecraftLaunched = launched;
-    }
-
-    /**
-     * Get the Packs available in the Launcher
-     * 
-     * @return The Packs available in the Launcher
-     */
-    public List<Pack> getPacks() {
-        return this.packs;
     }
 
     /**
@@ -1703,33 +1615,8 @@ public class Settings {
         apiCall(username, action, extra1, extra2, extra3, false);
     }
 
-    public void apiCall(String username, String action, String extra1, String extra2) {
-        apiCall(username, action, extra1, extra2, "", false);
-    }
-
-    public void apiCall(String username, String action, String extra1) {
-        apiCall(username, action, extra1, "", "", false);
-    }
-
-    public void apiCall(String username, String action) {
-        apiCall(username, action, "", "", "", false);
-    }
-
-    public String apiCallReturn(String username, String action, String extra1, String extra2,
-            String extra3) {
-        return apiCall(username, action, extra1, extra2, extra3, false);
-    }
-
-    public String apiCallReturn(String username, String action, String extra1, String extra2) {
-        return apiCall(username, action, extra1, extra2, "", false);
-    }
-
     public String apiCallReturn(String username, String action, String extra1) {
         return apiCall(username, action, extra1, "", "", false);
-    }
-
-    public String apiCallReturn(String username, String action) {
-        return apiCall(username, action, "", "", "", false);
     }
 
     public boolean canViewSemiPublicPackByCode(String packCode) {
@@ -1791,15 +1678,6 @@ public class Settings {
     }
 
     /**
-     * Get the Addons available in the Launcher
-     * 
-     * @return The Addons available in the Launcher
-     */
-    public ArrayList<Addon> getAddons() {
-        return this.addons;
-    }
-
-    /**
      * Get the Accounts added to the Launcher
      * 
      * @return The Accounts added to the Launcher
@@ -1852,36 +1730,12 @@ public class Settings {
     }
 
     /**
-     * Sets the launcher to offline mode
-     */
-    public void setOfflineMode() {
-        this.offlineMode = true;
-    }
-
-    /**
-     * Sets the launcher to online mode
-     */
-    public void setOnlineMode() {
-        this.offlineMode = false;
-    }
-
-    /**
      * Returns the JFrame reference of the main Launcher
      * 
      * @return Main JFrame of the Launcher
      */
     public Window getParent() {
         return this.parent;
-    }
-
-    /**
-     * Sets the panel used for Instances
-     * 
-     * @param instancesPanel
-     *            Instances Panel
-     */
-    public void setInstancesPanel(InstancesPanel instancesPanel) {
-        this.instancesPanel = instancesPanel;
     }
 
     /**
@@ -1894,40 +1748,10 @@ public class Settings {
     }
 
     /**
-     * Sets the panel used for Packs
-     * 
-     * @param packsPanel
-     *            Packs Panel
-     */
-    public void setPacksPanel(PacksPanel packsPanel) {
-        this.packsPanel = packsPanel;
-    }
-
-    /**
      * Reloads the panel used for Packs
      */
     public void reloadPacksPanel() {
         this.packsPanel.reload(); // Reload the instances panel
-    }
-
-    /**
-     * Sets the bottom bar
-     * 
-     * @param bottomBar
-     *            The Bottom Bar
-     */
-    public void setBottomBar(BottomBar bottomBar) {
-        this.bottomBar = bottomBar;
-    }
-
-    /**
-     * Reloads the bottom bar accounts combobox
-     */
-    public void reloadAccounts() {
-        if (this.bottomBar == null) {
-            return; // Bottom Bar hasnt been made yet, so don't do anything
-        }
-        this.bottomBar.reloadAccounts(); // Reload the Bottom Bar accounts combobox
     }
 
     /**
@@ -1997,38 +1821,6 @@ public class Settings {
     }
 
     /**
-     * Checks if there is an instance by the given name
-     * 
-     * @param name
-     *            name of the Instance to find
-     * @return True if the instance is found from the name
-     */
-    public boolean isInstanceByName(String name) {
-        for (Instance instance : instances) {
-            if (instance.getName().equalsIgnoreCase(name)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Checks if there is an instance by the given name
-     * 
-     * @param name
-     *            name of the Instance to find
-     * @return True if the instance is found from the name
-     */
-    public boolean isInstanceBySafeName(String name) {
-        for (Instance instance : instances) {
-            if (instance.getSafeName().equalsIgnoreCase(name)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * Finds a Instance from the given name
      * 
      * @param name
@@ -2038,22 +1830,6 @@ public class Settings {
     public Instance getInstanceByName(String name) {
         for (Instance instance : instances) {
             if (instance.getName().equalsIgnoreCase(name)) {
-                return instance;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Finds a Instance from the given name
-     * 
-     * @param name
-     *            name of the Instance to find
-     * @return Instance if the instance is found from the name
-     */
-    public Instance getInstanceBySafeName(String name) {
-        for (Instance instance : instances) {
-            if (instance.getSafeName().equalsIgnoreCase(name)) {
                 return instance;
             }
         }
@@ -2152,14 +1928,6 @@ public class Settings {
     @Deprecated
     public LauncherConsole getConsole() {
         return this.console;
-    }
-
-    public void clearConsole() {
-        this.console.clearConsole();
-    }
-
-    public void addConsoleListener(WindowAdapter wa) {
-        this.console.addWindowListener(wa);
     }
 
     public String getLog() {
@@ -2397,34 +2165,7 @@ public class Settings {
         return this.enableDebugConsole;
     }
 
-    /**
-     * Set the Launcher console's visibility
-     * 
-     * @param visible
-     *            The Launcher console's visibility
-     */
     public void setConsoleVisible(boolean visible) {
-        this.setConsoleVisible(visible, true);
-    }
-
-    /**
-     * Set the Launcher console's visibility
-     * 
-     * @param visible
-     *            The Launcher console's visibility
-     */
-    public void setConsoleVisible(boolean visible, boolean updateBottomBar) {
-        if (!visible) {
-            App.settings.log("Hiding console");
-            if (updateBottomBar) {
-                this.bottomBar.hideConsole();
-            }
-        } else {
-            App.settings.log("Showing console");
-            if (updateBottomBar) {
-                this.bottomBar.showConsole();
-            }
-        }
         this.console.setVisible(visible);
     }
 

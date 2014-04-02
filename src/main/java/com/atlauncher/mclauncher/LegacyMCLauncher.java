@@ -8,8 +8,8 @@ package com.atlauncher.mclauncher;
 
 import com.atlauncher.App;
 import com.atlauncher.Update;
-import com.atlauncher.data.Account;
-import com.atlauncher.data.Instance;
+import com.atlauncher.type.Account;
+import com.atlauncher.type.Instance;
 import com.atlauncher.data.mojang.auth.AuthenticationResponse;
 import com.atlauncher.utils.Utils;
 

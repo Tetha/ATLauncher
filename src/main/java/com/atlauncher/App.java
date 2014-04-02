@@ -6,167 +6,237 @@
  */
 package com.atlauncher;
 
-import com.atlauncher.data.Instance;
-import com.atlauncher.data.LogMessageType;
 import com.atlauncher.data.Settings;
+import com.atlauncher.exceptions.InvalidCallbackException;
+import com.atlauncher.gui.ConsoleFrame;
 import com.atlauncher.gui.LauncherFrame;
-import com.atlauncher.gui.SetupDialog;
 import com.atlauncher.gui.SplashScreen;
 import com.atlauncher.gui.comp.TrayMenu;
+import com.atlauncher.management.Accounts;
+import com.atlauncher.management.Resources;
+import com.atlauncher.thread.DataDesolver;
+import com.atlauncher.thread.Download;
+import com.atlauncher.thread.FileSystemResolver;
 import com.atlauncher.utils.Localizer;
 import com.atlauncher.utils.Utils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Method;
-import java.net.URISyntaxException;
-import java.util.Locale;
+import java.net.URL;
+import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
-public class App {
-    // Using this will help spread the workload across multiple threads allowing you to do many
-    // tasks at once
-    // Approach with caution though
-    // Dedicated 2 threads to the TASKPOOL shouldnt have any problems with that little
+public final class App {
     public static final ExecutorService TASKPOOL = Executors.newFixedThreadPool(2);
     public static final Logger LOGGER = LogManager.getLogger();
+    public static final Properties PROPERTIES = new Properties();
     public static final PopupMenu TRAY_MENU;
-    // Don't move this declaration anywheres, its important due to Java Class Loading
-    private static final Color BASE_COLOR = new Color(40, 45, 50);
+    public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    public static final Color BASE_COLOR = new Color(40, 45, 50);
 
     private static SystemTray TRAY = null;
+    private static File CURRENT;
 
     public static Settings settings;
 
     static {
-        // Setting the UI LAF here helps with loading the UI should improve performance
         try {
             setLAF();
             modifyLAF();
-
             TRAY_MENU = new TrayMenu();
-
             Localizer.INSTANCE.isLoaded("English");
-
+            resolveCurrent();
             trySystemTrayIntegration();
+
+            Runtime.getRuntime().addShutdownHook(new Thread(new DataDesolver()));
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static void main(String[] args) {
-        LOGGER.info("Testing");
-        Locale.setDefault(Locale.ENGLISH); // Set English as the default locale
+    public static final ConsoleFrame CONSOLE = new ConsoleFrame();
+    public static final SplashScreen SPLASH = new SplashScreen();
+    public static final LauncherFrame LAUNCHER = new LauncherFrame();
+
+    private App(){}
+
+    public static void main(String... args)
+    throws InterruptedException {
+        LOGGER.info("Showing Console");
+        pre();
+        LOGGER.info("Checking Directory");
+        checkDirectory();
+        LOGGER.info("Resolving File System");
+        ensureFileSystem();
+        LOGGER.info("Allowing IPv4");
         System.setProperty("java.net.preferIPv4Stack", "true");
-        String autoLaunch = null;
-        if (args != null) {
-            for (String arg : args) {
-                String[] parts = arg.split("=");
-                if (parts[0].equalsIgnoreCase("--launch")) {
-                    autoLaunch = parts[1];
+        LOGGER.info("Loading Rest");
+        settings = new Settings();
+        downloadData();
+        LOGGER.info("ATLauncher Version: " + settings.getVersion());
+        LOGGER.info("Operating System: " + System.getProperty("os.name"));
+        LOGGER.info("RAM Available: " + Utils.getMaximumRam() + "MB");
+        LOGGER.info("Java Version: " + Utils.getJavaVersion());
+
+        if(settings.isUsingCustomJavaPath()){
+            LOGGER.info("Custom Java Path Caught!");
+        }
+
+        LOGGER.info("Java Path: " + settings.getJavaPath());
+
+        if(Utils.is64Bit()){
+            LOGGER.info("64bit Java Caught");
+        }
+
+        LOGGER.info("Working Directory: " + CURRENT.getAbsolutePath());
+
+        if(Utils.isMac()){
+            helpMacOut();
+        }
+
+        if(args.length > 0){
+            if(args[0].equalsIgnoreCase("--launch") && args[1] != null){
+                LOGGER.info("Caught Launch Argument, Launching Instance: " + args[1]);
+            }
+        }
+
+        LOGGER.info("Done Loading");
+        post();
+    }
+
+    private static void downloadData(){
+        try{
+            TASKPOOL.submit(new Download(new URL(Accounts.getSkinURL("default")), new File(Resources.INSTANCE.getFile("skins"), "default.png"))).get();
+        } catch(Exception ex){
+            throw new RuntimeException(ex);
+        }
+    }
+
+    private static void ensureFileSystem(){
+        try{
+            Future<Void> f_callback = TASKPOOL.submit(new FileSystemResolver());
+            Void callback = f_callback.get();
+
+            if(callback != null){
+                throw new InvalidCallbackException();
+            }
+        } catch(Exception ex){
+            throw new RuntimeException(ex);
+        }
+    }
+
+    private static void checkDirectory(){
+        try{
+            File data = Resources.INSTANCE.getFile("Data");
+
+            if(!data.exists()){
+                if(CURRENT.listFiles().length > 1){
+                    String[] options = { "Yes It's Fine", "Whoops. I'll Change That Now" };
+                    int ret = JOptionPane.showOptionDialog(null,
+                            "<html><center>I've detected that you may not have installed this "
+                                    + "in the right location.<br/><br/>The exe or jar file"
+                                    + "should be placed in it's own folder with nothing else "
+                                    + "in it<br/><br/>Are you 100% sure that's what you've"
+                                    + "done?</center></html>", "Warning", JOptionPane.DEFAULT_OPTION,
+                            JOptionPane.ERROR_MESSAGE, null, options, options[0]);
+                    if (ret != 0) {
+                        System.exit(0);
+                    }
                 }
-            }
-        }
+            } else{
+                File props = new File(data, "ATLauncher.cfg");
 
-        File config;
-        if (Utils.isLinux()) {
-            try {
-                config = new File(App.class.getClassLoader().getResource("").toURI());
-            } catch (URISyntaxException e) {
-                config = new File(System.getProperty("user.dir"), "ATLauncher");
-            }
-        } else {
-            config = new File(System.getProperty("user.dir"));
-        }
-        config = new File(config, "Configs");
-        if (!config.exists()) {
-            int files = config.getParentFile().list().length;
-            if (files != 1) {
-                String[] options = { "Yes It's Fine", "Whoops. I'll Change That Now" };
-                int ret = JOptionPane.showOptionDialog(null,
-                        "<html><center>I've detected that you may not have installed this "
-                                + "in the right location.<br/><br/>The exe or jar file"
-                                + "should be placed in it's own folder with nothing else "
-                                + "in it<br/><br/>Are you 100% sure that's what you've"
-                                + "done?</center></html>", "Warning", JOptionPane.DEFAULT_OPTION,
-                        JOptionPane.ERROR_MESSAGE, null, options, options[0]);
-                if (ret != 0) {
-                    System.exit(0);
+                if(!props.exists()){
+                    props.createNewFile();
                 }
+
+                App.PROPERTIES.load(new InputStreamReader(new FileInputStream(props)));
             }
+        } catch(Exception ex){
+            throw new RuntimeException(ex);
         }
+    }
 
-        settings = new Settings(); // Setup the Settings and wait for it to
-                                   // finish
-
-        if (settings.enableConsole()) {
-            settings.setConsoleVisible(true, false);
-            ((TrayMenu) TRAY_MENU).setTCLabel("Hide Console"); // Set this until proper localization
-        } else {
-            ((TrayMenu) TRAY_MENU).setTCLabel("Show Console"); // Set this until proper localization
-        }
-
-        settings.log("ATLauncher Version: " + settings.getVersion());
-        settings.log("Operating System: " + System.getProperty("os.name"));
-        settings.log("RAM Available: " + Utils.getMaximumRam() + "MB");
-        settings.log("Java Version: " + Utils.getJavaVersion(), LogMessageType.info, false);
-        if (settings.isUsingCustomJavaPath()) {
-            settings.log("Custom Java Path Set!", LogMessageType.warning, false);
-        }
-        settings.log("Java Path: " + settings.getJavaPath());
-        settings.log("64 Bit Java: " + Utils.is64Bit());
-        settings.log("Launcher Directory: " + settings.getBaseDir());
-
-        if (Utils.isMac()) {
+    private static void helpMacOut(){
+        try{
             System.setProperty("apple.laf.useScreenMenuBar", "true");
-            System.setProperty("com.apple.mrj.application.apple.menu.about.name", "ATLauncher "
-                    + settings.getVersion());
-            try {
-                Class util = Class.forName("com.apple.eawt.Application");
-                Method getApplication = util.getMethod("getApplication", new Class[0]);
-                Object application = getApplication.invoke(util);
-                Class params[] = new Class[1];
-                params[0] = Image.class;
-                Method setDockIconImage = util.getMethod("setDockIconImage", params);
-                setDockIconImage.invoke(application, Utils.getImage("/resources/Icon.png"));
-            } catch (Exception ex) {
-                ex.printStackTrace(System.err);
-            }
+            System.setProperty(
+                    "com.apple.mrj.application.apple.menu.about.name",
+                    "ATLauncher" + settings.getVersion()
+            );
+
+            Class clazz = Class.forName("com.apple.eawt.Application");
+            Method getApplication = clazz.getDeclaredMethod("getApplication");
+            Method setDockIconImage = clazz.getDeclaredMethod("setDockIconImage", new Class[]{Image.class});
+            Object app = getApplication.invoke(null);
+            setDockIconImage.invoke(app, Utils.getImage("Icon.png"));
+        } catch(Exception ex){
+            throw new RuntimeException(ex);
         }
+    }
 
-        settings.log("Showing splash screen and loading everything");
-        SplashScreen ss = new SplashScreen(); // Show Splash Screen
-        settings.loadEverything(); // Loads everything that needs to be loaded
-        ((TrayMenu) TRAY_MENU).localize();
-        ss.close(); // Close the Splash Screen
-        settings.log("Launcher finished loading everything");
-
-        if (settings.isFirstTimeRun()) {
-            settings.log("Launcher not setup. Loading Setup Dialog", LogMessageType.warning, false);
-            new SetupDialog(settings);
-        }
-
-        boolean open = true;
-
-        if (autoLaunch != null) {
-            if (settings.isInstanceBySafeName(autoLaunch)) {
-                Instance instance = settings.getInstanceBySafeName(autoLaunch);
-                settings.log("Opening Instance " + instance.getName());
-                if (instance.launch()) {
-                    open = false;
-                } else {
-                    settings.log("Error Opening Instance  " + instance.getName(),
-                            LogMessageType.error, false);
+    private static void pre(){
+        try{
+            SwingUtilities.invokeLater(new Runnable(){
+                @Override
+                public void run(){
+                    App.CONSOLE.setVisible(true);
                 }
-            }
+            });
+            SwingUtilities.invokeLater(new Runnable(){
+                @Override
+                public void run(){
+                    App.SPLASH.setVisible(true);
+                }
+            });
+        } catch(Exception ex){
+            throw new RuntimeException(ex);
         }
+    }
 
-        new LauncherFrame(open); // Open the Launcher
+    private static void post(){
+        try{
+            SwingUtilities.invokeLater(new Runnable(){
+                @Override
+                public void run(){
+                    App.SPLASH.setVisible(false);
+                }
+            });
+            SwingUtilities.invokeLater(new Runnable(){
+                @Override
+                public void run(){
+                    App.LAUNCHER.setVisible(true);
+                }
+            });
+        } catch(Exception ex){
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public static File getCurrent(){
+        return CURRENT;
+    }
+
+    private static void resolveCurrent(){
+        if(Utils.isLinux()){
+            try{
+                CURRENT = new File(App.class.getClassLoader().getResource("").toURI());
+            } catch(Exception ex){
+                CURRENT = new File(System.getProperty("user.dir", "ATLaucher"));
+            }
+        } else{
+            CURRENT =new File(System.getProperty("user.dir"));
+        }
     }
 
     private static void setLAF() throws Exception {

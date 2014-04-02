@@ -2,6 +2,7 @@ package com.atlauncher.data;
 
 import com.atlauncher.App;
 import com.atlauncher.gui.CollapsiblePanel;
+import com.atlauncher.type.Instance;
 import com.atlauncher.utils.Base64;
 import com.atlauncher.utils.Localizer;
 import com.atlauncher.utils.Utils;

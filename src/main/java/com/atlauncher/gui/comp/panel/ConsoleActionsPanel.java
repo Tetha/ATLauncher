@@ -15,8 +15,8 @@ public final class ConsoleActionsPanel extends JPanel {
         this.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent event){
-                App.settings.clearConsole();
-                App.settings.log("Console Cleared");
+                App.CONSOLE.clear();
+                App.LOGGER.info("Clearing Console");
             }
         });
     }};
@@ -24,8 +24,11 @@ public final class ConsoleActionsPanel extends JPanel {
         this.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent event){
-                App.settings.log("Copied Log To Clipboar");
-                Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(App.settings.getLog()), null);
+                App.LOGGER.info("Copied Log To Clipboar");
+                Toolkit.getDefaultToolkit().getSystemClipboard().setContents(
+                        new StringSelection(App.CONSOLE.getText()),
+                        null
+                );
             }
         });
     }};

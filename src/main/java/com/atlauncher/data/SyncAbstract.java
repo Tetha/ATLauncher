@@ -1,6 +1,7 @@
 package com.atlauncher.data;
 
 import com.atlauncher.gui.CollapsiblePanel;
+import com.atlauncher.type.Instance;
 
 import java.io.File;
 import java.util.HashMap;

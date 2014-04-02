@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration status="WARN">
+<configuration status="WARN" packages="com.atlauncher.log4j2">
     <appenders>
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="[%d{HH:mm:ss}] %m%n"/>
         </Console>
+        <ATLauncher-Console/>
     </appenders>
     <loggers>
         <root level="all">
             <appender-ref ref="Console"/>
+            <appender-ref ref="ATLauncher-Console"/>
         </root>
     </loggers>
 </configuration>

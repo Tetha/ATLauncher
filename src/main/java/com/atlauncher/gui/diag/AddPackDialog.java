@@ -50,6 +50,7 @@ public final class AddPackDialog extends JDialog {
             this.gbc.gridx++;
             this.gbc.anchor = GridBagConstraints.BASELINE_LEADING;
             this.add(this.PC_FIELD, this.gbc);
+
         }
     }
 
@@ -69,22 +70,10 @@ public final class AddPackDialog extends JDialog {
                                     JOptionPane.INFORMATION_MESSAGE
                             );
                         } else{
-                            JOptionPane.showMessageDialog(
-                                    AddPackDialog.this,
-                                    Localizer.localize("pack.packalreadyaddedmessage"),
-                                    Localizer.localize("pack.packalreadyadded"),
-                                    JOptionPane.ERROR_MESSAGE
-                            );
+                            App.settings.log("Pack Already Added");
                         }
-
-                        dispose();
                     } else{
-                        JOptionPane.showMessageDialog(
-                                AddPackDialog.this,
-                                Localizer.localize("pack.packdoesntexist"),
-                                Localizer.localize("pack.packaddederror"),
-                                JOptionPane.ERROR_MESSAGE
-                        );
+                        App.settings.log("Pack Not Found");
                     }
                 }
             });

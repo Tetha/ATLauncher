@@ -4,11 +4,12 @@
  * This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 Unported License.
  * To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.
  */
-package com.atlauncher.data;
+package com.atlauncher.type;
 
 import com.atlauncher.App;
-import com.atlauncher.gui.ProgressDialog;
-import com.atlauncher.utils.Localizer;
+import com.atlauncher.exceptions.InvalidCallbackException;
+import com.atlauncher.management.Resources;
+import com.atlauncher.thread.Download;
 import com.atlauncher.utils.Utils;
 
 import javax.imageio.ImageIO;
@@ -19,10 +20,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.concurrent.Future;
 
 public class Account implements Serializable {
 
@@ -60,24 +59,41 @@ public class Account implements Serializable {
         this.collapsedInstances = new ArrayList<String>();
     }
 
-    public ImageIcon getMinecraftHead() {
-        File file = null;
-        if (isReal()) {
-            file = new File(App.settings.getSkinsDir(), minecraftUsername + ".png");
-            if (!file.exists()) {
-                updateSkin();
+    public void cacheSkin(){
+        File file = new File(Resources.INSTANCE.getFile("Skins"), this.minecraftUsername + ".png");
+
+        if(file.exists()){
+            return;
+        } else{
+            synchronized(this)
+            {
+                try{
+                    Future<Void> f_callback = App.TASKPOOL.submit(new Download(
+                            "http://s3.amazonaws.com/MinecraftSkins/" + this.minecraftUsername + ".png",
+                            new File(Resources.INSTANCE.getFile("Skins"), this.minecraftUsername + ".png")
+                    ));
+                    Void callback = f_callback.get();
+
+                    if(callback != null){
+                        throw new InvalidCallbackException();
+                    }
+                } catch(Exception ex){
+                    App.LOGGER.error("Cannot Download Skin For Account: " + this.minecraftUsername);
+                    Utils.copyFile(new File(Resources.INSTANCE.getFile("Skins"), "default.png"), file);
+                }
             }
         }
+    }
 
-        if (file == null || !file.exists()) {
-            file = new File(App.settings.getSkinsDir(), "default.png");
-        }
+    public ImageIcon getMinecraftHead() {
+        File file = new File(Resources.INSTANCE.getFile("Skins"), this.minecraftUsername + ".png");
+        this.cacheSkin();
 
-        BufferedImage image = null;
+        BufferedImage image;
         try {
             image = ImageIO.read(file);
         } catch (IOException e) {
-            App.settings.logStackTrace(e);
+            throw new RuntimeException(e);
         }
         BufferedImage main = image.getSubimage(8, 8, 8, 8);
         BufferedImage helmet = image.getSubimage(40, 8, 8, 8);
@@ -104,17 +120,8 @@ public class Account implements Serializable {
     }
 
     public ImageIcon getMinecraftSkin() {
-        File file = null;
-        if (isReal()) {
-            file = new File(App.settings.getSkinsDir(), minecraftUsername + ".png");
-            if (!file.exists()) {
-                updateSkin();
-            }
-        }
-
-        if (file == null || !file.exists()) {
-            file = new File(App.settings.getSkinsDir(), "default.png");
-        }
+        File file = new File(Resources.INSTANCE.getFile("Skins"), this.minecraftUsername + ".png");
+        this.cacheSkin();
 
         BufferedImage image = null;
         try {
@@ -222,47 +229,4 @@ public class Account implements Serializable {
     public String toString() {
         return this.minecraftUsername;
     }
-
-    public void updateSkin() {
-        if (!skinUpdating) {
-            skinUpdating = true;
-            final File file = new File(App.settings.getSkinsDir(), minecraftUsername + ".png");
-            if (file.exists()) {
-                Utils.delete(file);
-            }
-            App.settings.log("Downloading skin for " + getMinecraftUsername());
-            final ProgressDialog dialog = new ProgressDialog(
-                    Localizer.localize("account.downloadingskin"), 0,
-                    Localizer.localize("account.downloadingminecraftskin",
-                            getMinecraftUsername()), "Aborting downloading Minecraft skin for "
-                            + getMinecraftUsername());
-            dialog.addThread(new Thread() {
-                public void run() {
-                    try {
-                        HttpURLConnection conn = (HttpURLConnection) new URL(
-                                "http://s3.amazonaws.com/MinecraftSkins/" + minecraftUsername
-                                        + ".png").openConnection();
-                        if (conn.getResponseCode() == 200) {
-                            Downloadable skin = new Downloadable(
-                                    "http://s3.amazonaws.com/MinecraftSkins/" + minecraftUsername
-                                            + ".png", file, null, null, false);
-                            skin.download(false);
-                        } else {
-                            Utils.copyFile(new File(App.settings.getSkinsDir(), "default.png"),
-                                    file, true);
-                        }
-                    } catch (MalformedURLException e) {
-                        App.settings.logStackTrace(e);
-                    } catch (IOException e) {
-                        App.settings.logStackTrace(e);
-                    }
-                    App.settings.reloadAccounts();
-                    dialog.close();
-                }
-            });
-            dialog.start();
-            skinUpdating = false;
-        }
-    }
-
 }

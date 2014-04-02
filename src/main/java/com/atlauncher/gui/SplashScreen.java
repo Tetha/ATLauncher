@@ -14,8 +14,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class SplashScreen extends JWindow {
-
+public class SplashScreen extends JWindow{
     private ImageIcon icon = Utils.getIconImage("SplashScreen.png");
 
     public SplashScreen() {
@@ -28,7 +27,6 @@ public class SplashScreen extends JWindow {
         background.setOpaque(false);
         add(background);
         setSize(icon.getIconWidth(), icon.getIconHeight());
-        setVisible(true);
         setLocationRelativeTo(null);
 
         final JPopupMenu contextMenu = new JPopupMenu();

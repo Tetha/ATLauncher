@@ -12,6 +12,7 @@ package com.atlauncher.data;
 
 import com.atlauncher.App;
 import com.atlauncher.exceptions.InvalidPack;
+import com.atlauncher.type.Pack;
 
 import java.util.List;
 

@@ -229,7 +229,7 @@ public class Downloadable {
                         this.connection = null;
                         return getConnection();
                     } else {
-                        App.settings.log("Failed to download " + this.beforeURL
+                        App.LOGGER.info("Failed to download " + this.beforeURL
                                 + " from all ATLauncher servers. Cancelling install!",
                                 LogMessageType.error, false);
                         if (this.instanceInstaller != null) {
@@ -288,33 +288,12 @@ public class Downloadable {
     }
 
     public String getContents() {
-        if (instanceInstaller != null) {
-            if (instanceInstaller.isCancelled()) {
-                return null;
-            }
-        }
-        StringBuilder response = null;
-        try {
-            InputStream in = null;
-            if (isGziped()) {
-                in = new GZIPInputStream(getConnection().getInputStream());
-            } else {
-                in = getConnection().getInputStream();
-            }
-            BufferedReader br = new BufferedReader(new InputStreamReader(in));
-            response = new StringBuilder();
-            String inputLine;
-
-            while ((inputLine = br.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
-        } catch (IOException e) {
-            App.settings.logStackTrace(e);
+        try{
+            StringBuilder builder = new StringBuilder();
             return null;
+        } catch(Exception ex){
+            throw new RuntimeException(ex);
         }
-        this.connection.disconnect();
-        return response.toString();
     }
 
     public void download(boolean downloadAsLibrary) {
@@ -328,7 +307,7 @@ public class Downloadable {
             this.connection = null;
         }
         if (this.file == null) {
-            App.settings.log("Cannot download " + this.url + " to file as one wasn't specified!",
+            App.LOGGER.info("Cannot download " + this.url + " to file as one wasn't specified!",
                     LogMessageType.error, false);
             return;
         }
@@ -391,14 +370,14 @@ public class Downloadable {
                 }
                 if (this.isATLauncherDownload) {
                     if (App.settings.getNextServer()) {
-                        App.settings.log("Error downloading " + this.file.getName() + " from "
+                        App.LOGGER.info("Error downloading " + this.file.getName() + " from "
                                 + this.url + ". Expected hash of " + getHash() + " but got "
                                 + fileHash + " instead. Trying another server!",
                                 LogMessageType.warning, false);
                         this.url = App.settings.getFileURL(this.beforeURL);
                         download(downloadAsLibrary); // Redownload the file
                     } else {
-                        App.settings.log("Failed to download file " + this.file.getName()
+                        App.LOGGER.info("Failed to download file " + this.file.getName()
                                 + " from all ATLauncher servers. Cancelling install!",
                                 LogMessageType.error, false);
                         if (this.instanceInstaller != null) {
@@ -406,7 +385,7 @@ public class Downloadable {
                         }
                     }
                 } else {
-                    App.settings.log("Error downloading " + this.file.getName() + " from "
+                    App.LOGGER.info("Error downloading " + this.file.getName() + " from "
                             + this.url + ". Expected hash of " + getHash() + " but got " + fileHash
                             + " instead. Cancelling install!", LogMessageType.error, false);
                     if (this.instanceInstaller != null) {

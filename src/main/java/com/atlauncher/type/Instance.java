@@ -4,9 +4,13 @@
  * This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 Unported License.
  * To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.
  */
-package com.atlauncher.data;
+package com.atlauncher.type;
 
 import com.atlauncher.App;
+import com.atlauncher.data.Constants;
+import com.atlauncher.data.DisableableMod;
+import com.atlauncher.data.LogMessageType;
+import com.atlauncher.data.SyncAbstract;
 import com.atlauncher.data.mojang.auth.AuthenticationResponse;
 import com.atlauncher.gui.ProgressDialog;
 import com.atlauncher.mclauncher.LegacyMCLauncher;

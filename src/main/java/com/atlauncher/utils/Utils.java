@@ -1,9 +1,3 @@
-/**
- * Copyright 2013-2014 by ATLauncher and Contributors
- *
- * This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 Unported License.
- * To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.
- */
 package com.atlauncher.utils;
 
 import com.atlauncher.App;
@@ -42,16 +36,11 @@ public class Utils {
     public static ImageIcon getIconImage(String path) {
         URL url = System.class.getResource("/assets/image/" + path);
 
-        System.out.println("Loading Icon: " + "/assets/image/" + path);
-
         if (url == null) {
-            System.err.println("Unable to load resource " + "/assets/image/" +  path);
             return null;
         }
 
-        ImageIcon icon = new ImageIcon(url);
-
-        return icon;
+        return new ImageIcon(url);
     }
 
     public static StyleSheet createStyleSheet(String name){
@@ -77,15 +66,12 @@ public class Utils {
         return text.substring(0, 1).toUpperCase() + text.substring(1);
     }
 
-    public static ImageIcon getIconImage(File file) {
+    public static ImageIcon getIconImage(File file){
         if (!file.exists()) {
-            System.err.println("Unable to load file " + file.getAbsolutePath());
             return null;
         }
 
-        ImageIcon icon = new ImageIcon(file.getAbsolutePath());
-
-        return icon;
+        return new ImageIcon(file.getAbsolutePath());
     }
 
     public static Font getFont() {
@@ -100,13 +86,10 @@ public class Utils {
         URL url = System.class.getResource("/assets/image/" + path);
 
         if (url == null) {
-            System.err.println("Unable to load resource " + "/assets/image/" + path);
             return null;
         }
 
-        ImageIcon icon = new ImageIcon(url);
-
-        return icon.getImage();
+        return new ImageIcon(url).getImage();
     }
 
     public static void openExplorer(File file) {
@@ -200,7 +183,7 @@ public class Utils {
 
     public static boolean is64Bit() {
         String osType = System.getProperty("sun.arch.data.model");
-        return Boolean.valueOf(osType.contains("64"));
+        return osType.contains("64");
     }
 
     public static String getArch() {

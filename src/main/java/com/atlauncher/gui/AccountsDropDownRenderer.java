@@ -6,7 +6,7 @@
  */
 package com.atlauncher.gui;
 
-import com.atlauncher.data.Account;
+import com.atlauncher.type.Account;
 
 import javax.swing.*;
 import java.awt.*;

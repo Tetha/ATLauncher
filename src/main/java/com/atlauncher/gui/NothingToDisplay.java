@@ -6,14 +6,12 @@
  */
 package com.atlauncher.gui;
 
-import com.atlauncher.App;
 import com.atlauncher.utils.Localizer;
 import com.atlauncher.utils.Utils;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.io.File;
 
 /**
  * Class for displaying packs in the Pack Tab
@@ -55,9 +53,6 @@ public class NothingToDisplay extends JPanel {
         splitPane.setLeftComponent(leftPanel);
         splitPane.setRightComponent(rightPanel);
         splitPane.setEnabled(false);
-
-        errorImage = new JLabel(Utils.getIconImage(new File(App.settings.getImagesDir(),
-                "defaultimage.png")));
 
         errorMessage = new JTextArea();
         errorMessage.setBorder(BorderFactory.createEmptyBorder());

@@ -12,7 +12,7 @@ package com.atlauncher.gui;
 
 import com.atlauncher.App;
 import com.atlauncher.data.DisableableMod;
-import com.atlauncher.data.Instance;
+import com.atlauncher.type.Instance;
 import com.atlauncher.utils.Localizer;
 import com.atlauncher.utils.Utils;
 

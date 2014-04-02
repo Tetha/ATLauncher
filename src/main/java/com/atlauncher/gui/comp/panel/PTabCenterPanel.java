@@ -1,13 +1,11 @@
 package com.atlauncher.gui.comp.panel;
 
-import com.atlauncher.App;
-import com.atlauncher.data.Pack;
-import com.atlauncher.gui.NothingToDisplay;
+import com.atlauncher.type.Pack;
 import com.atlauncher.gui.PackDisplay;
-import com.atlauncher.utils.Localizer;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.LinkedList;
 import java.util.List;
 
 public final class PTabCenterPanel extends JPanel {
@@ -43,17 +41,9 @@ public final class PTabCenterPanel extends JPanel {
                 this.gbc.gridy++;
             }
         }
-
-        if(i == 0){
-            this.CONTENT.add(new NothingToDisplay(Localizer.localize("pack.nodisplay", "\n\n")), this.gbc);
-        }
     }
 
     private List<Pack> get(){
-        if(App.settings.sortPacksAlphabetically()){
-            return App.settings.getPacksSortedAlphabetically();
-        } else{
-            return App.settings.getPacksSortedPositionally();
-        }
+        return new LinkedList<Pack>();
     }
 }

@@ -1,9 +1,10 @@
 package com.atlauncher.gui.comp.panel;
 
 import com.atlauncher.App;
-import com.atlauncher.data.Account;
+import com.atlauncher.type.Account;
 import com.atlauncher.gui.AccountsDropDownRenderer;
 import com.atlauncher.gui.CustomLineBorder;
+import com.atlauncher.management.Accounts;
 import com.atlauncher.utils.Localizer;
 import com.atlauncher.utils.Utils;
 
@@ -13,7 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public final class MainBottomPanel extends JPanel {
-    private final MiddlePanel MIDDLE_PANEL = new MiddlePanel();
+    // private final MiddlePanel MIDDLE_PANEL = new MiddlePanel();
     private final SocialMediaPanel RIGHT_PANEL = new SocialMediaPanel();
     private final LeftPanel LEFT_PANEL = new LeftPanel();
 
@@ -23,7 +24,7 @@ public final class MainBottomPanel extends JPanel {
         this.setBorder(BorderFactory.createEtchedBorder());
         this.setPreferredSize(new Dimension(0, 50));
 
-        this.add(this.MIDDLE_PANEL, BorderLayout.CENTER);
+        // this.add(this.MIDDLE_PANEL, BorderLayout.CENTER);
         this.add(this.LEFT_PANEL, BorderLayout.WEST);
         this.add(this.RIGHT_PANEL, BorderLayout.EAST);
     }
@@ -33,14 +34,14 @@ public final class MainBottomPanel extends JPanel {
             this.setRenderer(new AccountsDropDownRenderer());
             this.addItem(new Account(Localizer.localize("account.select")));
 
-            for(Account acc : App.settings.getAccounts()){
+            for(Account acc : Accounts.all()){
                 this.addItem(acc);
             }
 
-            if(App.settings.getAccount() == null){
+            if(Accounts.current() == null){
                 this.setSelectedIndex(0);
             } else{
-                this.setSelectedItem(App.settings.getAccount());
+                this.setSelectedItem(Accounts.current());
             }
         }};
 
@@ -77,34 +78,16 @@ public final class MainBottomPanel extends JPanel {
 
     private final class LeftPanel extends JPanel{
         private final JButton TC_BUTTON = new JButton(){{
-            if(App.settings.isConsoleVisible()){
-                this.setText(Localizer.localize("console.hide"));
-            } else{
-                this.setText(Localizer.localize("console.show"));
-            }
-
-            this.addActionListener(new ActionListener(){
-                @Override
-                public void actionPerformed(ActionEvent event){
-
-                }
-            });
         }};
         private final JButton OPENFOLDER_BUTTON = new JButton(Localizer.localize("common.openfolder")){{
             this.addActionListener(new ActionListener(){
                 @Override
                 public void actionPerformed(ActionEvent event){
-
+                    Utils.openExplorer(App.settings.getBaseDir());
                 }
             });
         }};
         private final JButton UPDATEDATA_BUTTON = new JButton(Localizer.localize("common.updatedata")){{
-            this.addActionListener(new ActionListener(){
-                @Override
-                public void actionPerformed(ActionEvent event){
-
-                }
-            });
         }};
 
         private final GridBagConstraints gbc = new GridBagConstraints();

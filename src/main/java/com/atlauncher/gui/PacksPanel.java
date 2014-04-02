@@ -7,7 +7,7 @@
 package com.atlauncher.gui;
 
 import com.atlauncher.App;
-import com.atlauncher.data.Pack;
+import com.atlauncher.type.Pack;
 import com.atlauncher.utils.Localizer;
 
 import javax.swing.*;

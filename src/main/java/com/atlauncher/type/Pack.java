@@ -8,9 +8,10 @@
  *
  * Link to license: http://creativecommons.org/licenses/by-nc-nd/3.0/
  */
-package com.atlauncher.data;
+package com.atlauncher.type;
 
 import com.atlauncher.App;
+import com.atlauncher.data.*;
 import com.atlauncher.utils.Utils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

@@ -7,7 +7,7 @@
 package com.atlauncher.gui;
 
 import com.atlauncher.App;
-import com.atlauncher.data.Account;
+import com.atlauncher.type.Account;
 import com.atlauncher.data.LogMessageType;
 import com.atlauncher.data.mojang.auth.AuthenticationResponse;
 import com.atlauncher.utils.Authentication;
@@ -237,7 +237,6 @@ public class AccountPanel extends JPanel {
                                     null, options, options[0]);
                         }
                         App.settings.saveAccounts();
-                        App.settings.reloadAccounts();
                         accountsComboBox.removeAllItems();
                         accountsComboBox.addItem(fillerAccount);
                         for (Account accountt : App.settings.getAccounts()) {
@@ -297,7 +296,7 @@ public class AccountPanel extends JPanel {
         updateSkin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 final Account account = ((Account) accountsComboBox.getSelectedItem());
-                account.updateSkin();
+                account.cacheSkin();
                 userSkin.setIcon(account.getMinecraftSkin());
             }
         });
