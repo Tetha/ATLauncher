@@ -110,19 +110,9 @@ public class LegacyMCLauncher {
             arguments.add("-Xmx" + App.settings.getMemory() + "M");
         }
 
-        if (App.settings.getPermGen() < instance.getPermGen()) {
-            if(Utils.isJava8()) {
-                arguments.add("-XX:MetaspaceSize=" + instance.getPermGen() + "M");
-            }else{
-                arguments.add("-XX:PermSize=" + instance.getPermGen() + "M");
-            }
-        } else {
-            if(Utils.isJava8()) {
-                arguments.add("-XX:MetaspaceSize=" + App.settings.getPermGen() + "M");
-            }else{
-                arguments.add("-XX:PermSize=" + App.settings.getPermGen() + "M");
-            }
-        }
+        arguments.add( App.settings.getJavaLauncher()
+                .getPermgenParameter( App.settings.getPermGen(),
+                                      instance.getPermGen() ) );
 
         arguments.add("-Duser.language=en");
         arguments.add("-Duser.country=US");

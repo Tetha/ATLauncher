@@ -74,6 +74,8 @@ import com.atlauncher.gui.PacksPanel;
 import com.atlauncher.gui.ProgressDialog;
 import com.atlauncher.gui.TrayMenu;
 import com.atlauncher.utils.Utils;
+import com.atlauncher.utils.java.JavaLauncher;
+import com.atlauncher.utils.java.JavaLauncherFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
@@ -96,9 +98,16 @@ public class Settings {
     private int windowWidth; // Width of the Minecraft window
     private int windowHeight; // Height of the Minecraft window
     private boolean maximiseMinecraft; // If Minecraft should start maximised
+    
+    
+    private JavaLauncher javaLauncher; // should eventually encapsulate the three variables below.
+    
     private boolean usingCustomJavaPath; // If the user is using a custom java path
     private String javaPath; // Users path to Java
     private String javaParamaters; // Extra Java paramaters when launching Minecraft
+    
+    
+    
     private boolean advancedBackup; // If advanced backup is enabled
     private boolean sortPacksAlphabetically; // If to sort packs default alphabetically
     private boolean keepLauncherOpen; // If we should close the Launcher after Minecraft has closed
@@ -2318,8 +2327,14 @@ public class Settings {
             this.usingCustomJavaPath = true;
         }
         this.javaPath = javaPath;
+        
+        this.javaLauncher = JavaLauncherFactory.fromJavaPath( javaPath );
     }
 
+    public JavaLauncher getJavaLauncher() {
+        return javaLauncher;
+    }
+    
     public String getJavaParameters() {
         return this.javaParamaters;
     }
